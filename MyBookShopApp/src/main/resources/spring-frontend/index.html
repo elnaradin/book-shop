@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/assets/css/fonts.min.css?v=64223515">
     <link rel="stylesheet" href="/assets/css/basic.min.css?v=64223515">
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=64223515">
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=64223515"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -32,15 +32,15 @@
         th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
-        <main class="Middle-main">
+        <main class="Middle-main" >
             <div class="Section">
-                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title = #{index.recommended})}"></div>
-                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title= #{index.recent})}"></div>
-                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title=#{index.popular})}"></div>
+                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title =#{index.recommended}, category=${recommendedBooks}, bookType='recommended')}"></div>
+                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title= #{index.recent}, category=${recentBooks} , bookType='recent')}"></div>
+                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title=#{index.popular}, category=${popularBooks}, bookType='popular')}"></div>
             </div>
             <h2 class="Middle-title" th:text="#{index.books-by-tags}">Книги по тегам
             </h2>
-            <div class="Tags" id="tags" th:replace="~{fragments/tag_cloud_fragment :: cloud}"></div>
+            <div class="Tags" id="tags"  th:replace="~{fragments/tag_cloud_fragment :: cloud}"></div>
         </main>
     </div>
 </div>

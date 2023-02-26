@@ -1,53 +1,43 @@
 package com.example.MyBookShopApp.model.book.links;
 
-import javax.persistence.*;
+import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
+import com.example.MyBookShopApp.model.book.BookEntity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "book2author")
+@Getter
+@Setter
 public class Book2AuthorEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int bookId;
+    @JoinColumn(columnDefinition = "INT NOT NULL")
+    @ManyToOne
+    @JsonBackReference
+    private BookEntity book;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int authorId;
+    @JoinColumn(columnDefinition = "INT NOT NULL")
+    @ManyToOne
+    @JsonBackReference
+    private AuthorEntity author;
 
     @Column(columnDefinition = "INT NOT NULL  DEFAULT 0")
     private int sortIndex;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
-    }
-
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-
-    public int getSortIndex() {
-        return sortIndex;
-    }
-
-    public void setSortIndex(int sortIndex) {
-        this.sortIndex = sortIndex;
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.controllers;
 
+import com.example.MyBookShopApp.dto.SearchWordDto;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,19 @@ public class PopularBooksController {
         this.bookService = bookService;
     }
 
-    @ModelAttribute("booksList")
+    @ModelAttribute("popularBooks")
     public List<BookEntity> bookList() {
-        return bookService.getBooksData();
+        return bookService.getListOfPopularBooks(0, 20);
+    }
+
+    @ModelAttribute("searchWordDto")
+    public SearchWordDto searchWordDto(){
+        return new SearchWordDto();
     }
 
     @GetMapping("/books/popular")
     public String popularBooksPage() {
         return "/books/popular";
     }
+
 }

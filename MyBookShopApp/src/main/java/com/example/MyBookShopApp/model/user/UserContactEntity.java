@@ -4,7 +4,14 @@ import com.example.MyBookShopApp.model.enums.ContactType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,11 +21,12 @@ import java.time.LocalDateTime;
 public class UserContactEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int userId;
+    @JoinColumn(columnDefinition = "INT NOT NULL")
+    @OneToOne
+    private UserEntity user;
 
     private ContactType type;
 
@@ -37,67 +45,4 @@ public class UserContactEntity {
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String contact;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public ContactType getType() {
-        return type;
-    }
-
-    public void setType(ContactType type) {
-        this.type = type;
-    }
-
-    public short getApproved() {
-        return approved;
-    }
-
-    public void setApproved(short approved) {
-        this.approved = approved;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getCodeTrails() {
-        return codeTrails;
-    }
-
-    public void setCodeTrails(int codeTrails) {
-        this.codeTrails = codeTrails;
-    }
-
-    public LocalDateTime getCodeTime() {
-        return codeTime;
-    }
-
-    public void setCodeTime(LocalDateTime codeTime) {
-        this.codeTime = codeTime;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
 }
