@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="Cards Cards_refresh" th:fragment="pool">
+    <div class="Card" th:each="book: ${category}">
+        <div class="Card-picture"><a href="#"><img th:src="${book.image}"
+                                                   src="/assets/img/content/main/card.jpg"
+                                                   alt="card.jpg"/></a>
+        </div>
+        <div class="Card-content">
+            <strong class="Card-title" th:text="${book.title}">
+                <a href="#"></a></strong>
+            <div class="Card-description" th:text="${#strings.substring(book.description, 0, 70).concat('...')}"></div>
+            <div class="Card-cost">
+                <span class="Card-priceOld" th:text ="${book.price}"></span>
+                <span class="Card-price" th:text="${'₽' + #numbers.formatInteger((book.price - (book.price*book.discount*1.0)/100), 0)}"></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Тут название страницы написать</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="favicon.ico" rel="shortcut icon">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=52263780">
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=52263780">
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=52263780">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script defer src="/assets/js/scripts.min.js?v=52263780"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#locales").change(function () {
+                var selectedOption = $("#locales").val();
+                if (selectedOption !== '') {
+                    window.location.replace('?lang=' + selectedOption);
+                }
+            })
+        })
+    </script>
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status='unauthorized')}">
+</header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+            <h1 class="Middle-title" th:text="#{genres}">Жанры
+            </h1>
+            <div class="Section">
+                <div class="Tags Tags_genres">
+                    <th:block th:each="genre1 : ${genreList}">
+                        <div class="Tags Tags_embed" th:if="${genre1.parentId} == null">
+                            <div class="Tags-title">
+                                <div class="Tag"><a th:href="@{'/genres/' + ${genre1.slug}}" href="/genres/slug.html"
+                                                    th:text="${genre1.name}">Лёгкое
+                                    чтение</a><span th:text="${'(' + #lists.size(genre1.books) + ')'}"
+                                                    class="undefined-amount">(15638)</span>
+                                </div>
+                            </div>
+                            <th:block th:each="genre2 : ${genreList}">
+                                <th:block th:if="${genre2.parentId eq genre1.id}">
+                                    <div class="Tag"><a th:href="@{'/genres/' + ${genre2.slug}}"
+                                                        href="/genres/slug.html"
+                                                        th:text="${genre2.name}">Детективы
+                                    </a> <span th:text="${'(' + #lists.size(genre2.books) + ')'}"
+                                               class="undefined-amount">(10)</span>
+                                    </div>
+                                    <div class="Tags">
+                                        <th:block th:each="genre3 : ${genreList}">
+                                            <th:block th:if="${genre3.parentId eq genre2.id}">
+
+                                                <div class="Tag"><a th:href="@{'/genres/' + ${genre3.slug}}"
+                                                                    href="/genres/slug.html"
+                                                                    th:text="${genre3.name }">Детективы
+                                                </a><span th:text="${'(' + #lists.size(genre3.books) + ')'}"
+                                                          class="undefined-amount">(10)</span>
+                                                </div>
+                                            </th:block>
+                                        </th:block>
+                                    </div>
+                                </th:block>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="article">
+    <h1 class="Middle-title" th:text="${author}">Борис Васильевич Бедный
+    </h1>
+    <article class="Article">
+        <div class="sdf">
+        </div>
+        <div class="Spoiler">
+            <div class="Spoiler-visible">
+                <div class="pict pict_left"><img  src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
+                </div>
+                <div >
+                    <h2 th:text="#{authors.biography}">Биография
+                    </h2>
+                    <p th:text="${authorWithAllBooks.author.description}">Борис Бедный родился в семье учителя в 1916 году в станице Ярославская Краснодарского
+                        края. Окончил Майкопский лесной техникум и был послан учиться в Ленинградскую
+                        лесотехническую академию. Стал специалистом по сплаву леса и приехал в Республику Коми,
+                        работать на сплавных предприятиях.
+                    </p>
+
+                </div>
+            </div>
+            <div class="Spoiler-hide"  >
+                <p th:text="${authorWithAllBooks.author.description}">"Писать он начал до войны, в академии,- рассказал о нем в предисловии к книге "Первое дело"
+                    поэт К.Ваншенкин.- Был участником литературных кружков и студий. Но всерьез вернулся к этому
+                    в сорок шестом, в далекой сплавконторе, на Трехозерной запани. Печатался в Коми
+                    республиканской газете "За новый Север" ("Красное знамя") и наконец решился вновь переломить
+                    судьбу, поступив в Литературный институт" в 1952г.
+                </p>
+
+            </div>
+            <div class="Spoiler-footer">
+                <button class="Spoiler-trigger btn btn_primary btn_nr" type="button" data-showtext="Свернуть"
+                        data-hidetext="Показать полностью">
+                </button>
+            </div>
+        </div>
+    </article>
+</div>
+</html>
