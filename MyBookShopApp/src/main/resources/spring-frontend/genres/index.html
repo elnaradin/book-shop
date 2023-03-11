@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title>Жанры</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -41,29 +41,31 @@
                     <th:block th:each="genre1 : ${genreList}">
                         <div class="Tags Tags_embed" th:if="${genre1.parentId} == null">
                             <div class="Tags-title">
-                                <div class="Tag"><a th:href="@{'/genres/' + ${genre1.slug}}" href="/genres/slug.html"
-                                                    th:text="${genre1.name}">Лёгкое
-                                    чтение</a><span th:text="${'(' + #lists.size(genre1.books) + ')'}"
-                                                    class="undefined-amount">(15638)</span>
+                                <div class="Tag"><a th:href="@{'/genres/' + ${genre1.slug}}" href="/genres/slug.html">
+                                    <span th:text="${genre1.name}">Лёгкое чтение</span>
+                                    <span th:text="${'(' + genre1.booksAmount + ')'}"
+                                          class="undefined-amount">(15638)</span></a>
                                 </div>
                             </div>
                             <th:block th:each="genre2 : ${genreList}">
                                 <th:block th:if="${genre2.parentId eq genre1.id}">
                                     <div class="Tag"><a th:href="@{'/genres/' + ${genre2.slug}}"
-                                                        href="/genres/slug.html"
-                                                        th:text="${genre2.name}">Детективы
-                                    </a> <span th:text="${'(' + #lists.size(genre2.books) + ')'}"
-                                               class="undefined-amount">(10)</span>
+                                                        href="/genres/slug.html">
+                                        <span th:text="${genre2.name}">Детективы
+                                    </span>
+                                        <span th:text="${'(' + genre2.booksAmount + ')'}"
+                                              class="undefined-amount">(10)</span> </a>
                                     </div>
                                     <div class="Tags">
                                         <th:block th:each="genre3 : ${genreList}">
                                             <th:block th:if="${genre3.parentId eq genre2.id}">
 
                                                 <div class="Tag"><a th:href="@{'/genres/' + ${genre3.slug}}"
-                                                                    href="/genres/slug.html"
-                                                                    th:text="${genre3.name }">Детективы
-                                                </a><span th:text="${'(' + #lists.size(genre3.books) + ')'}"
+                                                                    href="/genres/slug.html">
+                                                    <span th:text="${genre3.name }">Детективы</span>
+                                                    <span th:text="${'(' + genre3.booksAmount + ')'}"
                                                           class="undefined-amount">(10)</span>
+                                                </a>
                                                 </div>
                                             </th:block>
                                         </th:block>

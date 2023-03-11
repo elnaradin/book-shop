@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface GenreRepository extends JpaRepository<GenreEntity, Integer> {
     Optional<GenreEntity> findGenreEntitiesBySlugIs(String slug);
+
 }

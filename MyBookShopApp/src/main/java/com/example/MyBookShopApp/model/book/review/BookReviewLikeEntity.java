@@ -21,11 +21,12 @@ import java.time.LocalDateTime;
 public class BookReviewLikeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int reviewId;
+    @ManyToOne
+    @JoinColumn(columnDefinition = "INT NOT NULL")
+    private BookReviewEntity review;
 
     @JoinColumn(columnDefinition = "INT NOT NULL")
     @ManyToOne

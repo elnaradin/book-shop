@@ -8,12 +8,13 @@
         </div>
         <div class="Spoiler">
             <div class="Spoiler-visible">
-                <div class="pict pict_left"><img  src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
+                <div class="pict pict_left"><img src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
                 </div>
-                <div >
+                <div>
                     <h2 th:text="#{authors.biography}">Биография
                     </h2>
-                    <p th:text="${authorWithAllBooks.author.description}">Борис Бедный родился в семье учителя в 1916 году в станице Ярославская Краснодарского
+                    <p th:text="${authorWithSomeBooks.author.description}">Борис Бедный родился в семье учителя в 1916
+                        году в станице Ярославская Краснодарского
                         края. Окончил Майкопский лесной техникум и был послан учиться в Ленинградскую
                         лесотехническую академию. Стал специалистом по сплаву леса и приехал в Республику Коми,
                         работать на сплавных предприятиях.
@@ -21,8 +22,9 @@
 
                 </div>
             </div>
-            <div class="Spoiler-hide"  >
-                <p th:text="${authorWithAllBooks.author.description}">"Писать он начал до войны, в академии,- рассказал о нем в предисловии к книге "Первое дело"
+            <div class="Spoiler-hide">
+                <p th:text="${authorWithSomeBooks.author.description}">"Писать он начал до войны, в академии,- рассказал
+                    о нем в предисловии к книге "Первое дело"
                     поэт К.Ваншенкин.- Был участником литературных кружков и студий. Но всерьез вернулся к этому
                     в сорок шестом, в далекой сплавконторе, на Трехозерной запани. Печатался в Коми
                     республиканской газете "За новый Север" ("Красное знамя") и наконец решился вновь переломить

@@ -1,12 +1,20 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.dto.BookPageDto;
+import com.example.MyBookShopApp.dto.BookDto;
+import com.example.MyBookShopApp.dto.BooksPageDto;
+import com.example.MyBookShopApp.dto.ResultDto;
+import com.example.MyBookShopApp.dto.SearchWordDto;
 import com.example.MyBookShopApp.services.AuthorService;
 import com.example.MyBookShopApp.services.BookService;
+import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
+import com.example.MyBookShopApp.services.ReviewService;
 import io.swagger.annotations.Api;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,61 +22,114 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 @Api(description = "book data api")
+@RequiredArgsConstructor
 public class BooksRestApiController {
+    private final BooksRatingAndPopularityService ratingAndPopularityService;
     private final BookService bookService;
     private final AuthorService authorService;
+    private final ReviewService reviewService;
+    @Value(value = "${min-review-length}")
+    private int minReviewLength;
 
-    public BooksRestApiController(BookService bookService, AuthorService authorService) {
-        this.bookService = bookService;
-        this.authorService = authorService;
-    }
 
     @GetMapping("/books/recommended")
     @ResponseBody
-    public BookPageDto getRecommendedBookPage(@RequestParam("offset") Integer offset,
-                                              @RequestParam("limit") Integer limit) {
-        return new BookPageDto(bookService.getPageOfRecommendedBooks(offset, limit).getContent());
+    public BooksPageDto getRecommendedBookPage(@RequestParam("offset") Integer offset,
+                                               @RequestParam("limit") Integer limit) {
+        List<BookDto> books = bookService.getPageOfRecommendedBooks(offset, limit);
+        return new BooksPageDto(books);
     }
 
     @GetMapping("/books/popular")
     @ResponseBody
-    public BookPageDto getPopularBookPage(@RequestParam("offset") Integer offset,
-                                         @RequestParam("limit") Integer limit) {
-        return new BookPageDto(bookService.getListOfPopularBooks(offset, limit));
+    public BooksPageDto getPopularBookPage(@RequestParam("offset") Integer offset,
+                                           @RequestParam("limit") Integer limit) {
+        List<BookDto> books = ratingAndPopularityService.getListOfPopularBooks(offset, limit);
+        return new BooksPageDto(books);
     }
 
     @GetMapping("/books/recent")
     @ResponseBody
-    public BookPageDto getRecentBookPage(@RequestParam(value = "from", required = false) String from,
-                                         @RequestParam(value = "to", required = false) String to,
-                                         @RequestParam(value = "offset", required = false) Integer offset,
-                                         @RequestParam(value = "limit", required = false) Integer limit) throws ParseException {
-        return new BookPageDto(bookService.getPageOfRecentBooksByPubDate(from, to, offset, limit).getContent());
+    public BooksPageDto getRecentBookPage(@RequestParam(value = "from", required = false) String from,
+                                          @RequestParam(value = "to", required = false) String to,
+                                          @RequestParam(value = "offset", required = false) Integer offset,
+                                          @RequestParam(value = "limit", required = false) Integer limit) throws ParseException {
+        List<BookDto> books = bookService.getPageOfRecentBooksByPubDate(from, to, offset, limit);
+        return new BooksPageDto(books);
     }
 
     @GetMapping("/books/tag/{id}")
-    public BookPageDto tagPage(@PathVariable("id") Integer tagId,
-                          @RequestParam(value = "offset", required = false) Integer offset,
-                          @RequestParam(value = "limit", required = false) Integer limit){
-        return new BookPageDto(bookService.getTaggedBooks(tagId, offset, limit).getBooks());
+    public BooksPageDto tagPage(@PathVariable("id") Integer tagId,
+                                @RequestParam(value = "offset", required = false) Integer offset,
+                                @RequestParam(value = "limit", required = false) Integer limit) {
+        List<BookDto> books = bookService.getTaggedBooks(tagId, offset, limit).getBooks();
+        return new BooksPageDto(books);
     }
 
     @GetMapping("/books/genre/{slug}")
-    public BookPageDto genrePage(@PathVariable("slug") String slug,
-                               @RequestParam(value = "offset", required = false) Integer offset,
-                               @RequestParam(value = "limit", required = false) Integer limit){
-        return new BookPageDto(bookService.getBooksByGenre(slug, offset, limit).getBooks());
+    public BooksPageDto genrePage(@PathVariable("slug") String slug,
+                                  @RequestParam(value = "offset", required = false) Integer offset,
+                                  @RequestParam(value = "limit", required = false) Integer limit) {
+        List<BookDto> books = bookService.getBooksByGenre(slug, offset, limit).getBooks();
+        return new BooksPageDto(books);
     }
 
     @GetMapping("/books/author/{slug}")
-    public BookPageDto BookOfAuthorPage(@PathVariable("slug") String slug,
-                                        @RequestParam(value = "offset", required = false) Integer offset,
-                                        @RequestParam(value = "limit", required = false) Integer limit){
-        return new BookPageDto(authorService.getAuthorWithBooks(slug, offset, limit).getBooks());
+    public BooksPageDto bookOfAuthorPage(@PathVariable("slug") String slug,
+                                         @RequestParam(value = "offset", required = false) Integer offset,
+                                         @RequestParam(value = "limit", required = false) Integer limit) {
+        List<BookDto> books = authorService.getAuthorWithBooks(slug, offset, limit).getBooks();
+        return new BooksPageDto(books);
+    }
+
+    @PostMapping("/rateBook")
+    public ResultDto rateBook(@RequestParam("bookId") Integer bookId, @RequestParam("value") Integer value) {
+        ResultDto result = new ResultDto();
+        if (value == 0) {
+            return result;
+        }
+        ratingAndPopularityService.addRating(bookId, value);
+
+        result.setResult(true);
+        return result;
+    }
+
+    @GetMapping("/search/{searchWord}")
+    public BooksPageDto getNextSearchPage(@RequestParam("offset") Integer offset,
+                                          @RequestParam("limit") Integer limit,
+                                          @PathVariable(value = "searchWord", required = false) SearchWordDto searchWordDto) {
+        List<BookDto> books = bookService.getPageOfSearchResultBooks(searchWordDto.getExample(), offset, limit);
+        Integer booksCount = bookService.countFoundBooks(searchWordDto.getExample());
+        BooksPageDto booksPageDto = new BooksPageDto(books);
+        booksPageDto.setCount(booksCount);
+        return booksPageDto;
+    }
+
+    @PostMapping("/bookReview")
+    public ResultDto addBookReview(@RequestParam("bookId") Integer bookId,
+                                   @RequestParam("text") String text) {
+        ResultDto resultDto = new ResultDto();
+        if (text.length() < minReviewLength) {
+            resultDto.setError("Отзыв слишком короткий. Напишите, пожалуйста, более развёрнутый отзыв");
+        } else {
+            reviewService.saveBookReview(bookId, text);
+            resultDto.setResult(true);
+        }
+        return resultDto;
+    }
+
+    @PostMapping("/rateBookReview")
+    public ResultDto rateBookReview(@RequestParam("reviewid") Integer reviewId,
+                                    @RequestParam("value") Short value) {
+        ResultDto resultDto = new ResultDto();
+        reviewService.saveBookReviewRating(reviewId, value);
+        resultDto.setResult(true);
+        return resultDto;
     }
 
 }

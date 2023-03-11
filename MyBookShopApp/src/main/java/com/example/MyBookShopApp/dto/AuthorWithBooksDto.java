@@ -1,6 +1,5 @@
 package com.example.MyBookShopApp.dto;
 
-import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +15,7 @@ import java.util.List;
 public class AuthorWithBooksDto {
 
     private AuthorEntity author;
+    private Integer booksAmount;
 
-    private List<BookEntity> books;
+    private List<BookDto> books;
 }

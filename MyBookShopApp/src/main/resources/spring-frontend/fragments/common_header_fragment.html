@@ -23,14 +23,18 @@
                     </div>
                     <div class="Header-search">
                         <div class="search">
-                            <form class="form form_search" action="#" method="post" data-searchlimit="5" >
+                            <form class="form form_search" action="#" method="post" data-searchlimit="5">
                                 <input class="search-input" id="query" name="query" type="text"
-                                       th:placeholder="#{searchbar-placeholder}" th:field="${searchWordDto.example}" value=""/>
-                                <button class="search-button" type="submit" name="search" id="search" th:text="#{top-bar.search}">Поиск
+                                       th:placeholder="#{searchbar-placeholder}" th:field="${searchWordDto.example}"
+                                       value=""/>
+                                <button class="search-button" type="submit" name="search" id="search"
+                                        th:text="#{top-bar.search}">Поиск
                                 </button>
                             </form>
                         </div>
                     </div>
+                    <span th:if="${searchError}" th:text="${searchError.getLocalizedMessage()}"
+                          style="color: red"></span>
                 </div>
                 <div class="row-block Header-cart" th:replace="~{fragments/cart_block_fragment :: ${status}}"></div>
                 <div class="row-block Header-trigger"><a class="menuTrigger" href="#navigate">
@@ -52,13 +56,16 @@
                         <a class="menu-link" th:href="@{/genres}" th:text="#{top-bar.genres}" href="/genres/index.html">Жанры</a>
                     </li>
                     <li class="menu-item" th:class="${recent}">
-                        <a class="menu-link" th:href="@{/books/recent}" th:text="#{top-bar.recent}" href="/books/recent.html">Новинки</a>
+                        <a class="menu-link" th:href="@{/books/recent}" th:text="#{top-bar.recent}"
+                           href="/books/recent.html">Новинки</a>
                     </li>
                     <li class="menu-item" th:class="${popular}">
-                        <a class="menu-link" th:href="@{/books/popular}" th:text="#{top-bar.popular}" href="/books/popular.html">Популярное</a>
+                        <a class="menu-link" th:href="@{/books/popular}" th:text="#{top-bar.popular}"
+                           href="/books/popular.html">Популярное</a>
                     </li>
                     <li class="menu-item" th:class="${authors}">
-                        <a class="menu-link" th:href="@{/authors}" th:text="#{top-bar.authors}" href="/authors/index.html">Авторы</a>
+                        <a class="menu-link" th:href="@{/authors}" th:text="#{top-bar.authors}"
+                           href="/authors/index.html">Авторы</a>
                     </li>
                 </ul>
             </nav>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title>Популярное</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -20,7 +20,7 @@
         $(document).ready(function () {
             $("#locales").change(function () {
                 var selectedOption = $("#locales").val();
-                if(selectedOption !== ''){
+                if (selectedOption !== '') {
                     window.location.replace('?lang=' + selectedOption);
                 }
             })
@@ -41,11 +41,8 @@
                     </h1>
                 </div>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(category=${popularBooks} , case='popular')}"></div>
-                <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary" href="#" data-refreshshow="popular"
-                                                                 th:attr="data-refreshquery = ${searchWordDto.example}" data-refreshquery="Техника"
-                                                                 data-refreshoffset="0" data-refreshlimit="20" th:text="#{show-more}">Показать еще</a>
-                </div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(bookList=${popularBooks},
+                      refreshShowValue='popular')}"></div>
             </div>
         </main>
     </div>

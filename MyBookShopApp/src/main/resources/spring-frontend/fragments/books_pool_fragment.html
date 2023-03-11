@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="Cards Cards_refresh" th:fragment="pool">
-    <div class="Card" th:each="book: ${category}">
-        <div class="Card-picture"><a href="#"><img th:src="${book.image}"
-                                                   src="/assets/img/content/main/card.jpg"
-                                                   alt="card.jpg"/></a>
+    <div class="Card" th:each="book: ${bookList}">
+        <div class="Card-picture"><a href="#" th:href="@{'/books/' + ${book.slug}}"><img th:src="${book.image}"
+                                                                                         src="/assets/img/content/main/card.jpg"
+                                                                                         alt="card.jpg"/></a>
         </div>
         <div class="Card-content">
             <strong class="Card-title" th:text="${book.title}">
-                <a href="#"></a></strong>
-            <div class="Card-description" th:text="${#strings.substring(book.description, 0, 70).concat('...')}"></div>
+                <a href="#" th:href="@{'/books/' + ${book.slug}}"></a></strong>
+            <div class="Card-description" th:text="${book.getAuthorNames()}"></div>
             <div class="Card-cost">
-                <span class="Card-priceOld" th:text ="${book.price}"></span>
-                <span class="Card-price" th:text="${'₽' + #numbers.formatInteger((book.price - (book.price*book.discount*1.0)/100), 0)}"></span>
+                <span class="Card-priceOld" th:text="${'₽' + book.price}"></span>
+                <span class="Card-price" th:text="${'₽' + book.discountPrice}"></span>
             </div>
         </div>
     </div>
+
+    <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"
+                                                     th:attr="data-refreshquery = ${searchWordDto.example},
+                                                     data-refreshid= ${refreshIdValue},
+                                                     data-refreshshow =${refreshShowValue}"
+                                                     href="#" data-refreshshow="author"
+                                                     data-refreshquery="Техника"
+                                                     data-refreshoffset="20"
+                                                     data-refreshlimit="20"
+                                                     data-refreshid="10"
+                                                     th:text="#{show-more}">Показать еще</a>
+    </div>
+
 
 </div>
 </html>

@@ -25,45 +25,45 @@ let stylusBasic = () =>
             way.stylus.basic + '/**/*.styl'
         ],
         {since: gulp.lastRun(stylusBasic)}
-        )
-    .pipe( stylus({
+    )
+        .pipe(stylus({
             import: [
                 __dirname + '/' + way.stylus.tools + '/variables.styl',
                 __dirname + '/' + way.stylus.tools + '/mixins.styl'
             ]
         }))
-    .pipe(autoprefixer())
-    .pipe(remember('basic'))
-    .pipe(concat('basic.css'))
-    .pipe( gulp.dest(way.stylus.css) )
-    .pipe( browserSync.stream() ) ;
+        .pipe(autoprefixer())
+        .pipe(remember('basic'))
+        .pipe(concat('basic.css'))
+        .pipe(gulp.dest(way.stylus.css))
+        .pipe(browserSync.stream());
 
 let stylusExtra = () =>
     gulp.src(
-        [   way.stylus.extra + '/**/*.styl'],
+        [way.stylus.extra + '/**/*.styl'],
         {since: gulp.lastRun(stylusExtra)}
-        )
-    .pipe( stylus({
+    )
+        .pipe(stylus({
             import: [
                 __dirname + '/' + way.stylus.tools + '/variables.styl',
                 __dirname + '/' + way.stylus.tools + '/mixins.styl'
             ]
         }))
-    .pipe(autoprefixer())
-    .pipe(remember('extra'))
-    .pipe(concat('extra.css'))
-    .pipe( gulp.dest(way.stylus.css) )
-    .pipe( browserSync.stream() ) ;
+        .pipe(autoprefixer())
+        .pipe(remember('extra'))
+        .pipe(concat('extra.css'))
+        .pipe(gulp.dest(way.stylus.css))
+        .pipe(browserSync.stream());
 
 let stylusWatch = () => {
     gulp.watch(
-        [   way.stylus.basic + '/**/*.styl'],
+        [way.stylus.basic + '/**/*.styl'],
         {delay: 80},
         stylusBasic
     );
 
     gulp.watch(
-        [   way.stylus.extra + '/**/*.styl'],
+        [way.stylus.extra + '/**/*.styl'],
         {delay: 80},
         stylusExtra
     );

@@ -2,7 +2,6 @@ package com.example.MyBookShopApp.model.book.links;
 
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.user.UserEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,8 +22,8 @@ import java.time.LocalDateTime;
 public class Book2UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(columnDefinition = "TIMESTAMP NOT NULL")
     private LocalDateTime time;
@@ -35,12 +34,10 @@ public class Book2UserEntity {
 
     @ManyToOne
     @JoinColumn(columnDefinition = "INT NOT NULL")
-    @JsonBackReference
     private BookEntity book;
 
     @ManyToOne
     @JoinColumn(columnDefinition = "INT NOT NULL")
-    @JsonBackReference
     private UserEntity user;
 
 }

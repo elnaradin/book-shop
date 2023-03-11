@@ -1,8 +1,9 @@
-package com.example.MyBookShopApp.controllers;
+package com.example.MyBookShopApp.controllers.book;
 
+import com.example.MyBookShopApp.dto.GenreDto;
 import com.example.MyBookShopApp.dto.SearchWordDto;
-import com.example.MyBookShopApp.model.genre.GenreEntity;
 import com.example.MyBookShopApp.services.BookService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,10 @@ import java.util.List;
 
 @Controller
 public class GenresController {
+    @Value("${books-pool-limit.genre}")
+    private Integer limit;
+    @Value("${universal-initial-offset}")
+    private Integer offset;
     private final BookService bookService;
 
     public GenresController(BookService bookService) {
@@ -21,12 +26,12 @@ public class GenresController {
     }
 
     @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto(){
+    public SearchWordDto searchWordDto() {
         return new SearchWordDto();
     }
 
     @ModelAttribute("genreList")
-    public List<GenreEntity> genreEntityList(){
+    public List<GenreDto> genreEntityList() {
         return bookService.getGenres();
     }
 
@@ -37,7 +42,7 @@ public class GenresController {
 
     @GetMapping("/genres/{slug}")
     public String genresPage(@PathVariable("slug") String slug, Model model) {
-        model.addAttribute("booksByGenre", bookService.getBooksByGenre(slug, 0, 15));
+        model.addAttribute("booksByGenre", bookService.getBooksByGenre(slug, offset, limit));
         return "/genres/slug";
     }
 }

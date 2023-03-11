@@ -1,6 +1,5 @@
 package com.example.MyBookShopApp.dto;
 
-import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.genre.GenreEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class BooksByGenreDto {
     private GenreEntity genre;
-    private List<BookEntity> books;
+    private List<BookDto> books;
 
 }
