@@ -1,6 +1,7 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.bookCollections;
 
-import com.example.MyBookShopApp.model.book.tags.TagEntity;
+import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.model.genre.GenreEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BooksWithTagDto {
-    private TagEntity tag;
+public class BooksByGenreDto {
+    private GenreEntity genre;
     private List<BookDto> books;
+
 }

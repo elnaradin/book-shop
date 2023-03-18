@@ -1,8 +1,8 @@
-package com.example.MyBookShopApp.controllers;
+package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.BookDto;
 import com.example.MyBookShopApp.dto.SearchWordDto;
-import com.example.MyBookShopApp.dto.TagDto;
+import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.dto.book.TagDto;
 import com.example.MyBookShopApp.services.BookService;
 import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 
 import java.util.List;
 

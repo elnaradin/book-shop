@@ -48,7 +48,7 @@
                         </form>
                     </div>
                     <div class="ProductCard-desc"
-                         th:replace="~{fragments/book_description_fragment :: bookDesc(book=${slugBook})}"></div>
+                         th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
                 </div>
                 <div class="Product-comments">
                     <div class="Product-comments-header">
@@ -100,7 +100,7 @@
                 <strong class="Comments-title">Написать отзыв
                 </strong>
                 <div class="Comments-addComment">
-                    <form class="form" action="#" method="post" th:attr="data-bookid =${slugBook.id}"
+                    <form class="form" action="#"  method="post" th:attr="data-bookid =${slugBook.id}"
                           data-bookid="1111">
                         <div class="form-group">
                                 <textarea class="form-textarea Comments-review" name="review" id="review"

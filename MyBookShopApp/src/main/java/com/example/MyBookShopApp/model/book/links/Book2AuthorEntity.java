@@ -1,19 +1,15 @@
 package com.example.MyBookShopApp.model.book.links;
 
-import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
 import com.example.MyBookShopApp.model.book.BookEntity;
-
+import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,15 +23,10 @@ public class Book2AuthorEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @JoinColumn(columnDefinition = "INT NOT NULL")
     @ManyToOne(cascade = CascadeType.ALL)
     private BookEntity book;
-
-    @JoinColumn(columnDefinition = "INT NOT NULL")
     @ManyToOne(cascade = CascadeType.ALL)
     private AuthorEntity author;
-
-    @Column(columnDefinition = "INT NOT NULL  DEFAULT 0")
     private int sortIndex;
 
 }

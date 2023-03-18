@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.book;
 
 import com.example.MyBookShopApp.model.book.review.BookReviewEntity;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class ReviewsDto implements Comparable<ReviewsDto>{
+public class ReviewsDto implements Comparable<ReviewsDto> {
     private Integer id;
     private String userName;
     private LocalDateTime time;

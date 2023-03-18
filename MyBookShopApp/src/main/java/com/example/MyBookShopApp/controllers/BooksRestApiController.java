@@ -1,22 +1,26 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.dto.BookDto;
-import com.example.MyBookShopApp.dto.BooksPageDto;
+import com.example.MyBookShopApp.dto.ChangeStatusPayload;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.SearchWordDto;
+import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.dto.book.BookRatingDto;
+import com.example.MyBookShopApp.dto.book.ReviewDto;
+import com.example.MyBookShopApp.dto.book.ReviewRatingDto;
+import com.example.MyBookShopApp.dto.bookCollections.BooksPageDto;
 import com.example.MyBookShopApp.services.AuthorService;
 import com.example.MyBookShopApp.services.BookService;
+import com.example.MyBookShopApp.services.BookStatusService;
 import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
 import com.example.MyBookShopApp.services.ReviewService;
 import io.swagger.annotations.Api;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +37,8 @@ public class BooksRestApiController {
     private final BookService bookService;
     private final AuthorService authorService;
     private final ReviewService reviewService;
+
+    private final BookStatusService bookStatusService;
     @Value(value = "${min-review-length}")
     private int minReviewLength;
 
@@ -88,12 +94,12 @@ public class BooksRestApiController {
     }
 
     @PostMapping("/rateBook")
-    public ResultDto rateBook(@RequestParam("bookId") Integer bookId, @RequestParam("value") Integer value) {
+    public ResultDto rateBook(@RequestBody BookRatingDto bookRatingDto) {
         ResultDto result = new ResultDto();
-        if (value == 0) {
+        if (bookRatingDto.getValue() == 0) {
             return result;
         }
-        ratingAndPopularityService.addRating(bookId, value);
+        ratingAndPopularityService.addRating(bookRatingDto.getBookId(), bookRatingDto.getValue());
 
         result.setResult(true);
         return result;
@@ -111,25 +117,32 @@ public class BooksRestApiController {
     }
 
     @PostMapping("/bookReview")
-    public ResultDto addBookReview(@RequestParam("bookId") Integer bookId,
-                                   @RequestParam("text") String text) {
+    public ResultDto addBookReview(@RequestBody ReviewDto reviewDto) {
         ResultDto resultDto = new ResultDto();
-        if (text.length() < minReviewLength) {
+        if (reviewDto.getText().length() < minReviewLength) {
             resultDto.setError("Отзыв слишком короткий. Напишите, пожалуйста, более развёрнутый отзыв");
         } else {
-            reviewService.saveBookReview(bookId, text);
+            reviewService.saveBookReview(reviewDto.getBookId(), reviewDto.getText());
             resultDto.setResult(true);
         }
         return resultDto;
     }
 
     @PostMapping("/rateBookReview")
-    public ResultDto rateBookReview(@RequestParam("reviewid") Integer reviewId,
-                                    @RequestParam("value") Short value) {
+    public ResultDto rateBookReview(@RequestBody ReviewRatingDto ratingDto) {
         ResultDto resultDto = new ResultDto();
-        reviewService.saveBookReviewRating(reviewId, value);
+        reviewService.saveBookReviewRating(ratingDto.getReviewid(), ratingDto.getValue());
         resultDto.setResult(true);
         return resultDto;
+    }
+
+    @PostMapping("/changeBookStatus")
+    public ResultDto handleChangeBookStatus(@RequestBody ChangeStatusPayload changeStatusPayload) {
+        bookStatusService.changeBookStatus(changeStatusPayload.getBookIds(), changeStatusPayload.getStatus());
+        ResultDto resultDto = new ResultDto();
+        resultDto.setResult(true);
+        return resultDto;
+
     }
 
 }

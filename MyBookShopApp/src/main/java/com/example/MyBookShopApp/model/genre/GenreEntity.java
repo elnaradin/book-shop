@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,15 +23,12 @@ public class GenreEntity {
     private Integer id;
 
     @ApiModelProperty("id of the parent genre")
-    @Column(columnDefinition = "INT")
     private Integer parentId;
 
     @ApiModelProperty("mnemonic identifier")
-    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String slug;
 
     @ApiModelProperty("name of the genre")
-    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
 
 }

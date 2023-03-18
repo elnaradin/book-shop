@@ -1,22 +1,21 @@
 package com.example.MyBookShopApp.services;
 
-import com.example.MyBookShopApp.dto.BookDto;
-import com.example.MyBookShopApp.dto.BooksByGenreDto;
-import com.example.MyBookShopApp.dto.BooksWithTagDto;
-import com.example.MyBookShopApp.dto.GenreDto;
-import com.example.MyBookShopApp.dto.TagDto;
+import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.dto.book.GenreDto;
+import com.example.MyBookShopApp.dto.book.TagDto;
+import com.example.MyBookShopApp.dto.bookCollections.BooksByGenreDto;
+import com.example.MyBookShopApp.dto.bookCollections.BooksWithTagDto;
+import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.tags.TagEntity;
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.model.genre.GenreEntity;
 import com.example.MyBookShopApp.repositories.AuthorRepository;
 import com.example.MyBookShopApp.repositories.Book2TagRepository;
 import com.example.MyBookShopApp.repositories.BookRepository;
-import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.repositories.GenreRepository;
 import com.example.MyBookShopApp.repositories.RatingRepository;
 import com.example.MyBookShopApp.repositories.TagRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

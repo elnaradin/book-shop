@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.BookDto;
 import com.example.MyBookShopApp.dto.SearchWordDto;
+import com.example.MyBookShopApp.dto.book.BookDto;
 import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

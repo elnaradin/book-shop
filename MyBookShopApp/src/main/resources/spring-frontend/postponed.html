@@ -97,7 +97,7 @@
                                 <div class="Cart-buttons">
                                     <div class="Cart-btn">
                                         <button class="btn btn_primary btn_outline" data-sendstatus="CART"
-                                                th:attr="data-bookid=${'cart/'+ book.slug}"
+                                                th:attr="data-bookid=${'[' +book.id + ']'}"
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/shopping-basket.svg"
                                                 alt="shopping-basket.svg"/></span><span
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="Cart-btn">
                                         <button class="btn btn_danger btn_outline" data-sendstatus="UNLINK"
-                                                th:attr="data-bookid=${'postponed/remove/' + book.slug}"
+                                                th:attr="data-bookid=${'[' +book.id + ']'}"
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span
                                                 class="btn-content">Удалить</span>
@@ -129,6 +129,7 @@
                     </div>
                     <div class="Cart-block">
                         <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART"
+                                th:attr="data-bookid = ${postponedBooks.getBookIds()}"
                                 data-bookid="[1111, 1122, 1133]">Купить все
                         </button>
                     </div>

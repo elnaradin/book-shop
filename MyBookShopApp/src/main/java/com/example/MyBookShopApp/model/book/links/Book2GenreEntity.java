@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,11 +23,9 @@ public class Book2GenreEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @JoinColumn(columnDefinition = "INT NOT NULL")
     @ManyToOne(cascade = CascadeType.ALL)
     private BookEntity book;
 
-    @JoinColumn(columnDefinition = "INT NOT NULL")
     @ManyToOne(cascade = CascadeType.ALL)
     private GenreEntity genre;
 }

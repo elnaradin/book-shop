@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.book;
 
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
@@ -43,7 +43,7 @@ public class BookDto {
 
     @JsonGetter(value = "authorNames")
     public String getAuthorNames() {
-        if(authors.isEmpty()){
+        if (authors.isEmpty()) {
             return "no author specified";
         }
         return authors.size() > 1

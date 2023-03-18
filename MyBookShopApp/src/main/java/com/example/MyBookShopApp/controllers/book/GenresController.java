@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.GenreDto;
 import com.example.MyBookShopApp.dto.SearchWordDto;
+import com.example.MyBookShopApp.dto.book.GenreDto;
 import com.example.MyBookShopApp.services.BookService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

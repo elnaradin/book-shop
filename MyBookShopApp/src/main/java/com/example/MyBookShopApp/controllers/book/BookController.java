@@ -1,8 +1,8 @@
 package com.example.MyBookShopApp.controllers.book;
 
 import com.example.MyBookShopApp.data.ResourceStorage;
-import com.example.MyBookShopApp.dto.BookDto;
 import com.example.MyBookShopApp.dto.SearchWordDto;
+import com.example.MyBookShopApp.dto.book.BookDto;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.services.BookService;

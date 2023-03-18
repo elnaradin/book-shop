@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.services;
 
-import com.example.MyBookShopApp.dto.BookDto;
+import com.example.MyBookShopApp.dto.book.BookDto;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.RatingEntity;
 import com.example.MyBookShopApp.model.book.links.Book2RatingEntity;

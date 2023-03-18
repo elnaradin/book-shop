@@ -1,5 +1,6 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.bookCollections;
 
+import com.example.MyBookShopApp.dto.book.BookDto;
 import lombok.Getter;
 import lombok.Setter;
 

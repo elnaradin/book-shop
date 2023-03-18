@@ -1,7 +1,7 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.book;
 
-import lombok.Data;
 import com.example.MyBookShopApp.model.genre.GenreEntity;
+import lombok.Data;
 
 import java.util.List;
 

@@ -1,11 +1,10 @@
 package com.example.MyBookShopApp.services;
 
-import com.example.MyBookShopApp.dto.AuthorWithBooksDto;
+import com.example.MyBookShopApp.dto.bookCollections.AuthorWithBooksDto;
 import com.example.MyBookShopApp.model.book.BookEntity;
-import com.example.MyBookShopApp.repositories.AuthorRepository;
 import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
+import com.example.MyBookShopApp.repositories.AuthorRepository;
 import com.example.MyBookShopApp.repositories.BookRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

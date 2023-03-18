@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,11 +23,9 @@ public class BookFileTypeEntity {
     private int id;
 
     @ApiModelProperty("file type name")
-    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
     private String name;
 
     @ApiModelProperty("file type description")
-    @Column(columnDefinition = "TEXT")
     private String description;
 
 }

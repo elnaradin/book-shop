@@ -2,11 +2,9 @@ package com.example.MyBookShopApp.model.book;
 
 import com.example.MyBookShopApp.model.book.links.Book2RatingEntity;
 import com.example.MyBookShopApp.model.user.UserEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,7 +25,7 @@ public class RatingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(columnDefinition = "INT NOT NULL  DEFAULT 0")
+
     private Integer value;
 
     @ManyToOne

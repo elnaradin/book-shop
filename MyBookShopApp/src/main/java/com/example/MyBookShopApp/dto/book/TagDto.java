@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.book;
 
 import com.example.MyBookShopApp.model.book.tags.TagEntity;
 import lombok.Data;

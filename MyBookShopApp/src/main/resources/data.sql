@@ -7607,6 +7607,8 @@ insert into book2user_type (id, code, name)
 values (3, 'CART', 'В корзине');
 insert into book2user_type (id, code, name)
 values (4, 'ARCHIVED', 'В архиве');
+insert into book2user_type (id, code, name)
+values (5, 'UNLINK', 'Без привязки');
 
 
 insert into book2user (type_id, time, book_id, user_id)

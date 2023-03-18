@@ -1,6 +1,7 @@
-package com.example.MyBookShopApp.dto;
+package com.example.MyBookShopApp.dto.bookCollections;
 
-import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
+import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.model.book.tags.TagEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthorWithBooksDto {
-
-    private AuthorEntity author;
-    private Integer booksAmount;
-
+public class BooksWithTagDto {
+    private TagEntity tag;
     private List<BookDto> books;
 }
