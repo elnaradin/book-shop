@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="Tags" id="tags" th:fragment="cloud">
     <th:block th:with="valRange= ${maxTagValue - minTagValue},
-     sizeRange= ${tag.books.size() - minTagValue}" th:each="tag : ${tagCloud}">
+
+     sizeRange= ${tag.booksAmount - minTagValue}" th:each="tag : ${tagCloud}"> <!--  MainPageController  -->
         <th:block th:if="${sizeRange} > ${valRange} * 3.0 / 4">
             <div class="Tag Tag_lg">
                 <a th:href="@{'/books/tag/' + ${tag.id}}" th:text="${tag.name}">современная литература</a>

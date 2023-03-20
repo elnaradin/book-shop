@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title>Книги автора</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/assets/css/basic.min.css?v=40130258">
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=40130258">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <script defer src="/assets/js/scripts.min.js?v=91228662"></script>
+    <script defer src="/assets/js/scripts.min.js?v=40130258"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -38,13 +38,8 @@
             </h1>
             <div class="Section">
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(category=${authorWithBooks.books})}"></div>
-                <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"
-                                                                 href="#" data-refreshshow="author"
-                                                                 data-refreshoffset="0" th:attr="data-refreshid= ${authorWithBooks.author.slug}"
-                                                                 data-refreshlimit="20"
-                                                                 data-refreshid="10">Показать еще</a>
-                </div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(bookList=${authorWithBooks.books},
+                      refreshShowValue='author', refreshIdValue=${authorWithBooks.author.slug})}"></div>
             </div>
         </main>
     </div>

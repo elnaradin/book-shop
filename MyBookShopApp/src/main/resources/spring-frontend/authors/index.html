@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title>Все авторы</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -20,7 +20,7 @@
         $(document).ready(function () {
             $("#locales").change(function () {
                 var selectedOption = $("#locales").val();
-                if(selectedOption !== ''){
+                if (selectedOption !== '') {
                     window.location.replace('?lang=' + selectedOption);
                 }
             })
@@ -39,15 +39,18 @@
                 <div class="Authors">
                     <div class="Authors-links">
                         <a th:each="authorsList : ${authorsMap}" class="Authors-link"
-                            href="#a" th:href="'#' + ${#strings.toLowerCase(authorsList.key)}" th:text="${authorsList.key}">А</a>
+                           href="#a" th:href="'#' + ${#strings.toLowerCase(authorsList.key)}"
+                           th:text="${authorsList.key}">А</a>
 
                     </div>
                     <div class="Authors-block" th:each="authorsList : ${authorsMap}">
-                        <h2 class="Authors-title" id="a" th:id="${#strings.toLowerCase(authorsList.key)}" th:text="${authorsList.key}">А
+                        <h2 class="Authors-title" id="a" th:id="${#strings.toLowerCase(authorsList.key)}"
+                            th:text="${authorsList.key}">А
                         </h2>
-                        <div class="Authors-letter" >
-                            <div th:each="author : ${authorsList.value}" class="Authors-item" >
-                                <a th:href=" @{'/authors/' + ${author.slug}}" href="/authors/slug.html" th:text="${author.name}">Абгарян Наринэ</a>
+                        <div class="Authors-letter">
+                            <div th:each="author : ${authorsList.value}" class="Authors-item">
+                                <a th:href=" @{'/authors/' + ${author.slug}}" href="/authors/slug.html"
+                                   th:text="${author.name}">Абгарян Наринэ</a>
                             </div>
                         </div>
                     </div>

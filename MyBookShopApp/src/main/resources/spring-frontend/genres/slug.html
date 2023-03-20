@@ -32,7 +32,7 @@
         th:replace="~{fragments/common_header_fragment :: head(status='unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
-        <main class="Middle-main" >
+        <main class="Middle-main">
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${booksByGenre.genre.name})}"></ul>
             <header class="Middle-header">
@@ -41,12 +41,16 @@
             </header>
             <div class="Section">
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(category=${booksByGenre.books})}"></div>
-                <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"
-                                                                 href="#" data-refreshshow="genre" data-refreshoffset="0"
-                                                                 data-refreshlimit="15" th:attr="data-refreshid= ${booksByGenre.genre.slug}"
-                                                                 data-refreshid="1020">Показать еще</a>
-                </div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(bookList=${booksByGenre.books},
+                      refreshShowValue='genre',
+                       refreshIdValue=${booksByGenre.genre.slug})}"></div>
+                <!--                <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"-->
+                <!--                                                                 href="#" data-refreshshow="genre" data-refreshoffset="0"-->
+                <!--                                                                 data-refreshlimit="15"-->
+
+                <!--                                                                 th:attr="data-refreshid= ${booksByGenre.genre.slug}"-->
+                <!--                                                                 data-refreshid="1020">Показать еще</a>-->
+                <!--                </div>-->
             </div>
         </main>
     </div>

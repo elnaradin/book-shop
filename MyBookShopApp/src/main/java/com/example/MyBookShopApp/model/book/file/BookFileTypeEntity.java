@@ -1,29 +1,31 @@
 package com.example.MyBookShopApp.model.book.file;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@ApiModel("entity representing a book file type")
 @Entity
 @Table(name = "book_file_type")
 @Getter
 @Setter
 public class BookFileTypeEntity {
-
+    @ApiModelProperty("auto generated id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+    @ApiModelProperty("file type name")
     private String name;
 
-    @Column(columnDefinition = "TEXT")
+    @ApiModelProperty("file type description")
     private String description;
 
 }

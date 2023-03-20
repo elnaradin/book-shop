@@ -20,7 +20,7 @@
         $(document).ready(function () {
             $("#locales").change(function () {
                 var selectedOption = $("#locales").val();
-                if(selectedOption !== ''){
+                if (selectedOption !== '') {
                     window.location.replace('?lang=' + selectedOption);
                 }
             })
@@ -32,7 +32,7 @@
         th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
-        <main class="Middle-main" >
+        <main class="Middle-main">
             <div class="Section">
                 <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title =#{index.recommended}, category=${recommendedBooks}, bookType='recommended')}"></div>
                 <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title= #{index.recent}, category=${recentBooks} , bookType='recent')}"></div>
@@ -40,7 +40,7 @@
             </div>
             <h2 class="Middle-title" th:text="#{index.books-by-tags}">Книги по тегам
             </h2>
-            <div class="Tags" id="tags"  th:replace="~{fragments/tag_cloud_fragment :: cloud}"></div>
+            <div class="Tags" id="tags" th:replace="~{fragments/tag_cloud_fragment :: cloud}"></div>
         </main>
     </div>
 </div>

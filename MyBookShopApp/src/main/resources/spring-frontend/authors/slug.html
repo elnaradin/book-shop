@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title>Автор</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/assets/css/basic.min.css?v=93601584">
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=93601584">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <script defer src="/assets/js/scripts.min.js?v=91228662"></script>
+    <script defer src="/assets/js/scripts.min.js?v=93601584"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -34,14 +34,15 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${authorWithAllBooks.author.name})}"></ul>
-            <div th:replace="~{fragments/author_article_fragment :: article(author=${authorWithAllBooks.author.name})}"></div>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${authorWithSomeBooks.author.name})}"></ul>
+            <div th:replace="~{fragments/author_article_fragment :: article(author=${authorWithSomeBooks.author.name})}"></div>
             <div class="Section"
-                 th:replace="~{fragments/book_slider_fragment :: bookSlider(title='Книги автора', category=${authorWithAllBooks.books} , bookType='author')}"></div>
+                 th:replace="~{fragments/book_slider_fragment :: bookSlider(title='Книги автора', category=${authorWithSomeBooks.books}, bookType='author')}"></div>
             <footer class="Section-footer"><a class="Author-books"
-                                              th:href="@{'/books/author/' + ${authorWithAllBooks.author.slug}}"
-                                              href="/books/author.html" th:text="#{authors.all-books}">Все книги автора</a><span
-                        class="Author-amount" th:text="${'('+ authorWithAllBooks.author.books.size() + ')'}">(55)</span>
+                                              th:href="@{'/books/author/' + ${authorWithSomeBooks.author.slug}}"
+                                              href="/books/author.html" th:text="#{authors.all-books}">Все книги
+                автора</a><span
+                    class="Author-amount" th:text="${'('+ authorWithSomeBooks.booksAmount + ')'}">(55)</span>
             </footer>
         </main>
     </div>
