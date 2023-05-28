@@ -4,6 +4,8 @@ import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.user.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class Book2UserEntity {
     private BookEntity book;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 
 }

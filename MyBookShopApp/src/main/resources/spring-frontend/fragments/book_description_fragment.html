@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="ProductCard-desc" th:fragment="bookDesc">
-    <div class="ProductCard-header">
-        <h1 class="ProductCard-title" th:text="${slugBook.title}">Мара и морок
+    <div class="ProductCard-header" th:object="${slugBook}">
+        <h1 class="ProductCard-title" th:text="*{title}">Мара и морок
         </h1>
-        <div class="ProductCard-author"><span class="ProductCard-titleProp">Автор(ы):</span >&#32;
-            <span th:with="lastAuthorId=${slugBook.authors[slugBook.authors.size() - 1].id}" th:each="author : ${slugBook.authors}">
+        <div class="ProductCard-author"><span class="ProductCard-titleProp">Автор(ы):</span>&#32;
+            <span
+                    th:each="author, status : *{authors}">
                 <a href="#" th:href="@{'/authors/' + ${author.slug}}"
-                   th:text="${author.name + (author.id == lastAuthorId ? '' : ', ')}">Лия Арден</a></span>
+                   th:text="${author.name}">Лия Арден</a><span th:if="!${status.last}" th:text="', '"></span></span>
         </div>
         <div class="ProductCard-rating"><span class="ProductCard-titleProp">Рейтинг:</span>
             <button class="trigger trigger_dropdown" type="button">
                 <div class="Rating Rating_noStyleLink"><span class="Rating-stars"><span
-                        class="Rating-star" th:classappend="${slugBook.rating >= 1 ? ' Rating-star_view' : ''}">
+                        class="Rating-star" th:classappend="*{rating >= 1 ? ' Rating-star_view' : ''}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                             <g>
                               <g>
@@ -21,7 +22,7 @@
                               </g>
                             </g>
                           </svg></span><span class="Rating-star"
-                                             th:classappend="${slugBook.rating >= 2 ? ' Rating-star_view' : ''}">
+                                             th:classappend="*{rating >= 2 ? ' Rating-star_view' : ''}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                             <g>
                               <g>
@@ -30,7 +31,7 @@
                               </g>
                             </g>
                           </svg></span><span class="Rating-star"
-                                             th:classappend="${slugBook.rating >= 3 ? ' Rating-star_view' : ''}">
+                                             th:classappend="*{rating >= 3 ? ' Rating-star_view' : ''}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                             <g>
                               <g>
@@ -39,7 +40,7 @@
                               </g>
                             </g>
                           </svg></span><span class="Rating-star"
-                                             th:classappend="${slugBook.rating >= 4 ? ' Rating-star_view' : ''}">
+                                             th:classappend="*{rating >= 4 ? ' Rating-star_view' : ''}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                             <g>
                               <g>
@@ -48,7 +49,7 @@
                               </g>
                             </g>
                           </svg></span><span class="Rating-star"
-                                             th:classappend="${slugBook.rating == 5 ? ' Rating-star_view' : ''}">
+                                             th:classappend="*{rating == 5 ? ' Rating-star_view' : ''}">
                           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                             <g>
                               <g>
@@ -57,7 +58,7 @@
                               </g>
                             </g>
                           </svg></span></span><span class="Rating-title"
-                                                    th:text="${'(' + bookRatingAmount + ')'}">(567)</span>
+                                                    th:text="'(' + *{ ratingsCount} + ')'">(567)</span>
                 </div>
                 <div class="modal modal_compression modal_dropdown">
                     <div class="modal-window"><a class="modal-close"
@@ -106,7 +107,7 @@
                                     </g>
                                   </g>
                                 </svg></span></span><span class="Rating-title"
-                                                          th:text="${ratingAmountByStars[4]}">1</span></span>
+                                                          th:text="*{ratingsByStar.get('star5')}">1</span></span>
                             <br><span
                                     class="Rating"><span class="Rating-stars"><span
                                     class="Rating-star Rating-star_view">
@@ -150,7 +151,7 @@
                                     </g>
                                   </g>
                                 </svg></span></span><span class="Rating-title"
-                                                          th:text="${ratingAmountByStars[3]}">4</span></span>
+                                                          th:text="*{ratingsByStar.get('star4')}">4</span></span>
 
                             <br><span
                                     class="Rating"><span class="Rating-stars"><span
@@ -195,7 +196,7 @@
                                     </g>
                                   </g>
                                 </svg></span></span><span class="Rating-title"
-                                                          th:text="${ratingAmountByStars[2]}">0</span></span><br><span
+                                                          th:text="*{ratingsByStar.get('star3')}">0</span></span><br><span
                                     class="Rating"><span class="Rating-stars"><span
                                     class="Rating-star Rating-star_view">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
@@ -238,7 +239,7 @@
                                     </g>
                                   </g>
                                 </svg></span></span><span class="Rating-title"
-                                                          th:text="${ratingAmountByStars[1]}">10</span></span><br><span
+                                                          th:text="*{ratingsByStar.get('star2')}">10</span></span><br><span
                                     class="Rating"><span
                                     class="Rating-stars"><span class="Rating-star Rating-star_view">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
@@ -281,7 +282,7 @@
                                     </g>
                                   </g>
                                 </svg></span></span><span class="Rating-title"
-                                                          th:text="${ratingAmountByStars[0]}">3</span></span>
+                                                          th:text="*{ratingsByStar.get('star1')}">3</span></span>
                         </div>
                     </div>
                 </div>
@@ -290,9 +291,8 @@
         <div class="ProductCard-assessment"><span
                 class="ProductCard-titleProp">Оцените книгу:</span><span class="Rating Rating_input"
                                                                          data-bookid="2121"
-                                                                         th:attr="data-bookid=${slugBook.id}">
-            <span
-                    class="Rating-stars"><span class="Rating-star">
+                                                                         th:attr="data-bookid=*{id}">
+            <span class="Rating-stars"><span class="Rating-star">
                         <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
                           <g>
                             <g>
@@ -340,23 +340,18 @@
                       <input name="rating" type="radio" value="5"/></span></span>
         </div>
         <div class="ProductCard-tags"><span class="ProductCard-titleProp">Тэги:</span>
-            <span th:with="lastTagId=${tags[tags.size() - 1].id}" th:each="tag : ${tags}">
-                <a href="/tags/" th:href="@{'/books/tag/' + ${tag.id}}" th:text="${tag.name + (tag.id == lastTagId ? '' : ', ')}">Современные</a></span>
+            <span th:each="tag, status : *{tags}">
+                <a href="/tags/" th:href="@{'/books/tag/' + ${tag.id}}"
+                   th:text="${tag.name}">Современные</a><span th:if="!${status.last}" th:text="', '"></span></span>
         </div>
         <div class="ProductCard-cost"><span class="ProductCard-titleProp">Цена:</span><span
-                class="ProductCard-priceOld" th:text="${'₽' + slugBook.price }">₽300</span><span class="ProductCard-price"
-                                                                                             th:text="${'₽'+ slugBook.discountPrice} ">₽180</span>
+                class="ProductCard-priceOld" th:text="'₽' + *{ price}">₽300</span><span
+                class="ProductCard-price"
+                th:text="'₽'+ *{discountPrice} ">₽180</span>
         </div>
     </div>
     <div class="ProductCard-text">
-        <p th:text="${slugBook.description}">Таких, как я, называют Марами - отмеченными самой богиней смерти Мораной.
-            Когда-то у меня
-            и моих шести сестер был свой путь. Тогда люди нас уважали и просили о милосердии. Они
-            приносили нам подношения и молились нам. Но 200 лет назад все изменилось, когда принц
-            Серата осмелился поднять руку на одну из нас. Я пыталась отомстить, но погибли мы все.
-            Теперь правители Аракена, погрязшие в длительной войне со своим соседом Сератом, решили
-            вернуть меня к жизни. Дать второй шанс на месть и свободу, привязав меня к тому, против
-            кого я никогда не пойду. Таких, как он, называют Морок, и их боятся абсолютно все.
+        <p th:text="*{description}">Таких, как я, называют Марами
         </p>
     </div>
     <div th:replace="~{fragments/book_slug_buttons_fragment :: panel}"></div>

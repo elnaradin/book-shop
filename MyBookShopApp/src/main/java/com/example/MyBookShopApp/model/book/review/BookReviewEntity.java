@@ -21,7 +21,7 @@ public class BookReviewEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne
     private BookEntity book;
@@ -30,6 +30,8 @@ public class BookReviewEntity {
     private UserEntity user;
     private LocalDateTime time;
     private String text;
+//    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY)
+//    private List<BookReviewLikeEntity> likes = new ArrayList<>();
 
 
 }

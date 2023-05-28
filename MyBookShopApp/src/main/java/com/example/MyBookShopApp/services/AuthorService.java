@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.services;
 
-import com.example.MyBookShopApp.dto.bookCollections.AuthorWithBooksDto;
+import com.example.MyBookShopApp.dto.author.AuthorWithBooksDto;
+import com.example.MyBookShopApp.errs.AuthorNotFoundException;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
 import com.example.MyBookShopApp.repositories.AuthorRepository;
@@ -32,16 +33,16 @@ public class AuthorService {
     }
 
     public AuthorWithBooksDto getAuthorWithBooks(String slug, Integer offset,
-                                                 Integer limit) throws NullPointerException {
+                                                 Integer limit)  {
         Pageable nextPage = PageRequest.of(offset, limit);
         Optional<AuthorEntity> author = authorRepository.findFirstBySlug(slug);
         if (author.isEmpty()) {
-            throw new NullPointerException();
+            throw new AuthorNotFoundException("no uch author in database: " + slug);
         }
         List<BookEntity> bookEntities = bookRepository.findBookEntitiesByAuthorId(author.get().getId(),
                 nextPage).getContent();
-        Integer booksAmount = bookRepository.countBookEntitiesByAuthorId(author.get().getId());
-        return new AuthorWithBooksDto(author.get(), booksAmount, bookService.createBookList(bookEntities));
+        Integer booksCount = bookRepository.countBookEntitiesByAuthorId(author.get().getId());
+        return new AuthorWithBooksDto(author.get(), booksCount, bookService.createBookList(bookEntities));
     }
 
 }

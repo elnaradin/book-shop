@@ -1,8 +1,7 @@
 package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.SearchWordDto;
-import com.example.MyBookShopApp.dto.book.BookDto;
-import com.example.MyBookShopApp.dto.book.TagDto;
+import com.example.MyBookShopApp.dto.book.BooksPageDto;
+import com.example.MyBookShopApp.dto.tag.TagDto;
 import com.example.MyBookShopApp.services.BookService;
 import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
 import lombok.RequiredArgsConstructor;
@@ -22,30 +21,25 @@ public class MainPageController {
     @Value("${universal-initial-offset}")
     private Integer offset;
 
-
     private final BooksRatingAndPopularityService ratingAndPopularityService;
     private final BookService bookService;
 
 
-    @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto() {
-        return new SearchWordDto();
-    }
-
     @ModelAttribute("recommendedBooks")
-    public List<BookDto> recommendedBooks() {
+    public BooksPageDto recommendedBooks() {
         return bookService.getPageOfRecommendedBooks(offset, limit);
     }
 
     @ModelAttribute("recentBooks")
-    public List<BookDto> recentBooks() {
+    public BooksPageDto recentBooks()  {
         return bookService.getPageOfRecentBooksFromMonthAgo(offset, limit);
     }
 
     @ModelAttribute("popularBooks")
-    public List<BookDto> popularBooks() {
+    public BooksPageDto popularBooks() {
         return ratingAndPopularityService.getListOfPopularBooks(offset, limit);
     }
+    // TODO: 26.04.2023 optimize tag size calculation
 
     @ModelAttribute("tagCloud")
     public List<TagDto> tagCloud() {

@@ -16,20 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=52263780"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#locales").change(function () {
-                var selectedOption = $("#locales").val();
-                if (selectedOption !== '') {
-                    window.location.replace('?lang=' + selectedOption);
-                }
-            })
-        })
-    </script>
+    <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status='unauthorized')}">
+        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}">
 </header>
 <div class="Middle">
     <div class="wrap">
@@ -38,42 +29,8 @@
             </h1>
             <div class="Section">
                 <div class="Tags Tags_genres">
-                    <th:block th:each="genre1 : ${genreList}">
-                        <div class="Tags Tags_embed" th:if="${genre1.parentId} == null">
-                            <div class="Tags-title">
-                                <div class="Tag"><a th:href="@{'/genres/' + ${genre1.slug}}" href="/genres/slug.html">
-                                    <span th:text="${genre1.name}">Лёгкое чтение</span>
-                                    <span th:text="${'(' + genre1.booksAmount + ')'}"
-                                          class="undefined-amount">(15638)</span></a>
-                                </div>
-                            </div>
-                            <th:block th:each="genre2 : ${genreList}">
-                                <th:block th:if="${genre2.parentId eq genre1.id}">
-                                    <div class="Tag"><a th:href="@{'/genres/' + ${genre2.slug}}"
-                                                        href="/genres/slug.html">
-                                        <span th:text="${genre2.name}">Детективы
-                                    </span>
-                                        <span th:text="${'(' + genre2.booksAmount + ')'}"
-                                              class="undefined-amount">(10)</span> </a>
-                                    </div>
-                                    <div class="Tags">
-                                        <th:block th:each="genre3 : ${genreList}">
-                                            <th:block th:if="${genre3.parentId eq genre2.id}">
-
-                                                <div class="Tag"><a th:href="@{'/genres/' + ${genre3.slug}}"
-                                                                    href="/genres/slug.html">
-                                                    <span th:text="${genre3.name }">Детективы</span>
-                                                    <span th:text="${'(' + genre3.booksAmount + ')'}"
-                                                          class="undefined-amount">(10)</span>
-                                                </a>
-                                                </div>
-                                            </th:block>
-                                        </th:block>
-                                    </div>
-                                </th:block>
-                            </th:block>
-                        </div>
-                    </th:block>
+                    <div class="Tags" th:replace="~{fragments/genre_tree_fragment :: tree(genreList=${genreList})}">
+                    </div>
                 </div>
             </div>
         </main>

@@ -1,17 +1,20 @@
 package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.SearchWordDto;
-import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.dto.book.BooksPageDto;
+import com.example.MyBookShopApp.dto.book.DatesDto;
 import com.example.MyBookShopApp.services.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Controller
+@RequiredArgsConstructor
 public class RecentBooksController {
     @Value("${books-pool-limit.recent}")
     private Integer limit;
@@ -19,20 +22,20 @@ public class RecentBooksController {
     private Integer offset;
     private final BookService bookService;
 
-    @Autowired
-    public RecentBooksController(BookService bookService) {
-        this.bookService = bookService;
-    }
 
     @ModelAttribute("recentBooks")
-    public List<BookDto> bookList() {
+    public BooksPageDto bookList() {
         return bookService.getPageOfRecentBooksFromMonthAgo(offset, limit);
     }
 
-    @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto() {
-        return new SearchWordDto();
+    @ModelAttribute("dates")
+    public DatesDto getDefaultPeriodOfBookPublications() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        formatter = formatter.withLocale(Locale.ROOT);
+        return new DatesDto(LocalDate.now().minusMonths(1).format(formatter),
+                LocalDate.now().format(formatter));
     }
+
 
     @GetMapping("/books/recent")
     public String recentBooks() {

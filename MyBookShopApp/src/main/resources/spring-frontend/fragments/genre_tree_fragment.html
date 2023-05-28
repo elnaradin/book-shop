@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:if="${genreList} != null and ${genreList.children} != null" th:fragment="tree" class="Tags"
+     th:each="genre : ${genreList.children}"
+     th:class=" ${genre.children.size() > 0 ? 'Tags' : 'Tags Tag'}">
+    <div class="Tags-title">
+        <div class="Tag"><a th:href="@{'/genres/' + ${genre.slug}}" href="/genres/slug.html">
+            <span th:text="${genre.name}">Лёгкое чтение</span>
+            <span th:text="${'(' + bookCount.get(genre.id) + ')'}"
+                  class="undefined-amount">(15638)</span></a>
+        </div>
+    </div>
+    <div class="Tags" th:replace="~{fragments/genre_tree_fragment :: tree(genreList=${genre})}">
+    </div>
+</div>
+
+</body>
+</html>

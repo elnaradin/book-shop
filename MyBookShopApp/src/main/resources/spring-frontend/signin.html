@@ -16,20 +16,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=27449092"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#locales").change(function () {
-                var selectedOption = $("#locales").val();
-                if (selectedOption !== '') {
-                    window.location.replace('?lang=' + selectedOption);
-                }
-            })
-        })
-    </script>
+    <!--    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+    <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status='unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
 <div class="Middle Middle_form">
     <div class="Middle-top">
         <div class="wrap">
@@ -42,13 +35,19 @@
             <form class="form Login" action="#" method="post">
                 <div class="Login-ins">
                     <div class="Login-step">
+                        <div class="form-group_center">
+                            <span th:if="${regOk} == true" style="color: #2aa73a">Регистрация прошла успешно!</span>
+                            <span th:if="${regOk} == false" style="color: red">Пользователь с данным почтовым адресом уже существует!</span>
+                            <span th:if="${signinError} == true"
+                                  style="color: red">Войдите в аккаунт, чтобы продолжить</span>
+                        </div>
                         <div class="form-group">
-                            <label class="form-label Login-title" th:text="#{sign-in.enter-info}">Введите e-mail или
-                                телефон
+                            <label class="form-label Login-title"><span th:text="#{sign-in.enter-info}">Введите e-mail или
+                                телефон</span>
                                 <br>
-                                <span th:if="${regOk}">Регистрация прошла успешно!</span>
                             </label>
                         </div>
+
                         <div class="form-group">
                             <div class="row">
                                 <div class="row-block">
@@ -74,10 +73,12 @@
                             <input class="form-input form-input_mail" id="mail" name="mail" type="text"
                                    placeholder="Введите e-mail" data-validate="mail require"/>
                         </div>
+
                         <div class="form-group form-group_center">
                             <button class="btn btn_primary form-btn" type="button" name="sendauth" id="sendauth"
                                     data-type="phone" data-send="" th:text="#{sign-in.next}">Далее
                             </button>
+
                         </div>
                     </div>
                     <div class="Login-step Login-step_hide" data-type="phone">
@@ -116,9 +117,9 @@
                                                                  href="/signup.html">Зарегистрироваться
                     </a>
                     </div>
-                    <div class="form-group form-group_center"><a class="Login-reg"
-                                                                 th:href="@{/oauth2/authorization/facebook}"
-                                                                 href="/signup.html">Войти с Facebook
+                    <div class="form-group_center"><a class="Login-reg"
+                                                      th:href="@{/oauth2/authorization/google}"
+                                                      href="/signup.html">Войти с Google
                     </a>
                     </div>
                 </div>
