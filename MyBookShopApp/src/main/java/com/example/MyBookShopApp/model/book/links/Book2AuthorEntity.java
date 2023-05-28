@@ -5,7 +5,6 @@ import com.example.MyBookShopApp.model.book.authors.AuthorEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,9 +22,9 @@ public class Book2AuthorEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private BookEntity book;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private AuthorEntity author;
     private int sortIndex;
 

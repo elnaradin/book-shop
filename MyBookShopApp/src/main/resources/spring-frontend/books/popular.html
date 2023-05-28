@@ -16,20 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=45035206"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#locales").change(function () {
-                var selectedOption = $("#locales").val();
-                if (selectedOption !== '') {
-                    window.location.replace('?lang=' + selectedOption);
-                }
-            })
-        })
-    </script>
+    <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(popular='menu-item menu-item_ACTIVE', status='unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head(popular='menu-item menu-item_ACTIVE', status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
@@ -41,7 +32,7 @@
                     </h1>
                 </div>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(bookList=${popularBooks},
+                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${popularBooks},
                       refreshShowValue='popular')}"></div>
             </div>
         </main>

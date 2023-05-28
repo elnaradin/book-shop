@@ -1,14 +1,12 @@
 package com.example.MyBookShopApp.controllers.book;
 
 import com.example.MyBookShopApp.data.ResourceStorage;
-import com.example.MyBookShopApp.dto.SearchWordDto;
-import com.example.MyBookShopApp.dto.book.BookDto;
 import com.example.MyBookShopApp.model.book.BookEntity;
+import com.example.MyBookShopApp.model.enums.UserRoles;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.services.BookService;
-import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
 import com.example.MyBookShopApp.services.FileService;
-import com.example.MyBookShopApp.services.ReviewService;
+import com.example.MyBookShopApp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,32 +31,24 @@ import java.util.logging.Logger;
 public class BookController {
     private final BookRepository bookRepository;
     private final BookService bookService;
+    private final UserService userService;
     private final ResourceStorage storage;
-    private final BooksRatingAndPopularityService booksRatingAndPopularityService;
     private final FileService fileService;
-    private final ReviewService reviewService;
-
-
-    @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto() {
-        return new SearchWordDto();
-    }
 
     @GetMapping("/{slug}")
-    public String bookPage(@PathVariable("slug") String slug, Model model) {
-        BookDto book = bookService.getBookBySlug(slug);
-        model.addAttribute("slugBook", book);
-        model.addAttribute("tags", bookService.getTagsByBookSlug(slug));
+    public String bookPage(@PathVariable("slug") String slug, Model model)  {
+        model.addAttribute("slugBook", bookService.getBookBySlug(slug));
         model.addAttribute("bookFiles", fileService.getFilesBySlug(slug));
-        model.addAttribute("bookRatingAmount", booksRatingAndPopularityService.getBookRatingAmount(slug));
-        model.addAttribute("ratingAmountByStars", booksRatingAndPopularityService.getRatingAmountByStars(slug));
-        model.addAttribute("reviews", reviewService.getBookReviews(slug));
-        return "/books/slugmy";
+        if (userService.checkUserRoles(UserRoles.USER)) {
+            return "/books/slugmy";
+        }
+        return "/books/slug";
     }
 
 
     @PostMapping("/{slug}/img/save")
-    public String saveNewBookImage(@PathVariable String slug, @RequestParam("file") MultipartFile file) throws IOException {
+    public String saveNewBookImage(@PathVariable String slug, @RequestParam("file") MultipartFile file)
+            throws IOException {
         String savePath = storage.saveNewBookImage(slug, file);
         BookEntity bookToUpdate = bookRepository.findBookEntityBySlug(slug);
         bookToUpdate.setImage(savePath);
@@ -75,7 +64,8 @@ public class BookController {
         Logger.getLogger(this.getClass().getSimpleName()).info("book file mime: " + path);
         byte[] data = storage.getBookFileByteArray(hash);
         Logger.getLogger(this.getClass().getSimpleName()).info("book file data length: " + data.length);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + path.getFileName().toString())
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment;filename=" + path.getFileName().toString())
                 .contentType(mediaType)
                 .contentLength(data.length)
                 .body(new ByteArrayResource(data));

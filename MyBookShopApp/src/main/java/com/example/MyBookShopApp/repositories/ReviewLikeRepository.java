@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewLikeRepository extends JpaRepository<BookReviewLikeEntity, Integer> {
-    Integer countBookReviewLikeEntitiesByValueAndReviewId(Short value, Integer reviewId);
 
-    Optional<BookReviewLikeEntity> findBookReviewLikeEntityByReviewId(Integer reviewId);
+
+    Optional<BookReviewLikeEntity> findBookReviewLikeEntityByReviewIdAndUserId(Integer reviewId, Integer userId);
 }

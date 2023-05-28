@@ -1,0 +1,37 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="user" id="addRoletable">
+        <createTable tableName="user_roles">
+
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user" id="addRoleLinktable">
+        <createTable tableName="user2role">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user2roles_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+            </column>
+            <column name="role_id" type="INTEGER">
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="user" id="addForrKeyRole">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user2role" constraintName="roleidconstr"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_roles" validate="true"/>
+    </changeSet>
+    <changeSet author="user" id="addForrKeyUser">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user2role" constraintName="userid2constr"
+                                 deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="CASCADE"
+                                 referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

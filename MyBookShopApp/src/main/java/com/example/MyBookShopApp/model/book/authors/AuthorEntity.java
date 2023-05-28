@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@ApiModel("entity representing an author")
+@ApiModel("author entity")
 @Entity
 @Table(name = "authors")
 @Getter

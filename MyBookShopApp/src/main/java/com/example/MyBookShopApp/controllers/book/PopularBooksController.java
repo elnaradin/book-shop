@@ -1,15 +1,12 @@
 package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.SearchWordDto;
-import com.example.MyBookShopApp.dto.book.BookDto;
+import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.services.BooksRatingAndPopularityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,13 +18,8 @@ public class PopularBooksController {
     private final BooksRatingAndPopularityService ratingAndPopularityService;
 
     @ModelAttribute("popularBooks")
-    public List<BookDto> bookList() {
+    public BooksPageDto bookList() {
         return ratingAndPopularityService.getListOfPopularBooks(offset, limit);
-    }
-
-    @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto() {
-        return new SearchWordDto();
     }
 
     @GetMapping("/books/popular")

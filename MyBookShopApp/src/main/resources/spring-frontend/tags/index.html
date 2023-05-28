@@ -16,19 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=91228662"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#locales").change(function () {
-                var selectedOption = $("#locales").val();
-                if (selectedOption !== '') {
-                    window.location.replace('?lang=' + selectedOption);
-                }
-            })
-        })
-    </script>
+    <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
 </head>
 <body class="Site">
-<header class="Header" th:replace="~{fragments/common_header_fragment :: head(status='unauthorized')}"></header>
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
@@ -44,13 +36,9 @@
                     </div>
                 </div>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(bookList=${taggedBooks.books},
+                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${taggedBooks},
                       refreshShowValue='tag',
                        refreshIdValue=${taggedBooks.tag.id})}"></div>
-                <!--                <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary" href="#" data-refreshshow="tag"-->
-                <!--                                                                 th:attr="data-refreshid = ${taggedBooks.tag.id}" data-refreshid="10"-->
-                <!--                                                                 data-refreshoffset="0" data-refreshlimit="15" th:text="#{show-more}">Показать еще</a>-->
-                <!--                </div>-->
             </div>
         </main>
     </div>

@@ -1,17 +1,12 @@
 package com.example.MyBookShopApp.controllers.shop;
 
-import com.example.MyBookShopApp.dto.SearchWordDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
+@RequiredArgsConstructor
 public class ContactsController {
-
-    @ModelAttribute("searchWordDto")
-    public SearchWordDto searchWordDto() {
-        return new SearchWordDto();
-    }
 
     @GetMapping("/contacts")
     public String recentBooksPage() {
