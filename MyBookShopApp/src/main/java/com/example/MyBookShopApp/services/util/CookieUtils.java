@@ -126,7 +126,7 @@ public class CookieUtils {
             Cookie[] cookies,
             String name
     ) {
-        if(cookies == null){
+        if (cookies == null) {
             return null;
         }
         return Arrays.stream(cookies)
@@ -135,7 +135,7 @@ public class CookieUtils {
                 .orElse(null);
     }
 
-    public List<String> getSlugsFromCookie(StatusType statusType){
+    public List<String> getSlugsFromCookie(StatusType statusType) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return new ArrayList<>();
@@ -147,6 +147,7 @@ public class CookieUtils {
         }
         return Arrays.stream(cookie.getValue().split(DELIMITER)).collect(Collectors.toList());
     }
+
     public void mergeSelectedBooks(StatusType statusType, UserEntity user) {
         List<String> slugs = getSlugsFromCookie(statusType);
         Book2UserTypeEntity typeEntity = book2UserTypeRepository.findByCode(statusType);

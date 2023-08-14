@@ -23,6 +23,7 @@ public class GenreController {
         model.addAttribute("genreTree", genreService.getGenreTree());
         return "/genres/index";
     }
+
     @GetMapping("/genres/{slug}")
     public String genresPage(@PathVariable("slug") String genreSlug, Model model, Authentication authentication) {
         model.addAttribute("genre", genreService.getShortGenreInfo(genreSlug));

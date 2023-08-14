@@ -20,6 +20,7 @@ public interface GenreRepository extends JpaRepository<GenreEntity, Integer> {
             "group by g.id, g.slug, g.name, g.parent.id " +
             "order by g.name")
     List<GenreDto> getAllGenres();
+
     @Query("select new com.example.MyBookShopApp.dto.genre.ShortGenreDto(g.slug, g.name) from GenreEntity g " +
             "where g.slug like ?1")
     Optional<ShortGenreDto> getShortGenreDto(String genreSlug);

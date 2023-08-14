@@ -1,11 +1,12 @@
 package com.example.MyBookShopApp.services.author;
 
+import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.author.FullAuthorDto;
 import com.example.MyBookShopApp.dto.author.ShortAuthorDto;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDto;
 import com.example.MyBookShopApp.dto.request.RequestDto;
-import com.example.MyBookShopApp.errs.NotFoundException;
+import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.repositories.AuthorRepository;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService {
     private final BookRepository bookRepository;
 
     private final AuthorRepository authorRepository;
 
+    @DurationTrackable
     @Override
     public Map<String, List<ShortAuthorDto>> createAuthorsMap() {
         List<ShortAuthorDto> authors = authorRepository.findAllAuthors();
@@ -37,7 +39,7 @@ public class AuthorServiceImpl implements AuthorService{
     @Override
     public FullAuthorDto getFullAuthorInfo(String slug) {
         Optional<FullAuthorDto> author = authorRepository.getFullAuthorDtoBySlug(slug);
-        return author.orElseThrow(NotFoundException::new);
+        return author.orElseThrow(ItemNotFoundException::new);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class AuthorServiceImpl implements AuthorService{
     @Override
     public ShortAuthorDto getShortAuthorInfo(String slug) {
         Optional<ShortAuthorDto> shortAuthorDto = authorRepository.getShortAuthorDtoBySlug(slug);
-        return shortAuthorDto.orElseThrow(NotFoundException::new);
+        return shortAuthorDto.orElseThrow(ItemNotFoundException::new);
     }
 
     @Override

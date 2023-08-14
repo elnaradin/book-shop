@@ -6,10 +6,13 @@ import com.example.MyBookShopApp.dto.request.RequestDto;
 
 public interface BookService {
     FullBookDto getFullBookInfoBySlug(String bookSlug);
+
     BooksPageDto getRecommendedBooksPage(RequestDto requestDto);
+
     BooksPageDto getRecentBooksPage(RequestDto requestDto);
 
     BooksPageDto getPopularBooksPage(RequestDto request);
+
     BooksPageDto getPageOfSearchResultBooks(RequestDto request);
 
 }

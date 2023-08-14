@@ -17,7 +17,9 @@ public interface ReviewDto {
     Long getLikeCount();
 
     Long getDislikeCount();
+
     Boolean getIsLiked();
+
     Boolean getIsDisliked();
 
 

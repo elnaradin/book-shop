@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.config.security.jwt;
 
+import com.example.MyBookShopApp.annotation.JwtExceptionResolvable;
 import com.example.MyBookShopApp.model.jwt.JwtBlackList;
 import com.example.MyBookShopApp.repositories.JwtBlackListRepository;
 import io.jsonwebtoken.Claims;
@@ -23,8 +24,6 @@ public class JWTUtils {
 
     @Value("${auth.secret}")
     private String secret;
-    @Value(value = ("${blacklist.time-min}"))
-    private long blMinutes;
 
     @Value(value = ("${jwt.expire-period-min}"))
     private long expireTimeMinutes;
@@ -55,6 +54,7 @@ public class JWTUtils {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
+    @JwtExceptionResolvable
     public String extractSubject(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -67,6 +67,7 @@ public class JWTUtils {
         return extractExpiration(token).before(new Date());
     }
 
+    @JwtExceptionResolvable
     public Boolean validateToken(String token, String userName) {
         String username = extractSubject(token);
         return username.equals(userName)

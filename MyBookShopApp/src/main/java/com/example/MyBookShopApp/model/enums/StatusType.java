@@ -11,6 +11,7 @@ public enum StatusType {
     UNLINK("");
 
     private final String cookieName;
+
     StatusType(String cookieName) {
         this.cookieName = cookieName;
     }

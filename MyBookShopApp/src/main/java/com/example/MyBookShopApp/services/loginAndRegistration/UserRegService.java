@@ -7,5 +7,6 @@ import com.example.MyBookShopApp.model.user.UserEntity;
 
 public interface UserRegService {
     UserEntity registerNewUser(RegistrationForm registrationForm);
+
     ContactConfirmationResponse jwtLogin(ContactConfirmationPayload payload);
 }

@@ -30,10 +30,11 @@ public class BookstoreEmailUserDetails implements UserDetails {
         this.balance = user.getBalance();
         this.roles = user.getRoles();
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(r-> new SimpleGrantedAuthority("ROLE_" + r.getRole()))
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getRole()))
                 .collect(Collectors.toList());
     }
 

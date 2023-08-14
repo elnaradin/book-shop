@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface TagService {
     List<TagDtoProjection> getTagsList();
+
     List<ShortTagDto> getShortTagsList(String slug);
+
     BooksPageDto getBooksPageByTag(RequestDto request, Authentication authentication);
+
     ShortTagDto getShortTagInfo(String tagSlug);
 }

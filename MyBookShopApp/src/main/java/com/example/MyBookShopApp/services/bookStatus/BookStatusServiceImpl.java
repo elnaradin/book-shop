@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BookStatusServiceImpl implements BookStatusService{
+public class BookStatusServiceImpl implements BookStatusService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final Book2UserRepository book2UserRepository;
@@ -63,6 +63,7 @@ public class BookStatusServiceImpl implements BookStatusService{
                 .build();
 
     }
+
     @Override
     @Transactional
     public ResultDto changeBookStatus(ChangeStatusPayload payload, String userEmail) {
@@ -92,6 +93,7 @@ public class BookStatusServiceImpl implements BookStatusService{
         }
         return resultDto;
     }
+
     @Override
     public BooksPageDto getBooksByStatus(StatusType status, Authentication authentication) {
         List<ShortBookDto> books = bookRepository.getBooksByUserAndStatus(
@@ -112,10 +114,12 @@ public class BookStatusServiceImpl implements BookStatusService{
                 .build();
 
     }
+
     @Override
     public StatusType getBookStatus(String slug, String email) {
         return book2UserRepository.getCodeByBookSlugAndEmail(slug, email);
     }
+
     @Override
     public Map<String, List<String>> getUserBookSlugs(Authentication authentication) {
         Map<String, List<String>> slugsByStatus = new HashMap<>();

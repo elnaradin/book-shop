@@ -12,9 +12,14 @@ import java.util.List;
 
 public interface RatingReviewService {
     RatingDto getBookRating(String slug);
+
     List<ReviewDto> getBookReviews(String slug);
+
     List<ReviewDto> getBookReviews(String slug, String email);
+
     ResultDto addRating(BookRatingDto bookRatingDto, Authentication authentication);
+
     ResultDto addReviewRating(ReviewLikeDto reviewLikeDto, String authentication);
-    ResultDto addBookReview(MyReviewDto reviewDto,Authentication authentication);
+
+    ResultDto addBookReview(MyReviewDto reviewDto, Authentication authentication);
 }

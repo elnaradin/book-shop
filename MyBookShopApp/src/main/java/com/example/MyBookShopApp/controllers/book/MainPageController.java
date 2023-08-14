@@ -26,8 +26,8 @@ public class MainPageController {
 
     @ModelAttribute("recommended")
     public BooksPageDto recommendedBooks() {
-           return bookService.getRecommendedBooksPage(
-                    getDefaultRequest());
+        return bookService.getRecommendedBooksPage(
+                getDefaultRequest());
     }
 
     @ModelAttribute("recent")
@@ -41,7 +41,7 @@ public class MainPageController {
     @ModelAttribute("popular")
     public BooksPageDto popularBooks() {
         return bookService.getPopularBooksPage(
-               getDefaultRequest()
+                getDefaultRequest()
         );
     }
 
@@ -54,8 +54,9 @@ public class MainPageController {
     public String mainPage() {
         return "index";
     }
-    private RequestDto getDefaultRequest(){
-        return  RequestDto.builder()
+
+    private RequestDto getDefaultRequest() {
+        return RequestDto.builder()
                 .offset(0)
                 .limit(limit).build();
     }

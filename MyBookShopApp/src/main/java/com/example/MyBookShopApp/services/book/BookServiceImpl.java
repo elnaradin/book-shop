@@ -4,7 +4,7 @@ import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.FullBookDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDto;
 import com.example.MyBookShopApp.dto.request.RequestDto;
-import com.example.MyBookShopApp.errs.NotFoundException;
+import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.services.util.CookieUtils;
@@ -31,17 +31,19 @@ public class BookServiceImpl implements BookService {
     public FullBookDto getFullBookInfoBySlug(String bookSlug) {
 
         FullBookDto fullBookInfo = bookRepository.getFullBookInfo(bookSlug);
-        if(fullBookInfo == null){
-            throw new NotFoundException();
+        if (fullBookInfo == null) {
+            throw new ItemNotFoundException();
         }
         return fullBookInfo;
     }
+
     @Override
     public BooksPageDto getRecommendedBooksPage(RequestDto requestDto) {
         Pageable nextPage = PageRequest.of(requestDto.getOffset(), requestDto.getLimit());
-
+        List<String> slugsToExclude = getSlugsToExclude();
         Page<ShortBookDto> booksPage = bookRepository
-                .getRecommendedBooks(getSlugsToExclude(), nextPage);
+                .getRecommendedBooks(slugsToExclude, nextPage);
+
         return BooksPageDto.builder()
                 .count(booksPage.getTotalElements())
                 .books(booksPage.getContent())
@@ -68,6 +70,7 @@ public class BookServiceImpl implements BookService {
                 .hasNext(booksPage.hasNext())
                 .build();
     }
+
     @Override
     public BooksPageDto getPopularBooksPage(RequestDto request) {
         Pageable pageable = PageRequest.of(request.getOffset(), request.getLimit());
@@ -78,6 +81,7 @@ public class BookServiceImpl implements BookService {
                 .hasNext(booksPage.hasNext())
                 .build();
     }
+
     @Override
     public BooksPageDto getPageOfSearchResultBooks(RequestDto request) {
         Pageable nextPage = PageRequest.of(request.getOffset(), request.getLimit());
@@ -89,10 +93,11 @@ public class BookServiceImpl implements BookService {
                 .hasNext(booksPage.hasNext())
                 .build();
     }
-    protected List<String> getSlugsToExclude(){
+
+    protected List<String> getSlugsToExclude() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<String> slugs = new ArrayList<>();
-        if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             List<String> kept = cookieUtils.getBookSlugsByStatus(StatusType.KEPT);
             slugs.addAll(kept == null ? new ArrayList<>() : kept);
             List<String> cart = cookieUtils.getBookSlugsByStatus(StatusType.CART);

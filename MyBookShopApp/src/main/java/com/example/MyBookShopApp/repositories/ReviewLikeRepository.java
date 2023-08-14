@@ -18,6 +18,7 @@ public interface ReviewLikeRepository extends JpaRepository<BookReviewLikeEntity
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("update BookReviewLikeEntity b set b.time = ?1, b.value = ?2 where b.user = ?3 and b.review = ?4")
     int updateTimeAndValueByUserAndReview(LocalDateTime time, short value, UserEntity user, BookReviewEntity review);
+
     boolean existsByReviewAndUser(BookReviewEntity review, UserEntity user);
 
 

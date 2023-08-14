@@ -39,8 +39,9 @@ public interface ReviewRepository extends JpaRepository<BookReviewEntity, Intege
             " group by b.slug, br.id, u.name, r.value   " +
             " having b.slug like :slug) as reviews_table " +
             " order by likeCount - dislikeCount desc",
-             nativeQuery = true)
+            nativeQuery = true)
     List<ReviewDto> getReviewListBySlug(@Param("slug") String slug);
+
     @Query(value = "select * from (select   " +
             "    br.id id,   " +
             "    u.name userName,   " +
@@ -52,11 +53,11 @@ public interface ReviewRepository extends JpaRepository<BookReviewEntity, Intege
             "       (select case when brl2.value = 1 then true else false end " +
             "       from book_review_like brl2 " +
             "       left join users u2 on u2.id = brl2.user_id " +
-            "       where u2.email = :email and brl2.review_id = br.id) isLiked, "+
+            "       where u2.email = :email and brl2.review_id = br.id) isLiked, " +
             "       (select case when brl2.value = -1 then true else false end " +
             "       from book_review_like brl2 " +
             "       left join users u2 on u2.id = brl2.user_id " +
-            "       where u2.email = :email and brl2.review_id = br.id) isDisliked "+
+            "       where u2.email = :email and brl2.review_id = br.id) isDisliked " +
             " from book_review br   " +
             "         left join book_review_like brl on br.id = brl.review_id   " +
             "         join books b on b.id = br.book_id   " +

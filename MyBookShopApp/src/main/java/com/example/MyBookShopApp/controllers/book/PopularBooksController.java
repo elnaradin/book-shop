@@ -14,6 +14,7 @@ public class PopularBooksController {
     @Value("${books-batch-size.pool}")
     private Integer limit;
     private final BookService bookService;
+
     @GetMapping("/books/popular")
     public String popularBooksPage(Model model) {
         model.addAttribute("popularBooks", bookService.getPopularBooksPage(

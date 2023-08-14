@@ -28,8 +28,10 @@ public class SpringfoxConfig {
     public ApiInfo apiInfo() {
         return new ApiInfo("Bookshop API", "API for bookstore", "1.0",
                 "http://termsofservice.org", new Contact("API owner",
-                "http://www.ownersite.com", "owner@rmailer.org"),
+                "http://www.ownersite.com", "owner@rmailer.org"
+        ),
                 "api_licence",
-                "http://www.licence.edu.org", new ArrayList<>());
+                "http://www.licence.edu.org", new ArrayList<>()
+        );
     }
 }

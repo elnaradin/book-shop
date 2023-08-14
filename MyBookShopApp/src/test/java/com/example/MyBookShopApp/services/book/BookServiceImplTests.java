@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
@@ -22,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
@@ -37,6 +37,8 @@ class BookServiceImplTests {
 
     private ChangeStatusPayload changeStatusPayload;
     private final String popularBookSlug = "book-mna-449";
+    @SpyBean
+    private BookServiceImpl bookServiceSpy;
 
 
 
@@ -58,19 +60,19 @@ class BookServiceImplTests {
     @Test
     @DisplayName("Получение списка рекомендаций")
     void getRecommendedBooksPage() {
-        String authorName = "Mame Dwelly";
-        List<String> bookSlugs = List.of("book-tzi-927", "book-vhu-260", "book-yfx-138"); //books by Mame Dwelly
+        String authorName = "Howard O'Doogan";
+        //books by Howard O'Doogan
+        List<String> bookSlugs = List.of("book-asg-221", "book-rqj-173", "book-cif-695", "book-xvd-106");
         BooksPageDto recommendedBooksPage = bookService.getRecommendedBooksPage(requestDto);
         assertNotNull(recommendedBooksPage.getBooks());
         assertEquals(6, recommendedBooksPage.getBooks().size());
-        BookServiceImpl spyBookService = spy(bookService);
         assertThat(
                 recommendedBooksPage.getBooks().get(0).getAuthors(),
                 not(containsString(authorName))
         );
         doReturn(bookSlugs)
-                .when(spyBookService).getSlugsToExclude();
-        BooksPageDto newRecommendedBooksPage = spyBookService.getRecommendedBooksPage(requestDto);
+                .when(bookServiceSpy).getSlugsToExclude();
+        BooksPageDto newRecommendedBooksPage = bookServiceSpy.getRecommendedBooksPage(requestDto);
         assertNotEquals(
                 recommendedBooksPage.getBooks().get(0).getAuthors(),
                 newRecommendedBooksPage.getBooks().get(0).getAuthors()

@@ -1,11 +1,12 @@
 package com.example.MyBookShopApp.services.genre;
 
+import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDto;
 import com.example.MyBookShopApp.dto.genre.GenreDto;
 import com.example.MyBookShopApp.dto.genre.ShortGenreDto;
 import com.example.MyBookShopApp.dto.request.RequestDto;
-import com.example.MyBookShopApp.errs.NotFoundException;
+import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.repositories.GenreRepository;
 import com.example.MyBookShopApp.services.bookStatus.BookStatusService;
@@ -24,11 +25,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class GenreServiceImpl implements GenreService{
+public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
     private final BookRepository bookRepository;
     private final BookStatusService statusService;
 
+    @DurationTrackable
     @Override
     public GenreDto getGenreTree() {
         List<GenreDto> allGenres = genreRepository.getAllGenres();
@@ -74,9 +76,10 @@ public class GenreServiceImpl implements GenreService{
                 .build();
 
     }
+
     @Override
     public ShortGenreDto getShortGenreInfo(String genreSlug) {
         Optional<ShortGenreDto> shortGenreDto = genreRepository.getShortGenreDto(genreSlug);
-        return shortGenreDto.orElseThrow(NotFoundException::new);
+        return shortGenreDto.orElseThrow(ItemNotFoundException::new);
     }
 }
