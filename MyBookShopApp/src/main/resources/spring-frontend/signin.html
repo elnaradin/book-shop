@@ -39,7 +39,7 @@
                         <div class="form-group_center">
                             <span th:if="${regOk} == true" style="color: #2aa73a">Регистрация прошла успешно!</span>
                             <span th:if="${regOk} == false" style="color: red">Пользователь с данным почтовым адресом уже существует!</span>
-                            <span th:if="${signinError} == true"
+                            <span th:if="${authError} == true"
                                   style="color: red">Войдите в аккаунт, чтобы продолжить</span>
                         </div>
                         <div class="form-group">

@@ -16,6 +16,7 @@ public class TagController {
     @Value("${books-batch-size.pool}")
     private Integer limit;
     private final TagService tagService;
+
     @GetMapping("/books/tag/{slug}")
     public String getTagPage(@PathVariable("slug") String tagSlug, Model model, Authentication authentication) {
         model.addAttribute("tag", tagService.getShortTagInfo(tagSlug));

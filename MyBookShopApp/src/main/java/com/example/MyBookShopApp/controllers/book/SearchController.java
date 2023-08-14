@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.controllers.book;
 
+import com.example.MyBookShopApp.annotation.RequestParamsTrackable;
 import com.example.MyBookShopApp.dto.request.RequestDto;
 import com.example.MyBookShopApp.dto.search.SearchWordDto;
 import com.example.MyBookShopApp.errs.EmptySearchException;
@@ -30,6 +31,7 @@ public class SearchController {
     }
 
     @GetMapping(value = {"/search", "/search/{searchWord}"})
+    @RequestParamsTrackable
     public String getSearchResults(
             @PathVariable(value = "searchWord", required = false) SearchWordDto searchWordDto,
             Model model

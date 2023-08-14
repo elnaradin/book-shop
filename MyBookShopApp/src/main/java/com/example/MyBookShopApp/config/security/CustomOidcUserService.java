@@ -29,6 +29,7 @@ public class CustomOidcUserService extends OidcUserService {
         UserEntity user = getUserOrCreateNew(email, oidcUser);
         return new CustomOidcUser(oidcUser, user);
     }
+
     @Transactional
     public UserEntity getUserOrCreateNew(String email, OidcUser oidcUser) {
         return userRepository.findByEmail(email)

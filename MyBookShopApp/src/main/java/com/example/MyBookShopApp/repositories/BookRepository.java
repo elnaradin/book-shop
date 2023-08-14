@@ -103,7 +103,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
     );
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
-            SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE + ", "+
+            SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE + ", " +
             " b.pub_date , " +
             " sum(r.value) rating_value, " +
             " (select tag.c + author.c + genre.c " +
@@ -111,7 +111,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             "    (select (case when array_agg(b2t.tag_id) && array_agg(b2t2.id) " +
             "                  then 1 else 0 end) c from book2tag b2t2 " +
             "            join  books b3 on b3.id = b2t2.book_id " +
-            "            where b3.slug in :slugs) tag, "+
+            "            where b3.slug in :slugs) tag, " +
             "    (select (case when array_agg(b2a.author_id) && array_agg(b2a2.id) " +
             "                  then 1 else 0 end) c  from book2author b2a2 " +
             "            join  books b3 on b3.id = b2a2.book_id " +
@@ -122,7 +122,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             "            where b3.slug in :slugs) genre) match_value" +
             "      from books b " +
             "      join book2author b2a on b2a.book_id = b.id " +
-            "      join authors a on b2a.author_id = a.id "+
+            "      join authors a on b2a.author_id = a.id " +
             "      left join ratings r on b.id = r.book_id " +
             "      left join book2tag b2t on b2t.book_id = b.id " +
             "      left join book2genre b2g on b2g.book_id = b.id " +

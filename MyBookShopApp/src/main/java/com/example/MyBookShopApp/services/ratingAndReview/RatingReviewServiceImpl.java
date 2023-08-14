@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.services.ratingAndReview;
 
+import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.RatingDto;
 import com.example.MyBookShopApp.dto.review.BookRatingDto;
@@ -39,11 +40,13 @@ public class RatingReviewServiceImpl implements RatingReviewService {
     public RatingDto getBookRating(String slug) {
         return bookRepository.getBookRatingsCountBySlug(slug);
     }
+
     @Override
     public List<ReviewDto> getBookReviews(String slug) {
         return reviewRepository.getReviewListBySlug(slug);
     }
 
+    @DurationTrackable
     @Override
     public List<ReviewDto> getBookReviews(String slug, String email) {
         return reviewRepository.getReviewListBySlugAndEmail(slug, email);
@@ -94,6 +97,7 @@ public class RatingReviewServiceImpl implements RatingReviewService {
         }
         return ResultDto.builder().result(true).build();
     }
+
     @Override
     @Transactional
     public ResultDto addBookReview(
@@ -125,6 +129,7 @@ public class RatingReviewServiceImpl implements RatingReviewService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
+
     private BookEntity getBook(String slug) {
         return bookRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("book not found"));

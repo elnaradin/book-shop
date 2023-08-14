@@ -36,7 +36,6 @@ public interface TagRepository extends JpaRepository<TagEntity, Integer> {
     List<TagDtoProjection> getAllTags();
 
 
-
     @Query("select new com.example.MyBookShopApp.dto.tag.ShortTagDto(t.slug, t.name) from  TagEntity t " +
             "where t.slug = ?1")
     Optional<ShortTagDto> getShortTagDtoBySlug(String tagSlug);

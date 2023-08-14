@@ -8,6 +8,8 @@ import org.springframework.security.core.Authentication;
 
 public interface GenreService {
     ShortGenreDto getShortGenreInfo(String genreSlug);
+
     GenreDto getGenreTree();
+
     BooksPageDto getBooksPageByGenre(RequestDto request, Authentication authentication);
 }

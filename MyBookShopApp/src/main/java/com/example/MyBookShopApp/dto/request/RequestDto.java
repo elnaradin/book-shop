@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 
@@ -17,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SuperBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString(callSuper = true)
 public class RequestDto extends PubDatesDto {
     private String slug;
     private String searchWord;

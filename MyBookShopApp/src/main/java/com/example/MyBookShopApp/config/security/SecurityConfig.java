@@ -33,11 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOauthLoginSuccessHandler oauthLoginSuccessHandler;
 
 
-
     @Bean
     PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter() {
         return new SecurityContextHolderAwareRequestFilter();
@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/logout").logoutSuccessUrl("/")
                 .logoutSuccessHandler(logoutSuccessHandler)
-                .deleteCookies(  "token", StatusType.CART.getCookieName(), StatusType.KEPT.getCookieName())
+                .deleteCookies("token", StatusType.CART.getCookieName(), StatusType.KEPT.getCookieName())
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .and().oauth2Login().successHandler(oauthLoginSuccessHandler)

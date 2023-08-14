@@ -15,6 +15,7 @@ public interface RatingRepository extends JpaRepository<RatingEntity, Integer> {
     @Modifying
     @Query("update RatingEntity r set r.value = ?1 where r.user = ?2 and r.book = ?3")
     void updateValueByUserAndBook(Integer value, UserEntity user, BookEntity book);
+
     boolean existsByUserAndBook(UserEntity user, BookEntity book);
 
 }

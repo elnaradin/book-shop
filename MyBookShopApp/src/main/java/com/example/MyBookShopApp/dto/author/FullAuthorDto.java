@@ -1,4 +1,5 @@
 package com.example.MyBookShopApp.dto.author;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -6,7 +7,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class FullAuthorDto extends ShortAuthorDto{
+public class FullAuthorDto extends ShortAuthorDto {
     private String photo;
     private String description;
 

@@ -58,6 +58,7 @@ public class MainPage {
         element.click();
         return this;
     }
+
     public MainPage openBooksByTag(String tag) {
         WebElement element = chromeDriver.findElementByLinkText(tag);
         element.click();

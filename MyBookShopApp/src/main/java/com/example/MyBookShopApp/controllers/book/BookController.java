@@ -3,11 +3,11 @@ package com.example.MyBookShopApp.controllers.book;
 import com.example.MyBookShopApp.data.ResourceStorage;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.repositories.BookRepository;
+import com.example.MyBookShopApp.services.author.AuthorService;
+import com.example.MyBookShopApp.services.book.BookService;
 import com.example.MyBookShopApp.services.bookStatus.BookStatusService;
 import com.example.MyBookShopApp.services.file.FileService;
 import com.example.MyBookShopApp.services.ratingAndReview.RatingReviewService;
-import com.example.MyBookShopApp.services.author.AuthorService;
-import com.example.MyBookShopApp.services.book.BookService;
 import com.example.MyBookShopApp.services.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -53,11 +53,13 @@ public class BookController {
         model.addAttribute("tags", tagService.getShortTagsList(slug));
 
         model.addAttribute("bookFiles", fileService.getFilesBySlug(slug));
-        if(authentication != null){
+        if (authentication != null) {
             model.addAttribute("reviews", ratingService.getBookReviews(slug, authentication.getName()));
-            model.addAttribute("status",
-                    statusService.getBookStatus(slug, authentication.getName()).toString());
-        }else {
+            model.addAttribute(
+                    "status",
+                    statusService.getBookStatus(slug, authentication.getName()).toString()
+            );
+        } else {
             model.addAttribute("reviews", ratingService.getBookReviews(slug));
         }
         return "/books/slug";
@@ -71,7 +73,7 @@ public class BookController {
             throws IOException {
         String savePath = storage.saveNewBookImage(slug, file);
         BookEntity bookToUpdate = bookRepository.findBySlug(slug)
-                .orElseThrow(()-> new RuntimeException("book not found"));
+                .orElseThrow(() -> new RuntimeException("book not found"));
         bookToUpdate.setImage(savePath);
         bookRepository.save(bookToUpdate);
         return "redirect:/books/" + slug;

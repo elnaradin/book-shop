@@ -14,9 +14,9 @@ import java.time.LocalDate;
 @SuperBuilder
 public class PubDatesDto {
 
-    @DateTimeFormat(pattern ="dd.MM.yyyy" )
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate from;
 
-    @DateTimeFormat(pattern ="dd.MM.yyyy" )
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate to;
 }

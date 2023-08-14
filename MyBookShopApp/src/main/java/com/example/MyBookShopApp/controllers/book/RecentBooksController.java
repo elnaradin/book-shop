@@ -16,6 +16,7 @@ public class RecentBooksController {
     @Value("${books-batch-size.slider}")
     private Integer limit;
     private final BookService bookService;
+
     @GetMapping("/books/recent")
     public String recentBooks(Model model) {
         model.addAttribute("recentBooks", bookService.getRecentBooksPage(RequestDto.builder()

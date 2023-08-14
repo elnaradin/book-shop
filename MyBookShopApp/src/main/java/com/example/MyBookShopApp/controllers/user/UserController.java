@@ -1,13 +1,9 @@
 package com.example.MyBookShopApp.controllers.user;
 
-import com.example.MyBookShopApp.config.security.jwt.JWTUtils;
 import com.example.MyBookShopApp.dto.security.ContactConfirmationPayload;
 import com.example.MyBookShopApp.dto.security.ContactConfirmationResponse;
 import com.example.MyBookShopApp.dto.security.RegistrationForm;
-import com.example.MyBookShopApp.repositories.JwtBlackListRepository;
-import com.example.MyBookShopApp.services.book.BookService;
 import com.example.MyBookShopApp.services.loginAndRegistration.UserRegService;
-import com.example.MyBookShopApp.services.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,13 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
-
-
-    private final BookService bookService;
     private final UserRegService userService;
-    private final JwtBlackListRepository blackListRepository;
-    private final CookieUtils cookieUtils;
-    private final JWTUtils jwtUtil;
 
 
     @GetMapping("/signin")
@@ -70,15 +60,16 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ContactConfirmationResponse handleLogin(@RequestBody ContactConfirmationPayload payload,
-                                                   HttpServletResponse response) {
+    public ContactConfirmationResponse handleLogin(
+            @RequestBody ContactConfirmationPayload payload,
+            HttpServletResponse response
+    ) {
         response.addCookie(new Cookie("token", userService.jwtLogin(payload).getResult()));
         return userService.jwtLogin(payload);
     }
 
     @GetMapping("/profile")
     public String handleProfile(Model model) {
-
         return "profile";
     }
 }

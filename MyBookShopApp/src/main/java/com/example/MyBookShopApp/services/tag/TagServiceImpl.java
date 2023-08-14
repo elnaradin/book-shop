@@ -1,11 +1,12 @@
 package com.example.MyBookShopApp.services.tag;
 
+import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDto;
 import com.example.MyBookShopApp.dto.request.RequestDto;
 import com.example.MyBookShopApp.dto.tag.ShortTagDto;
 import com.example.MyBookShopApp.dto.tag.TagDtoProjection;
-import com.example.MyBookShopApp.errs.NotFoundException;
+import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.repositories.TagRepository;
 import com.example.MyBookShopApp.services.bookStatus.BookStatusService;
@@ -33,6 +34,7 @@ public class TagServiceImpl implements TagService {
         return tagRepository.getTagsByBookSlug(slug);
     }
 
+    @DurationTrackable
     @Override
     public List<TagDtoProjection> getTagsList() {
         return tagRepository.getAllTags();
@@ -60,6 +62,6 @@ public class TagServiceImpl implements TagService {
     @Override
     public ShortTagDto getShortTagInfo(String tagSlug) {
         Optional<ShortTagDto> shortTagDtoBySlug = tagRepository.getShortTagDtoBySlug(tagSlug);
-        return shortTagDtoBySlug.orElseThrow(NotFoundException::new);
+        return shortTagDtoBySlug.orElseThrow(ItemNotFoundException::new);
     }
 }

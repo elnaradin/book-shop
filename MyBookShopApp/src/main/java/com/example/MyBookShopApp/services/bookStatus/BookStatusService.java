@@ -11,8 +11,12 @@ import java.util.Map;
 
 public interface BookStatusService {
     BooksPageDto getAnonymUserBooks(StatusType status);
+
     ResultDto changeBookStatus(ChangeStatusPayload payload, String authentication);
+
     BooksPageDto getBooksByStatus(StatusType status, Authentication authentication);
+
     StatusType getBookStatus(String slug, String email);
+
     Map<String, List<String>> getUserBookSlugs(Authentication authentication);
 }
