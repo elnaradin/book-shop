@@ -19,10 +19,11 @@
     <!--    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>-->
     <!--    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle Middle_form">
     <div class="Middle-top">
         <div class="wrap">
@@ -89,7 +90,7 @@
                         </div>
                         <div class="form-group form-group_key">
                             <input class="form-input" id="phonecode" name="phonecode" type="text" placeholder="Код"
-                                   data-validate="key require" data-mask="999 999"/>
+                                   data-validate="key require" />
                         </div>
                         <div class="form-group form-group_center">
                             <button class="btn btn_primary form-btn" type="button" name="toComeInPhone"
@@ -119,8 +120,8 @@
                     </div>
                     <div class="form-group_center"><a class="Login-reg"
                                                       th:href="@{/oauth2/authorization/google}"
-                                                      href="/signup.html">Войти с Google
-                    </a>
+                                                      href="/signup.html">Войти через Google
+                   </a>
                     </div>
                 </div>
             </form>

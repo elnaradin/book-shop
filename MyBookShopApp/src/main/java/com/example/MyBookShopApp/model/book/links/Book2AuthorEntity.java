@@ -17,11 +17,9 @@ import javax.persistence.Table;
 @Getter
 @Setter
 public class Book2AuthorEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-
     @ManyToOne
     private BookEntity book;
     @ManyToOne

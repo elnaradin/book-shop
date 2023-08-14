@@ -2869,6 +2869,7 @@ button.trigger {
     max-width: 95%;
 }
 
+
 @media screen and (max-width: 480px) {
     .modal-window {
         padding: 35px;
@@ -2914,6 +2915,7 @@ button.trigger {
 
 .modal_compression .modal-window {
     width: auto;
+
 }
 
 .modal-title {

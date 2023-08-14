@@ -17,10 +17,11 @@
     <script defer src="/assets/js/scripts.min.js?v=10496799"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle">
     <div class="Middle-top">
         <div class="wrap">

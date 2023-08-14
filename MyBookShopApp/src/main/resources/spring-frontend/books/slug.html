@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Тут название страницы написать</title>
+    <title th:text="${book.title}">Страница книги</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -15,32 +15,48 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=87821122">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+
     <script defer src="/assets/js/scripts.min.js?v=87821122"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    </script>
     <link rel="stylesheet" href="/assets/css/DownloadBookWindowStyle.css">
     <!--    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>-->
     <!--    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+
+    <script src="/assets/js/sendChangeBookStatusRequestScript.js"></script>
+    <script src="/assets/js/SigninRequiredWindowScript.js"></script>
+    <link rel="stylesheet" href="/assets/css/SigninRequiredWindowStyle.css">
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle">
     <div class="wrap">
-        <main class="Middle-main" th:object="${slugBook}">
+        <main class="Middle-main" th:object="${book}">
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{title})}"></ul>
             <div class="Product">
                 <div class="ProductCard">
                     <div class="ProductCard-look">
-                        <form id="imgForm" method="POST" enctype="multipart/form-data" action="#"
+                        <form sec:authorize="hasRole('ADMIN')" id="imgForm" method="POST" enctype="multipart/form-data"
+                              action="#"
                               th:action="'/books/' + *{slug} +'/img/save'">
-                            <div class="ProductCard-photo" id="uploadButton"><img th:src="*{image}"
-                                                                                  src="/assets/img/content/main/card.jpg"
-                                                                                  alt="card.jpg"/>
+                            <div class="ProductCard-photo uploadButton">
+                                <img th:src="*{image}" style="width: 400px; height: 600px; object-fit: cover;"
+                                     src="/assets/img/content/main/card.jpg"
+                                     alt="card.jpg"/>
                             </div>
                             <input type="file" name="file" id="dialog" style="display: none" accept="image/*"/>
                         </form>
+
+                        <div sec:authorize="!hasAnyRole('ADMIN')" class="ProductCard-photo">
+                            <img th:src="*{image}"  style="width: 400px; height: 600px; object-fit: cover;"
+                                 src="/assets/img/content/main/card.jpg"
+                                 alt="card.jpg"/>
+                        </div>
+
                     </div>
                     <div class="ProductCard-desc"
                          th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
@@ -49,9 +65,12 @@
                     <div class="Product-comments-header">
                         <h3 class="Product-comments-title">Отзывы
                         </h3><span class="Product-comments-amount"
-                                   th:text="*{#lists.size(reviews)} == 0 ? 'Отзывов нет' : *{#lists.size(reviews)} + ' отзывов'">567 отзывов</span>
+                                   th:text="${#lists.size(reviews)} == 0 ? 'Отзывов нет'
+                                   : ${#lists.size(reviews)} + ' отзывов'">567 отзывов</span>
                     </div>
                 </div>
+                <div sec:authorize="hasRole('USER')"
+                     th:replace="~{fragments/add_comment_fragment :: commentForm}"></div>
                 <div th:replace="~{fragments/book_reviews_fragment :: reviewBlock}"></div>
             </div>
 

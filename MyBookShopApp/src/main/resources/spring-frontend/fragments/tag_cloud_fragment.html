@@ -1,32 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="Tags" id="tags" th:fragment="cloud">
-    <th:block th:with="valRange= ${maxTagValue - minTagValue},
 
-     sizeRange= ${tag.booksAmount - minTagValue}" th:each="tag : ${tagCloud}"> <!--  MainPageController  -->
-        <th:block th:if="${sizeRange} > ${valRange} * 3.0 / 4">
-            <div class="Tag Tag_lg">
-                <a th:href="@{'/books/tag/' + ${tag.id}}" th:text="${tag.name}">современная литература</a>
-            </div>
-        </th:block>
-        <th:block
-                th:if="${sizeRange} <= ${valRange} * 3.0 / 4 and ${sizeRange} > ${valRange}  * 2.0 / 4">
-            <div class="Tag Tag_md">
-                <a th:href="@{'/books/tag/' + ${tag.id}}" th:text="${tag.name}">современная литература</a>
-            </div>
-        </th:block>
-
-        <th:block
-                th:if="${sizeRange} <= ${valRange}  * 2.0 / 4 and ${sizeRange} > ${valRange}  * 1.0 / 4">
-            <div class="Tag Tag_sm">
-                <a th:href="@{'/books/tag/' + ${tag.id}}" th:text="${tag.name}">современная литература</a>
-            </div>
-        </th:block>
-        <th:block th:if="${sizeRange} <= ${valRange} * 1.0 / 4 ">
-            <div class="Tag Tag_xs">
-                <a th:href="@{'/books/tag/' + ${tag.id}}" th:text="${tag.name}">современная литература</a>
-            </div>
-        </th:block>
-    </th:block>
+    <div th:object="${tag}" th:each="tag : ${tagCloud}" class="Tag "
+         th:classappend="*{size} eq 3 ? 'Tag_lg' : (*{size} eq 2 ? 'Tag_md' :(*{size} eq 1 ? 'Tag_sm': 'Tag_xs'))">
+        <a class="tag_link" th:href="@{'/books/tag/' + *{slug}}" th:text="*{name}">современная литература</a>
+    </div>
 </div>
 </html>

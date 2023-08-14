@@ -17,10 +17,11 @@
     <script defer src="/assets/js/scripts.min.js?v=88436650"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 
 <div class="Middle">
     <div class="wrap">
@@ -35,9 +36,17 @@
                             class="Section-header-link" th:href="@{/myarchive}" href="/myarchive.html">Архив</a>
                     </div>
                 </div>
+                <form class="form Cart" th:if="${#lists.isEmpty(booksPage.books)}" >
+                    <div class="Cart-messageInfo">У вас пока нет книг</div>
+                    <div class="Cart-total">
+                        <div class="Cart-block Cart-block_total">
+
+                        </div>
+                    </div>
+                </form>
                 <div class="Cards">
                     <div class="Cards Cards_refresh"
-                         th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${books},
+                         th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage},
                       refreshShowValue='my')}"></div>
 
                 </div>

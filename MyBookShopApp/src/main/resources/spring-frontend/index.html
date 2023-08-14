@@ -19,17 +19,18 @@
     <!--    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>-->
     <!--    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE')}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
             <div class="Section">
-                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title =#{index.recommended}, category=${recommendedBooks}, bookType='recommended')}"></div>
-                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title= #{index.recent}, category=${recentBooks} , bookType='recent')}"></div>
-                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title=#{index.popular}, category=${popularBooks}, bookType='popular')}"></div>
+                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title =#{index.recommended}, booksPage=${recommended}, bookType='recommended')}"></div>
+                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title= #{index.recent}, booksPage=${recent} , bookType='recent')}"></div>
+                <div th:replace="~{fragments/book_slider_fragment :: bookSlider(title=#{index.popular}, booksPage=${popular}, bookType='popular')}"></div>
             </div>
             <h2 class="Middle-title" th:text="#{index.books-by-tags}">Книги по тегам
             </h2>

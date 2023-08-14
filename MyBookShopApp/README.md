@@ -1,14 +1,14 @@
-# Переменные окружения для запуска приложения
+# env variables
 ```
 APP_PORT=;DB_PASSWORD=;DB_PORT=;DB_USERNAME=;DB_NAME=
 ```
-## где
-`APP_PORT` - номер порта приложения
+## where
+`APP_PORT` - app's port
 
-`DB_PASSWORD` - пароль от базы
+`DB_PASSWORD` - db's pass
 
-`DB_PORT` - порт сервера базы
+`DB_PORT` - db's port
 
-`DB_NAME` - имя базы
+`DB_NAME` - db's name
 
-`DB_USERNAME` - имя пользователя базы
+`DB_USERNAME` - db's username

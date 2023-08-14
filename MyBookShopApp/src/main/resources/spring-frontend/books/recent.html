@@ -17,17 +17,18 @@
     <script defer src="/assets/js/scripts.min.js?v=09585989"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(recent='menu-item menu-item_ACTIVE', status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head(recent='menu-item menu-item_ACTIVE' )}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category= #{index.recent})}"></ul>
             <div class="Section">
-                <div class="Section-header">
+                <div class="Section-header" th:object="${recentBooks}">
                     <h1 class="Section-title" th:text="#{index.recent}">Новинки
                     </h1>
                     <form class="form form_inline Section-header-form" action="#" method="post">
@@ -37,7 +38,7 @@
                             <input class="form-input form-input_date form-input_date_uninit" id="fromdaterecent"
                                    name="fromdaterecent" type="text" placeholder="Дата" data-refreshoffset="0"
                                    data-refreshlimit="20" data-refreshshow="changedate"
-                                   th:attr="data-refreshfrom=${dates.from}" data-refreshfrom="0"
+                                   th:attr="data-refreshfrom=*{from}" data-refreshfrom="0"
                                    autocomplete="off"/>
                         </div>
                         <div class="form-group">
@@ -46,12 +47,15 @@
                             <input class="form-input form-input_date form-input_date_uninit" id="enddaterecent"
                                    name="enddaterecent" type="text" placeholder="Дата" data-refreshoffset="0"
                                    data-refreshlimit="20" data-refreshshow="changedate"
-                                   th:attr="data-refreshto=${dates.to}" data-refreshto="0"
+                                   th:attr="data-refreshto=*{to}" data-refreshto="0"
                                    autocomplete="off"/>
                         </div>
                     </form>
                 </div>
-                <div class="Cards Cards_refresh"
+                <form class="form Cart" th:style="${#lists.isEmpty(recentBooks.books)} ? '' : 'display: none;'" >
+                    <div class="Cart-messageInfo">За данный период новинок нет</div>
+                </form>
+                <div class="Cards Cards_refresh" th:unless="${#lists.isEmpty(recentBooks.books)}"
                      th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${recentBooks},
                       refreshShowValue='recent')}"></div>
 

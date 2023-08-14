@@ -17,10 +17,11 @@
     <script defer src="/assets/js/scripts.min.js?v=52263780"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE', status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}">
+        th:replace="~{fragments/common_header_fragment :: head(genres='menu-item menu-item_ACTIVE')}">
 </header>
 <div class="Middle">
     <div class="wrap">
@@ -29,7 +30,7 @@
             </h1>
             <div class="Section">
                 <div class="Tags Tags_genres">
-                    <div class="Tags" th:replace="~{fragments/genre_tree_fragment :: tree(genreList=${genreList})}">
+                    <div class="Tags" th:replace="~{fragments/genre_tree_fragment :: tree(genreTree=${genreTree})}">
                     </div>
                 </div>
             </div>

@@ -5,10 +5,22 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="/db.changelog/liquibase-outputChangelog.xml"/>
+<!--    <includeAll path="changesets" relativeToChangelogFile="true"/>-->
+
+    <include file="/db.changelog/liquibase-outputChangelog_init.xml"/>
     <include file="db.changelog/changelog_1_blacklist.xml"/>
     <include file="db.changelog/changelog_2_unique_key_like_table.xml"/>
     <include file="db.changelog/changelog_3_role_table.xml"/>
     <include file="db.changelog/4-add-date-field-blacklist.xml"/>
-
+    <include file="data.sql"
+             relativeToChangelogFile="true" />
+    <include file="db.changelog/5-add-slug-to-tags.xml"/>
+    <include file="db.changelog/tagSlugs.sql"/>
+    <include file="db.changelog/006_add_unique_constraint_book2user.xml" />
+    <include file="db.changelog/007_add_unique_constraint_book2usertype.xml"/>
+    <include file="db.changelog/008_add_bookid_column_ratings.xml"/>
+    <include file="db.changelog/009_add_UC_ratings.xml"/>
+    <include file="db.changelog/add_book_id_in_ratings.sql"/>
+    <include file="db.changelog/add_user_email.sql"/>
+    <include file="db.changelog/change_test_user_phone.sql"/>
 </databaseChangeLog>

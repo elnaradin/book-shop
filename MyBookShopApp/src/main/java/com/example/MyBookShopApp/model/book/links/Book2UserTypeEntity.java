@@ -1,9 +1,12 @@
 package com.example.MyBookShopApp.model.book.links;
 
+import com.example.MyBookShopApp.model.enums.StatusType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +22,8 @@ public class Book2UserTypeEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    private String code;
+    @Enumerated(value = EnumType.STRING)
+    private StatusType code;
 
     private String name;
 

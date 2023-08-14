@@ -1,7 +1,10 @@
 package com.example.MyBookShopApp.model.book.review;
 
 import com.example.MyBookShopApp.model.user.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -16,6 +19,9 @@ import java.time.LocalDateTime;
 @Table(name = "book_review_like")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookReviewLikeEntity {
 
     @Id

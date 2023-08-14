@@ -17,28 +17,47 @@
     <script defer src="/assets/js/scripts.min.js?v=91228662"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle">
     <div class="wrap">
-        <main class="Middle-main">
+        <main class="Middle-main" th:object="${tag}">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${taggedBooks.tag.name})}"></ul>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{name})}"></ul>
+
+
             <div class="Section">
+
+
                 <div class="Section-header">
-                    <h1 class="Section-title" th:text="${taggedBooks.tag.name}">Психологическая проза
+
+                    <h1 class="Section-title" th:text="*{name}">Психологическая проза
                     </h1>
-                    <div class="Section-header-links"><a class="Section-header-link" th:href="@{'/' + '#tags'}"
-                                                         href="/index.html#tags">Все
-                        тэги</a>
-                    </div>
+                    <button class="trigger trigger_dropdown" type="button">
+                        <div class="Section-header-links">
+                            <a class="Section-header-link" th:href="@{'/' + '#tags'}"
+                               href="/index.html#tags">Все тэги</a>
+                        </div>
+
+                        <div class="modal modal_dropdown ">
+                            <div class="modal-window "><a class="modal-close"
+                                                          href="#"><span></span><span></span></a>
+                                <strong class="modal-title">Все тэги</strong>
+                                <div th:replace="~{fragments/tag_cloud_fragment :: cloud}"></div>
+
+                            </div>
+                        </div>
+
+                    </button>
                 </div>
+
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${taggedBooks},
+                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage},
                       refreshShowValue='tag',
-                       refreshIdValue=${taggedBooks.tag.id})}"></div>
+                       refreshIdValue=*{slug})}"></div>
             </div>
         </main>
     </div>

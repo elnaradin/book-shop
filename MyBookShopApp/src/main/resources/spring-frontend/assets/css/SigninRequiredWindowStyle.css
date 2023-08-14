@@ -1,0 +1,42 @@
+.signinPopup {
+    width: 400px;
+    height: 320px;
+    padding: 70px 40px;
+    border-radius: 4px;
+    background: #fafafa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    display: none;
+    opacity: 0;
+    z-index: 2;
+    text-align: center;
+    font-size: large;
+    line-height: 1.6;
+}
+
+.signinPopup .signinPopup_close {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    cursor: pointer;
+    display: block;
+    font-size: 29px;
+}
+
+.signinOverlay {
+    z-index: 1;
+    position: fixed;
+    background-color: rgba(0, 0, 0, .7);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    display: none;
+}

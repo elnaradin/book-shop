@@ -17,23 +17,24 @@
     <script defer src="/assets/js/scripts.min.js?v=93601584"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE', status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head(main='menu-item menu-item_ACTIVE')}"></header>
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${authorWithSomeBooks.author.name})}"></ul>
-            <div th:replace="~{fragments/author_article_fragment :: article(author=${authorWithSomeBooks.author.name})}"></div>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${author.name})}"></ul>
+            <div th:replace="~{fragments/author_article_fragment :: article(author=${author})}"></div>
             <div class="Section"
-                 th:replace="~{fragments/book_slider_fragment :: bookSlider(title='Книги автора', category=${authorWithSomeBooks}, bookType='author')}"></div>
+                 th:replace="~{fragments/book_slider_fragment :: bookSlider(title='Книги автора', category=${booksPage.books}, bookType='author')}"></div>
             <footer class="Section-footer"><a class="Author-books"
-                                              th:href="@{'/books/author/' + ${authorWithSomeBooks.author.slug}}"
+                                              th:href="@{'/books/author/' + ${author.slug}}"
                                               href="/books/author.html"><span th:text="#{authors.all-books}">Все книги
                 автора</span><span
-                    class="Author-amount" th:text="${'('+ authorWithSomeBooks.count + ')'}">(55)</span></a>
+                    class="Author-amount" th:text="${'('+ booksPage.count + ')'}">(55)</span></a>
             </footer>
         </main>
     </div>

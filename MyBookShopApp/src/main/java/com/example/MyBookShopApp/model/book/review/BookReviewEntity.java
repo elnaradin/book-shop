@@ -2,7 +2,10 @@ package com.example.MyBookShopApp.model.book.review;
 
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.user.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -17,6 +20,9 @@ import java.time.LocalDateTime;
 @Table(name = "book_review")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookReviewEntity {
 
     @Id
@@ -30,8 +36,6 @@ public class BookReviewEntity {
     private UserEntity user;
     private LocalDateTime time;
     private String text;
-//    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY)
-//    private List<BookReviewLikeEntity> likes = new ArrayList<>();
 
 
 }

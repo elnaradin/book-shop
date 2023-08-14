@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="reviewBlock">
     <div class="Comments">
-        <h3 th:if="${slugBook.reviews.size() == 0}">Отзывов пока нет</h3>
-        <div class="Comment" th:each="review : ${slugBook.reviews}">
+        <h3 th:if="${reviews.size() == 0}">Отзывов пока нет</h3>
+        <div class="Comment" th:each="review : ${reviews}">
             <div class="Comment-column Comment-column_pict">
                 <div class="Comment-avatar">
                 </div>
@@ -11,7 +11,7 @@
             <div class="Comment-column" th:object="${review}">
                 <header class="Comment-header">
                     <div>
-                        <strong class="Comment-title"><span th:text="*{review.userName}">Александр Кузнецов</span>
+                        <strong class="Comment-title"><span th:text="*{userName}">Александр Кузнецов</span>
                             <span
                                     class="Comment-rating">
                             <span class="Rating Rating_comment">
@@ -62,26 +62,40 @@
                                 </g>
                               </svg></span></span></span></span>
                         </strong><span class="Comment-date"
-                                       th:text="*{#temporals.format(review.time, 'dd.MM.yyyy hh:mm')}">17.04.2020 16:40</span>
+                                       th:text="*{#temporals.format(time, 'dd.MM.yyyy hh:mm')}">17.04.2020 16:40</span>
                     </div>
                 </header>
                 <div class="Comment-content">
-                    <p th:text="*{review.text}">Lorem ipsum dolor sit amet,
+                    <p th:text="*{text}">Lorem ipsum dolor sit amet,
                     </p>
                     <div class="Comment-footer">
-                        <div class="Comment-appeal">
-                            <button class="btn btn_white btn_like" data-btntype="check" data-check="false"
-                                    data-btnradio="two2"
-                                    th:attr="data-likeid =*{review.id}"
-                                    data-likeid="1111"><span
+                        <div class="Comment-appeal" sec:authorize="hasRole('USER')">
+                            <button class="btn btn_white btn_like"
+                                    data-btntype="check" data-check="false"
+                                    th:attr="data-likeid =*{id}, data-btnradio=*{id}, data-check= *{isLiked}"
+                                    th:classappend=" *{isLiked} ? btn_check : ''"
+                                    data-likeid="1111"
+                                    data-btnradio="two2"><span
                                     class="btn-icon"><img
                                     src="/assets/img/icons/comment/like.svg" alt="like.svg"/></span><span
                                     class="btn-content" th:text="*{likeCount}">200</span>
                             </button>
-                            <button class="btn btn_white btn_dislike" data-btntype="check" data-check="false"
-                                    data-btnradio="two2"
-                                    th:attr="data-likeid =*{review.id}"
-                                    data-likeid="1111"><span
+                            <button class="btn btn_white btn_dislike"
+                                    data-btntype="check" data-check="false"
+                                    th:attr="data-likeid =*{id}, data-btnradio=*{id}, data-check= *{isDisliked}"
+                                    th:classappend=" *{isDisliked} ? btn_check : ''"
+                                    data-btnradio="two2" data-likeid="1111"><span class="btn-icon"><img
+                                    src="/assets/img/icons/comment/dislike.svg" alt="dislike.svg"/></span><span
+                                    class="btn-content" th:text="*{dislikeCount}">100</span>
+                            </button>
+                        </div>
+                        <div class="Comment-appeal" sec:authorize="isAnonymous()" >
+                            <button class="btn btn_white btn_like popup-trigger like-trigger" ><span
+                                    class="btn-icon"><img
+                                    src="/assets/img/icons/comment/like.svg" alt="like.svg"/></span><span
+                                    class="btn-content" th:text="*{likeCount}">200</span>
+                            </button>
+                            <button class="btn btn_white btn_dislike popup-trigger like-trigger" ><span
                                     class="btn-icon"><img
                                     src="/assets/img/icons/comment/dislike.svg" alt="dislike.svg"/></span><span
                                     class="btn-content" th:text="*{dislikeCount}">100</span>
@@ -89,6 +103,7 @@
                         </div>
                     </div>
                 </div>
+                <div th:replace="~{fragments/signin_popup_fragment :: popup(reason='Чтобы оценить отзыв', popupOverlayId='like-popup')}"></div>
             </div>
         </div>
     </div>

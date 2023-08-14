@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="bookSlider">
     <div class="Section-header">
         <h2 class="Section-title" th:text="${title}">Рекомендуемое
@@ -8,33 +8,46 @@
     <div class="Slider Slider_carousel">
         <div class="Slider-box Cards" th:attr="data-load=${bookType}" data-load="recommended" data-loadoffset="0"
              data-loadlimit="6">
-            <div class="Slider-item" th:each="book: ${category.books}">
+            <div class="Slider-item" th:each="book: ${booksPage.books}">
                 <div class="Slider-content" th:object="${book}">
-                    <div class="Card">
-                        <a class="Card-picture" th:href="@{'/books/' + ${book.slug}}"
-                           href="/books/slug.html"><img
-                                th:src="*{image}" alt="card.jpg"/>
-                            <div class="Card-ribbon" th:if="*{isBestseller}">
-                                <span class="Card-ribbonText">Бестселлер</span>
-                            </div>
-                            <div class="Card-sale" th:if="*{discount} > 0" th:text="*{discount} + '% скидка'">30%
-                                скидка
-                            </div>
-                            <th:block th:if="*{status} != 'UNLINK'" th:switch="*{status}">
-                                <a th:case="'CART'" class="Card-status" title="В корзине">
-                                    <img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg">
-                                </a>
-                                <a th:case="'KEPT'" class="Card-status" title="Отложена">
-                                    <img src="/assets/img/icons/heart.svg" alt="heart.svg">
-                                </a>
-                                <a th:case="'PAID'" class="Card-status" title="Куплена">
-                                    <img src="/assets/img/icons/check.svg" alt="check.svg">
-                                </a>
-                                <a th:case="'ARCHIVED'" class="Card-status" title="В архиве">
-                                    <img src="/assets/img/icons/archive.svg" alt="archive.svg">
-                                </a>
-                            </th:block>
-                        </a>
+                    <div class="Card" >
+                        <div class="Card-picture" >
+                            <a  th:href="@{'/books/' + ${book.slug}}"
+                               href="/books/slug.html">
+
+                                <img  style="width: 168px; height: 253px; object-fit: cover;"
+                                      th:src="*{image}" alt="card.jpg"/>
+                                <div class="Card-ribbon" th:if="*{isBestseller}">
+                                    <span class="Card-ribbonText">Бестселлер</span>
+                                </div>
+                                <div class="Card-sale" th:if="*{discount} > 0" th:text="*{discount} + '% скидка'">30%
+                                    скидка
+                                </div>
+                                <div sec:authorize="hasRole('USER')">
+                                    <a th:if="${#lists.contains(slugsByStatus.get('CART'), book.slug)}" th:href="@{/cart}" class="Card-status" title="В корзине">
+                                        <img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg">
+                                    </a>
+                                    <a th:if="${#lists.contains(slugsByStatus.get('KEPT'), book.slug)}" th:href="@{/postponed}"  class="Card-status" title="Отложена">
+                                        <img src="/assets/img/icons/heart.svg" alt="heart.svg">
+                                    </a>
+                                    <a th:if="${#lists.contains(slugsByStatus.get('PAID'), book.slug)}" th:href="@{/my}"  class="Card-status" title="Куплена">
+                                        <img src="/assets/img/icons/check.svg" alt="check.svg">
+                                    </a>
+                                    <a th:if="${#lists.contains(slugsByStatus.get('ARCHIVED'), book.slug)}" th:href="@{/myarchive}" class="Card-status" title="В архиве">
+                                        <img src="/assets/img/icons/archive.svg" alt="archive.svg">
+                                    </a>
+                                </div>
+                                <div sec:authorize="isAnonymous()">
+                                    <a th:if="${#lists.contains(slugsByStatus.get('CART'), book.slug)}" th:href="@{/anonym/cart}" class="Card-status" title="В корзине">
+                                        <img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg">
+                                    </a>
+                                    <a th:if="${#lists.contains(slugsByStatus.get('KEPT'), book.slug)}" th:href="@{/anonym/postponed}"  class="Card-status" title="Отложена">
+                                        <img src="/assets/img/icons/heart.svg" alt="heart.svg">
+                                    </a>
+                                </div>
+                            </a>
+                        </div>
+
 
 
                         <div class="Card-content">
@@ -56,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div th:if="${category.books.size() > 5}" class="Slider-navigateWrap">
+        <div th:if="${booksPage.hasNext}" class="Slider-navigateWrap">
             <div class="Slider-navigate">
             </div>
         </div>

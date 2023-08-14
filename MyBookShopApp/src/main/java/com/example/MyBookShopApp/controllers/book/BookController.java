@@ -2,16 +2,19 @@ package com.example.MyBookShopApp.controllers.book;
 
 import com.example.MyBookShopApp.data.ResourceStorage;
 import com.example.MyBookShopApp.model.book.BookEntity;
-import com.example.MyBookShopApp.model.enums.UserRoles;
 import com.example.MyBookShopApp.repositories.BookRepository;
-import com.example.MyBookShopApp.services.BookService;
-import com.example.MyBookShopApp.services.FileService;
-import com.example.MyBookShopApp.services.UserService;
+import com.example.MyBookShopApp.services.bookStatus.BookStatusService;
+import com.example.MyBookShopApp.services.file.FileService;
+import com.example.MyBookShopApp.services.ratingAndReview.RatingReviewService;
+import com.example.MyBookShopApp.services.author.AuthorService;
+import com.example.MyBookShopApp.services.book.BookService;
+import com.example.MyBookShopApp.services.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,26 +34,44 @@ import java.util.logging.Logger;
 public class BookController {
     private final BookRepository bookRepository;
     private final BookService bookService;
-    private final UserService userService;
+    private final AuthorService authorService;
     private final ResourceStorage storage;
     private final FileService fileService;
+    private final RatingReviewService ratingService;
+    private final TagService tagService;
+    private final BookStatusService statusService;
 
     @GetMapping("/{slug}")
-    public String bookPage(@PathVariable("slug") String slug, Model model)  {
-        model.addAttribute("slugBook", bookService.getBookBySlug(slug));
+    public String bookPage(
+            @PathVariable("slug") String slug,
+            Model model,
+            Authentication authentication
+    ) {
+        model.addAttribute("book", bookService.getFullBookInfoBySlug(slug));
+        model.addAttribute("authors", authorService.getAuthorsList(slug));
+        model.addAttribute("ratings", ratingService.getBookRating(slug));
+        model.addAttribute("tags", tagService.getShortTagsList(slug));
+
         model.addAttribute("bookFiles", fileService.getFilesBySlug(slug));
-        if (userService.checkUserRoles(UserRoles.USER)) {
-            return "/books/slugmy";
+        if(authentication != null){
+            model.addAttribute("reviews", ratingService.getBookReviews(slug, authentication.getName()));
+            model.addAttribute("status",
+                    statusService.getBookStatus(slug, authentication.getName()).toString());
+        }else {
+            model.addAttribute("reviews", ratingService.getBookReviews(slug));
         }
         return "/books/slug";
     }
 
-
     @PostMapping("/{slug}/img/save")
-    public String saveNewBookImage(@PathVariable String slug, @RequestParam("file") MultipartFile file)
+    public String saveNewBookImage(
+            @PathVariable String slug,
+            @RequestParam("file") MultipartFile file
+    )
             throws IOException {
         String savePath = storage.saveNewBookImage(slug, file);
-        BookEntity bookToUpdate = bookRepository.findBookEntityBySlug(slug);
+        BookEntity bookToUpdate = bookRepository.findBySlug(slug)
+                .orElseThrow(()-> new RuntimeException("book not found"));
         bookToUpdate.setImage(savePath);
         bookRepository.save(bookToUpdate);
         return "redirect:/books/" + slug;
@@ -64,8 +85,10 @@ public class BookController {
         Logger.getLogger(this.getClass().getSimpleName()).info("book file mime: " + path);
         byte[] data = storage.getBookFileByteArray(hash);
         Logger.getLogger(this.getClass().getSimpleName()).info("book file data length: " + data.length);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment;filename=" + path.getFileName().toString())
+        return ResponseEntity.ok().header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment;filename=" + path.getFileName().toString()
+                )
                 .contentType(mediaType)
                 .contentLength(data.length)
                 .body(new ByteArrayResource(data));

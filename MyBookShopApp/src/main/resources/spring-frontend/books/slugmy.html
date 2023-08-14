@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title th:text="${book.title}">Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -20,13 +20,14 @@
     <!--    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>-->
     <!--    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle">
     <div class="wrap">
-        <main class="Middle-main" th:object="${slugBook}">
+        <main class="Middle-main" th:object="${book}">
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{title})}"></ul>
             <div class="Product">
@@ -55,7 +56,7 @@
                 <strong class="Comments-title">Написать отзыв
                 </strong>
                 <div class="Comments-addComment">
-                    <form class="form" action="#" method="post" th:attr="data-bookid =*{id}"
+                    <form class="form" action="#" method="post" th:attr="data-bookid =*{slug}"
                           data-bookid="1111">
                         <div class="form-group">
                                 <textarea class="form-textarea Comments-review" name="review" id="review"

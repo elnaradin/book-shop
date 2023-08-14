@@ -1,4 +1,4 @@
-$('#uploadButton').on('click', function () {
+$('.uploadButton').on('click', function () {
     $('#dialog').trigger('click');
 })
 $('#dialog').on('change', function () {

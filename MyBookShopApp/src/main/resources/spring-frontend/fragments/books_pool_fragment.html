@@ -1,31 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div class="Cards Cards_refresh" th:fragment="pool">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="Cards Cards_refresh" th:fragment="pool" >
     <div class="Card" th:each="book: ${booksPage.books}">
         <th:block th:object="${book}">
-            <div class="Card-picture"><a href="#" th:href="@{'/books/' + *{slug}}">
-                <img th:src="*{image}" src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
-                <div class="Card-ribbon" th:if="*{isBestseller}">
-                    <span class="Card-ribbonText">Бестселлер</span>
-                </div>
-                <div class="Card-sale" th:if="*{discount} > 0" th:text="*{discount} + '% скидка'">30%
-                    скидка
-                </div>
-                <th:block th:if="*{status} != 'UNLINK'" th:switch="*{status}">
-                    <a th:case="'CART'" class="Card-status" title="В корзине">
-                        <img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg">
-                    </a>
-                    <a th:case="'KEPT'" class="Card-status" title="Отложена">
-                        <img src="/assets/img/icons/heart.svg" alt="heart.svg">
-                    </a>
-                    <a th:case="'PAID'" class="Card-status" title="Куплена">
-                        <img src="/assets/img/icons/check.svg" alt="check.svg">
-                    </a>
-                    <a th:case="'ARCHIVED'" class="Card-status" title="В архиве">
-                        <img src="/assets/img/icons/archive.svg" alt="archive.svg">
-                    </a>
-                </th:block>
-            </a>
+            <div class="Card-picture" >
+                <a href="#" th:href="@{'/books/' + *{slug}}">
+
+                    <img style="width: 183px; height: 254px; object-fit: cover;" th:src="*{image}"
+                         src="/assets/img/content/main/card.jpg" alt="card.jpg"/>
+                    <div class="Card-ribbon" th:if="*{isBestseller}">
+                        <span class="Card-ribbonText">Бестселлер</span>
+                    </div>
+                    <div class="Card-sale" th:if="*{discount} > 0" th:text="*{discount} + '% скидка'">30%
+                        скидка
+                    </div>
+                    <div sec:authorize="hasRole('USER')">
+                        <a th:if="${#lists.contains(slugsByStatus.get('CART'), book.slug)}" th:href="@{/cart}" class="Card-status" title="В корзине">
+                            <img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg">
+                        </a>
+                        <a th:if="${#lists.contains(slugsByStatus.get('KEPT'), book.slug)}" th:href="@{/postponed}"  class="Card-status" title="Отложена">
+                            <img src="/assets/img/icons/heart.svg" alt="heart.svg">
+                        </a>
+                        <a th:if="${#lists.contains(slugsByStatus.get('PAID'), book.slug)}" th:href="@{/my}"  class="Card-status" title="Куплена">
+                            <img src="/assets/img/icons/check.svg" alt="check.svg">
+                        </a>
+                        <a th:if="${#lists.contains(slugsByStatus.get('ARCHIVED'), book.slug)}" th:href="@{/myarchive}" class="Card-status" title="В архиве">
+                            <img src="/assets/img/icons/archive.svg" alt="archive.svg">
+                        </a>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        <a th:if="${#lists.contains(slugsByStatus.get('CART'), book.slug)}" th:href="@{/anonym/cart}" class="Card-status" title="В корзине">
+                            <img src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg">
+                        </a>
+                        <a th:if="${#lists.contains(slugsByStatus.get('KEPT'), book.slug)}" th:href="@{/anonym/postponed}"  class="Card-status" title="Отложена">
+                            <img src="/assets/img/icons/heart.svg" alt="heart.svg">
+                        </a>
+                    </div>
+
+
+                </a>
             </div>
             <div class="Card-content">
                 <strong class="Card-title" th:text="*{title}">
@@ -44,15 +57,18 @@
     </div>
 
     <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"
+                                                     style="display: none;"
+                                                     th:style="${booksPage.hasNext ? '' : 'display: none;'}"
                                                      th:attr="data-refreshquery = ${searchWordDto.example},
-                                                     data-refreshid= ${refreshIdValue},
-                                                     data-refreshshow =${refreshShowValue}"
+                                                     data-refreshid = ${refreshIdValue},
+                                                     data-refreshshow = ${refreshShowValue}"
                                                      href="#" data-refreshshow="author"
                                                      data-refreshquery="Техника"
                                                      data-refreshoffset="20"
                                                      data-refreshlimit="20"
                                                      data-refreshid="10"
                                                      th:text="#{show-more}">Показать еще</a>
+
     </div>
 
 

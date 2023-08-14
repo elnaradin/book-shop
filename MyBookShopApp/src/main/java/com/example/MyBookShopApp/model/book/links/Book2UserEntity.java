@@ -2,10 +2,11 @@ package com.example.MyBookShopApp.model.book.links;
 
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.user.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,9 @@ import java.time.LocalDateTime;
 @Table(name = "book2user")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book2UserEntity {
 
     @Id
@@ -33,8 +37,8 @@ public class Book2UserEntity {
     @ManyToOne
     private BookEntity book;
 
+
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 
 }

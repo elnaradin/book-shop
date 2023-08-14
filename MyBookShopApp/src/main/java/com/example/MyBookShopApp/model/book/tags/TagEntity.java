@@ -21,6 +21,7 @@ public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    private String slug;
     @ApiModelProperty("name of a tag")
     private String name;
 

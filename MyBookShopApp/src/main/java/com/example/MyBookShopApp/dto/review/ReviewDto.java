@@ -1,17 +1,24 @@
 package com.example.MyBookShopApp.dto.review;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ReviewDto {
-    private SmallReviewDto review;
 
-    private Integer rating;
-    private Integer likeCount;
-    private Integer dislikeCount;
+public interface ReviewDto {
+    Integer getId();
+
+    String getUserName();
+
+    LocalDateTime getTime();
+
+    String getText();
+
+    Integer getRating();
+
+    Long getLikeCount();
+
+    Long getDislikeCount();
+    Boolean getIsLiked();
+    Boolean getIsDisliked();
+
 
 }

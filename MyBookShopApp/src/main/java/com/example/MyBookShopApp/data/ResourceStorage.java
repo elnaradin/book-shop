@@ -34,7 +34,8 @@ public class ResourceStorage {
         if (!file.isEmpty()) {
             if (!new File(uploadPath).exists()) {
                 Files.createDirectories(Paths.get(uploadPath));
-                Logger.getLogger(this.getClass().getSimpleName()).info("created image folder in " + uploadPath);
+                Logger.getLogger(this.getClass().getSimpleName())
+                        .info("created image folder in " + uploadPath);
             }
             String fileName = slug + "." + FilenameUtils.getExtension(file.getOriginalFilename());
             Path path = Paths.get(uploadPath, fileName);
@@ -53,7 +54,9 @@ public class ResourceStorage {
 
     public MediaType getBookFileMime(String hash) {
         BookFileEntity bookFile = bookFileRepository.findFirstByHash(hash);
-        String mimeType = URLConnection.guessContentTypeFromName(Paths.get(bookFile.getPath()).getFileName().toString());
+        String mimeType = URLConnection.guessContentTypeFromName(
+                Paths.get(bookFile.getPath()).getFileName().toString()
+        );
         if (mimeType != null) {
             return MediaType.parseMediaType(mimeType);
         } else {

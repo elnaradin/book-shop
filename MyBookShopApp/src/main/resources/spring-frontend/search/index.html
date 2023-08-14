@@ -2,25 +2,26 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Поиск</title>
-    <meta name="description" content="Описание страницы">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="../favicon.ico" rel="shortcut icon">
-    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
-    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
-    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
-    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
-    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=33498857">
-    <link rel="stylesheet" href="/assets/css/basic.min.css?v=33498857">
-    <link rel="stylesheet" href="/assets/css/extra.min.css?v=33498857">
+    <meta name="description" content="Описание страницы"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <link href="../favicon.ico" rel="shortcut icon"/>
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous"/>
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous"/>
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous"/>
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=33498857"/>
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=33498857"/>
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=33498857"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <script defer src="/assets/js/scripts.min.js?v=33498857"></script>
+    <script defer="defer" src="/assets/js/scripts.min.js?v=33498857"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
-        th:replace="~{fragments/common_header_fragment :: head(status=${header.isAuthorized } ? 'authorized' : 'unauthorized')}"></header>
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle Middle_search">
     <div class="wrap">
         <main class="Middle-main">
@@ -39,13 +40,15 @@
                 </div>
             </div>
             <div class="Section Section_close">
-                <header class="Section-header">
+                <header class="Section-header" th:object="${booksPage}">
                     <h2 class="Section-title Middle-searchHeader"
-                        th:text="${'Найдено книг: ' + booksFoundAmount}">Найдено 40 книг
+                        th:text="'Найдено ' +
+                        *{count + (count eq 1 ? ' книга':(count gt 1 and count lt 5 ? ' книги' : ' книг' ))}">
+                        Найдено 40 книг
                     </h2>
                 </header>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${searchResults}, refreshShowValue = 'search')}"></div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage}, refreshShowValue = 'search')}"></div>
             </div>
         </main>
     </div>

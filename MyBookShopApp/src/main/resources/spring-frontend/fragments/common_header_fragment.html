@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <header class="Header" th:fragment="head">
     <div class="Header-rowMain">
@@ -36,7 +36,8 @@
                     <span th:if="${searchError}" th:text="${searchError.getLocalizedMessage()}"
                           style="color: red"></span>
                 </div>
-                <div class="row-block Header-cart" th:replace="~{fragments/cart_block_fragment :: ${status}}"></div>
+                <div class="row-block Header-cart" sec:authorize="hasAnyRole('USER', 'ADMIN')" th:replace="~{fragments/cart_block_fragment ::  authorized}" ></div>
+                <div class="row-block Header-cart" sec:authorize="isAnonymous()"  th:replace="~{fragments/cart_block_fragment ::  unauthorized}"></div>
                 <div class="row-block Header-trigger"><a class="menuTrigger" href="#navigate">
                     <div class="menuTrigger-content" th:text="#{top-bar.show-navigation}">Показать навигацию
                     </div>
