@@ -2,8 +2,8 @@ package com.example.MyBookShopApp.services.book;
 
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.FullBookDto;
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.repositories.BookRepository;
@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
     public BooksPageDto getRecommendedBooksPage(RequestDto requestDto) {
         Pageable nextPage = PageRequest.of(requestDto.getOffset(), requestDto.getLimit());
         List<String> slugsToExclude = getSlugsToExclude();
-        Page<ShortBookDto> booksPage = bookRepository
+        Page<ShortBookDtoProjection> booksPage = bookRepository
                 .getRecommendedBooks(slugsToExclude, nextPage);
 
         return BooksPageDto.builder()
@@ -56,7 +56,7 @@ public class BookServiceImpl implements BookService {
         Pageable nextPage = PageRequest.of(requestDto.getOffset(), requestDto.getLimit());
         LocalDate from = requestDto.getFrom();
         LocalDate to = requestDto.getTo();
-        Page<ShortBookDto> booksPage = bookRepository.getRecentBooksByPubDate(
+        Page<ShortBookDtoProjection> booksPage = bookRepository.getRecentBooksByPubDate(
                 from == null ? LocalDate.ofYearDay(-4712, 366) : from,
                 to == null ? LocalDate.now() : to,
                 getSlugsToExclude(),
@@ -74,7 +74,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BooksPageDto getPopularBooksPage(RequestDto request) {
         Pageable pageable = PageRequest.of(request.getOffset(), request.getLimit());
-        Page<ShortBookDto> booksPage = bookRepository.getPopularBooks(getSlugsToExclude(), pageable);
+        Page<ShortBookDtoProjection> booksPage = bookRepository.getPopularBooks(getSlugsToExclude(), pageable);
         return BooksPageDto.builder()
                 .count(booksPage.getTotalElements())
                 .books(booksPage.getContent())
@@ -82,17 +82,6 @@ public class BookServiceImpl implements BookService {
                 .build();
     }
 
-    @Override
-    public BooksPageDto getPageOfSearchResultBooks(RequestDto request) {
-        Pageable nextPage = PageRequest.of(request.getOffset(), request.getLimit());
-        Page<ShortBookDto> booksPage = bookRepository
-                .findBooksByTitleContaining(request.getSearchWord(), nextPage);
-        return BooksPageDto.builder()
-                .count(booksPage.getTotalElements())
-                .books(booksPage.getContent())
-                .hasNext(booksPage.hasNext())
-                .build();
-    }
 
     protected List<String> getSlugsToExclude() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

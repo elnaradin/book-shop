@@ -22,7 +22,6 @@ import java.util.Random;
 
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,7 +46,7 @@ class UserControllerTests {
         registrationForm = new RegistrationForm();
         registrationForm.setPass("1234567");
         registrationForm.setEmail("test" + new Random().nextInt(1000) + "@mail.org");
-        registrationForm.setPhone("+7 (123) " + (10 + new Random().nextInt(89)) + "-78-98");
+        registrationForm.setPhone("+7 (123) " + String.format("%03d", new Random().nextInt(1000)) + "-78-98");
         registrationForm.setName("Miranda");
         payload = new ContactConfirmationPayload();
         payload.setCode("1234567");
@@ -72,7 +71,7 @@ class UserControllerTests {
     @Test
     @DisplayName("Логин по почте")
     void handleEmailLogin() throws Exception {
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/login-by-pass")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(payload)))
                 .andDo(print())
@@ -82,7 +81,7 @@ class UserControllerTests {
     @DisplayName("Логин по номеру телефона")
     void handlePhoneLogin() throws Exception {
         payload.setContact("+7 (999) 999-99-99");
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/login-by-pass")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(payload)))
                 .andDo(print())

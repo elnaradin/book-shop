@@ -1,0 +1,1 @@
+update users set phone = '+79999999999' where email = 'test@email.com'

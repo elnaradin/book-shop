@@ -7,6 +7,9 @@ $(document).ready(function () {
         if(triggerElement.hasClass("rating-trigger")){
             popupOverlay = $("#rating-popup");
         }
+        if(triggerElement.hasClass("pay-trigger")){
+            popupOverlay = $("#pay-popup");
+        }
         if(triggerElement.hasClass("download-trigger")){
             popupOverlay = $("#download-popup");
         }

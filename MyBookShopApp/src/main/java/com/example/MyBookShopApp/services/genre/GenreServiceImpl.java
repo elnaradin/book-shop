@@ -2,10 +2,10 @@ package com.example.MyBookShopApp.services.genre;
 
 import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.genre.GenreDto;
 import com.example.MyBookShopApp.dto.genre.ShortGenreDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
 import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.repositories.GenreRepository;
@@ -65,7 +65,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public BooksPageDto getBooksPageByGenre(RequestDto request, Authentication authentication) {
         Pageable pageable = PageRequest.of(request.getOffset(), request.getLimit());
-        Page<ShortBookDto> booksPage = bookRepository.getBooksByGenre(request.getSlug(), pageable);
+        Page<ShortBookDtoProjection> booksPage = bookRepository.getBooksByGenre(request.getSlug(), pageable);
 
         Map<String, List<String>> slugsByStatus = statusService.getUserBookSlugs(authentication);
         return BooksPageDto.builder()

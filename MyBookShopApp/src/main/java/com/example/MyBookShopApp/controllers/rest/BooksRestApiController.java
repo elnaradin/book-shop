@@ -3,7 +3,7 @@ package com.example.MyBookShopApp.controllers.rest;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.review.BookRatingDto;
 import com.example.MyBookShopApp.dto.review.MyReviewDto;
 import com.example.MyBookShopApp.dto.review.ReviewLikeDto;
@@ -11,7 +11,9 @@ import com.example.MyBookShopApp.services.author.AuthorService;
 import com.example.MyBookShopApp.services.book.BookService;
 import com.example.MyBookShopApp.services.bookStatus.BookStatusService;
 import com.example.MyBookShopApp.services.genre.GenreService;
+import com.example.MyBookShopApp.services.payment.PaymentService;
 import com.example.MyBookShopApp.services.ratingAndReview.RatingReviewService;
+import com.example.MyBookShopApp.services.search.SearchService;
 import com.example.MyBookShopApp.services.tag.TagService;
 import com.example.MyBookShopApp.services.util.CookieUtils;
 import io.swagger.annotations.Api;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class BooksRestApiController {
     private final BookService bookService;
+    private final SearchService searchService;
     private final AuthorService authorService;
     private final RatingReviewService ratingService;
 
@@ -39,6 +42,7 @@ public class BooksRestApiController {
     private final GenreService genreService;
     private final TagService tagService;
     private final CookieUtils cookieUtils;
+    private final PaymentService paymentService;
 
 
     @GetMapping("/books/recommended")
@@ -82,7 +86,7 @@ public class BooksRestApiController {
 
     @GetMapping("/search/{searchWord}")
     public BooksPageDto getNextSearchPage(RequestDto request) {
-        return bookService.getPageOfSearchResultBooks(request);
+        return searchService.getPageOfGoogleBooksApiSearchResult(request);
     }
 
     @PostMapping("/bookReview")
@@ -111,5 +115,10 @@ public class BooksRestApiController {
             Authentication authentication
     ) {
         return bookStatusService.changeBookStatus(changeStatusPayload, authentication.getName());
+    }
+
+    @GetMapping("/payment")
+    public ResultDto handlePay(Authentication authentication) {
+        return paymentService.buyCartItems(authentication.getName());
     }
 }

@@ -4,8 +4,8 @@ import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.author.FullAuthorDto;
 import com.example.MyBookShopApp.dto.author.ShortAuthorDto;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.repositories.AuthorRepository;
 import com.example.MyBookShopApp.repositories.BookRepository;
@@ -45,7 +45,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public BooksPageDto getBooksPageByAuthor(RequestDto request) {
         Pageable nextPage = PageRequest.of(request.getOffset(), request.getLimit());
-        Page<ShortBookDto> booksPage = bookRepository.getBooksListByAuthor(
+        Page<ShortBookDtoProjection> booksPage = bookRepository.getBooksListByAuthor(
                 request.getSlug(), nextPage
         );
         Long booksCount = booksPage.getTotalElements();

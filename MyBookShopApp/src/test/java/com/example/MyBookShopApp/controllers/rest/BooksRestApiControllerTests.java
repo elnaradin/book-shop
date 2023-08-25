@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.controllers.rest;
 
 import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;

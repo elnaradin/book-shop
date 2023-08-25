@@ -1,11 +1,12 @@
 package com.example.MyBookShopApp.controllers.book;
 
 import com.example.MyBookShopApp.annotation.RequestParamsTrackable;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.search.SearchWordDto;
 import com.example.MyBookShopApp.errs.EmptySearchException;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.services.book.BookService;
+import com.example.MyBookShopApp.services.search.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class SearchController {
     @Value("${books-batch-size.pool}")
     private Integer limit;
     private final BookService bookService;
+    private final SearchService searchService;
 
 
     @ModelAttribute("searchResults")
@@ -38,7 +40,7 @@ public class SearchController {
     ) throws EmptySearchException {
         if (searchWordDto != null) {
             model.addAttribute("searchWordDto", searchWordDto);
-            model.addAttribute("booksPage", bookService.getPageOfSearchResultBooks(
+            model.addAttribute("booksPage", searchService.getPageOfGoogleBooksApiSearchResult(
                     RequestDto.builder()
                             .searchWord(searchWordDto.getExample())
                             .offset(0)

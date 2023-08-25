@@ -17,7 +17,13 @@ import java.util.Arrays;
 public class RequestAndResponseTrackerAspect {
     @AfterReturning(value = "allGetBooksPageRestControllerMethods()", returning = "result")
     public void trackResponseAdvice(JoinPoint joinPoint, BooksPageDto result) {
-        log.info(joinPoint.getSignature().getName() + " response contains: " + result.getBooks().size() + " books");
+        String message;
+        if (result != null && result.getBooks() != null) {
+            message = joinPoint.getSignature().getName() + " result contains: " + result.getBooks().size() + " books";
+        } else {
+            message = joinPoint.getSignature().getName() + " result contains no books";
+        }
+        log.info(message);
     }
 
     @Before(value = "allGetBooksPageRestControllerMethods() || " +

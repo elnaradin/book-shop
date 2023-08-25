@@ -70,7 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/bookReview",
                         "/api/rateBook",
                         "/api/rateBookReview",
-                        "/api/changeBookStatus"
+                        "/api/changeBookStatus",
+                        "/api/pay"
                 )
                 .hasRole("USER")
                 .antMatchers("/**").permitAll()

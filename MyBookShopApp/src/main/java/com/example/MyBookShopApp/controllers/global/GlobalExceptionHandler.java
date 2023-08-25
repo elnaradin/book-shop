@@ -1,8 +1,10 @@
 package com.example.MyBookShopApp.controllers.global;
 
-import com.example.MyBookShopApp.errs.EmailExistsException;
+import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.errs.EmptySearchException;
+import com.example.MyBookShopApp.errs.InsufficientFundsException;
 import com.example.MyBookShopApp.errs.ItemNotFoundException;
+import com.example.MyBookShopApp.errs.UserExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -49,7 +52,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return "redirect:/signin";
     }
 
-    @ExceptionHandler({EmailExistsException.class})
+    @ExceptionHandler({UserExistsException.class})
     public String handleRegWithExistingEmail(RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("emailExistsError", true);
         return "redirect:/signup";
@@ -60,12 +63,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             MethodArgumentNotValidException ex, HttpHeaders headers,
             HttpStatus status, WebRequest request
     ) {
+
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
+        log.error("Validation error");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler({InsufficientFundsException.class})
+    @ResponseBody
+    public ResultDto handleInsufficientFunds() {
+        return ResultDto.builder()
+                .result(false)
+                .error("Недостаточно средств")
+                .build();
     }
 }

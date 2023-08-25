@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.repositories;
 
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +31,12 @@ class BookRepositoryTests {
     @Test
     void findBookEntitiesByTitleContainingIgnoreCase() {
         String token = "night";
-        Page<ShortBookDto> bookEntitiesByTitleContainingIgnoreCase
+        Page<ShortBookDtoProjection> bookEntitiesByTitleContainingIgnoreCase
                 = bookRepository.findBooksByTitleContaining(token, Pageable.unpaged());
 
         assertNotNull(bookEntitiesByTitleContainingIgnoreCase);
         assertFalse(bookEntitiesByTitleContainingIgnoreCase.isEmpty());
-        for (ShortBookDto bookEntity : bookEntitiesByTitleContainingIgnoreCase) {
+        for (ShortBookDtoProjection bookEntity : bookEntitiesByTitleContainingIgnoreCase) {
             log.info(bookEntity.getTitle());
             assertThat(bookEntity.getTitle()).containsIgnoringCase(token);
         }
@@ -45,7 +45,7 @@ class BookRepositoryTests {
 
     @Test
     void findPopularBooks() {
-        Page<ShortBookDto> popularBooks = bookRepository.getPopularBooks(List.of(""), PageRequest.of(1, 10));
+        Page<ShortBookDtoProjection> popularBooks = bookRepository.getPopularBooks(List.of(""), PageRequest.of(1, 10));
         assertNotNull(popularBooks);
         assertFalse(popularBooks.isEmpty());
         assertThat(popularBooks.getSize()).isGreaterThan(1);
@@ -56,7 +56,7 @@ class BookRepositoryTests {
     @Test
     void findBookEntitiesByAuthorId() {
         String token = "author-uta-899";
-        Page<ShortBookDto> books = bookRepository.getBooksListByAuthor(token, Pageable.unpaged());
+        Page<ShortBookDtoProjection> books = bookRepository.getBooksListByAuthor(token, Pageable.unpaged());
         assertNotNull(books);
         assertFalse(books.isEmpty());
     }

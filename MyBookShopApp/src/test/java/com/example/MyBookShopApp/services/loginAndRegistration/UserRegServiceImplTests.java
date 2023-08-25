@@ -4,7 +4,7 @@ import com.example.MyBookShopApp.config.security.jwt.JWTUtils;
 import com.example.MyBookShopApp.dto.security.ContactConfirmationPayload;
 import com.example.MyBookShopApp.dto.security.ContactConfirmationResponse;
 import com.example.MyBookShopApp.dto.security.RegistrationForm;
-import com.example.MyBookShopApp.errs.EmailExistsException;
+import com.example.MyBookShopApp.errs.UserExistsException;
 import com.example.MyBookShopApp.model.user.UserEntity;
 import com.example.MyBookShopApp.repositories.UserRepository;
 import org.hamcrest.CoreMatchers;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -81,20 +80,18 @@ class UserRegServiceImplTests {
         Mockito.doReturn(true)
                 .when(userRepositoryMock)
                 .existsByEmail(registrationForm.getEmail());
-        assertThrows(EmailExistsException.class, () -> userRegService.registerNewUser(registrationForm));
+        assertThrows(UserExistsException.class, () -> userRegService.registerNewUser(registrationForm));
     }
 
     @Test
     @DisplayName("Получение токена при входе")
     void jwtLogin() {
-        Mockito.doReturn(Optional.of(new UserEntity()))
+        UserEntity user = new UserEntity();
+        user.setEmail(payload.getContact());
+        user.setPassword(payload.getCode());
+        Mockito.doReturn(Optional.of(user))
                 .when(userRepositoryMock)
                 .findByEmail(payload.getContact());
-        Mockito.doReturn(new UsernamePasswordAuthenticationToken(payload.getContact(), passwordEncoder.encode(payload.getCode())))
-                .when(authenticationManager)
-                .authenticate(new UsernamePasswordAuthenticationToken(payload.getContact(), payload.getCode()));
-
-
         ContactConfirmationResponse response = userRegService.jwtLogin(payload);
         String token = response.getResult();
         assertEquals(payload.getContact(), jwtUtils.extractSubject(token));

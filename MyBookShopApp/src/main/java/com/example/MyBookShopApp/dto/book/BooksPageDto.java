@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.dto.book;
 
-import com.example.MyBookShopApp.dto.request.PubDatesDto;
+import com.example.MyBookShopApp.dto.book.request.PubDatesDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +18,11 @@ import java.util.Map;
 public class BooksPageDto extends PubDatesDto {
     private boolean hasNext;
     private Long count;
-    private List<ShortBookDto> books;
+    private List<ShortBookDtoProjection> books;
     private Integer totalPrice;
     private Integer totalDiscountPrice;
     private List<String> slugs;
     private Map<String, List<String>> slugsByStatus;
+
 
 }

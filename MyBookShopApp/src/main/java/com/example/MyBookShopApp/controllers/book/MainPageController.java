@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.controllers.book;
 
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.tag.TagDtoProjection;
 import com.example.MyBookShopApp.services.book.BookService;
 import com.example.MyBookShopApp.services.tag.TagService;

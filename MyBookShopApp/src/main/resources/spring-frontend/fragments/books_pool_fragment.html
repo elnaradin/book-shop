@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div class="Cards Cards_refresh" th:fragment="pool" >
+<div class="Cards Cards_refresh" th:fragment="pool" style="width: 100%">
     <div class="Card" th:each="book: ${booksPage.books}">
         <th:block th:object="${book}">
             <div class="Card-picture" >
@@ -49,12 +49,15 @@
                 <div class="Card-description" th:text="*{authors}"></div>
 
                 <div class="Card-cost">
-                    <span class="Card-priceOld" th:text="'₽' + *{price}"></span>
+                    <span class="Card-priceOld" th:unless="*{price == discountPrice}" th:text="'₽' + *{price}"></span>
                     <span class="Card-price" th:text="'₽' + *{ discountPrice}"></span>
                 </div>
             </div>
         </th:block>
     </div>
+
+
+
 
     <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"
                                                      style="display: none;"

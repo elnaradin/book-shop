@@ -37,8 +37,6 @@
                 <div class="Login-ins">
                     <div class="Login-step">
                         <div class="form-group_center">
-                            <span th:if="${regOk} == true" style="color: #2aa73a">Регистрация прошла успешно!</span>
-                            <span th:if="${regOk} == false" style="color: red">Пользователь с данным почтовым адресом уже существует!</span>
                             <span th:if="${authError} == true"
                                   style="color: red">Войдите в аккаунт, чтобы продолжить</span>
                         </div>
@@ -65,6 +63,13 @@
                                                                             th:text="#{sign-in.e-mail}">E-mail</span>
                                     </label>
                                 </div>
+                                <div class="row-block">
+                                    <label class="toggle Login-type">
+                                        <input type="radio" name="typeauth" value="passtype"/><span
+                                            class="toggle-box"></span><span class="toggle-text"
+                                                                            th:text="#{sign-in.pass}">E-mail</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,6 +78,8 @@
                                    data-validate="require"/>
                             <input class="form-input form-input_mail" id="mail" name="mail" type="text"
                                    placeholder="Введите e-mail" data-validate="mail require"/>
+                            <input class="form-input form-input_contact" id="pass" name="pass" type="text"
+                                   placeholder="Введите e-mail или телефон" data-validate="require"/>
                         </div>
 
                         <div class="form-group form-group_center">
@@ -90,7 +97,7 @@
                         </div>
                         <div class="form-group form-group_key">
                             <input class="form-input" id="phonecode" name="phonecode" type="text" placeholder="Код"
-                                   data-validate="key require" />
+                                   data-mask="99 99" data-validate="key require" />
                         </div>
                         <div class="form-group form-group_center">
                             <button class="btn btn_primary form-btn" type="button" name="toComeInPhone"
@@ -106,13 +113,33 @@
                         </div>
                         <div class="form-group form-group_key">
                             <input class="form-input" id="mailcode" name="mailcode" type="text" placeholder="Код"
-                                   data-validate="key require"/>
+                                   data-mask="999 999" data-validate="key require"/>
                         </div>
                         <div class="form-group form-group_center">
                             <button class="btn btn_primary form-btn" type="button" name="toComeInMail" id="toComeInMail"
                                     data-send="">Войти
                             </button>
                         </div>
+                    </div>
+                    <div class="Login-step Login-step_hide" data-type="pass">
+                        <div class="form-group">
+                            <label class="form-label Login-title">Введите пароль учетной записи или
+                                перейдите по&nbsp;ссылке ниже для регистрации:
+                            </label>
+                        </div>
+                        <div class="form-group form-group_key">
+                            <input class="form-input" id="passcode" name="passcode" type="text" placeholder="Пароль"
+                                   data-validate="key require"/>
+                        </div>
+                        <div class="form-group form-group_center">
+                            <button class="btn btn_primary form-btn" type="button" name="toComeInPass" id="toComeInPass"
+                                    data-send="">Войти
+                            </button>
+                        </div>
+<!--                        <div class="form-group form-group_center"><a class="Login-reg" th:href="@{/signup}"-->
+<!--                                                                     href="/signup.html">Восстановить пароль-->
+<!--                        </a>-->
+<!--                        </div>-->
                     </div>
                     <div class="form-group form-group_center"><a class="Login-reg" th:href="@{/signup}"
                                                                  href="/signup.html">Зарегистрироваться

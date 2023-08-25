@@ -1,19 +1,15 @@
 package com.example.MyBookShopApp.dto.book;
 
-public interface ShortBookDto {
-    String getSlug();
+import lombok.Data;
 
-    String getImage();
-
-    String getTitle();
-
-    Integer getDiscount();
-
-    Boolean getIsBestseller();
-
-    Integer getPrice();
-
-    Integer getDiscountPrice();
-
-    String getAuthors();
+@Data
+public class ShortBookDto implements ShortBookDtoProjection {
+    private String slug;
+    private String image;
+    private String title;
+    private Integer discount;
+    private Boolean isBestseller;
+    private Integer price;
+    private Integer discountPrice;
+    private String authors;
 }

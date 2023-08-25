@@ -2,8 +2,8 @@ package com.example.MyBookShopApp.services.tag;
 
 import com.example.MyBookShopApp.annotation.DurationTrackable;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.tag.ShortTagDto;
 import com.example.MyBookShopApp.dto.tag.TagDtoProjection;
 import com.example.MyBookShopApp.errs.ItemNotFoundException;
@@ -46,7 +46,7 @@ public class TagServiceImpl implements TagService {
                 request.getOffset(),
                 request.getLimit()
         );
-        Page<ShortBookDto> booksPage = bookRepository.getBooksByTag(
+        Page<ShortBookDtoProjection> booksPage = bookRepository.getBooksByTag(
                 request.getSlug(),
                 nextPage
         );
