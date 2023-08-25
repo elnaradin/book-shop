@@ -3,8 +3,9 @@ package com.example.MyBookShopApp.repositories;
 import com.example.MyBookShopApp.dto.book.BookSlugs;
 import com.example.MyBookShopApp.dto.book.FullBookDto;
 import com.example.MyBookShopApp.dto.book.RatingDto;
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
 import com.example.MyBookShopApp.model.book.BookEntity;
+import com.example.MyBookShopApp.model.enums.StatusType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -57,7 +58,14 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
 
     Optional<BookEntity> findBySlug(String slug);
 
-    List<BookEntity> findAllBySlugIn(List<String> slug);
+    @Query(value = "select * from books b " +
+            "where b.slug in :slug " +
+            "and b.id not in (select bu.book_id from book2user bu " +
+            "                   join users u on u.id = bu.user_id " +
+            "                   join book2user_type but on but.id = bu.type_id" +
+            "                   where u.email like :email" +
+            "                   and (but.code like 'PAID' or but.code like 'ARCHIVE'))", nativeQuery = true)
+    List<BookEntity> findKeptOrCartBooksBySlugIn(@Param("slug") List<String> slug, @Param("email") String email);
 
     List<BookEntity> findBookEntitiesBySlugIn(List<String> bookIds);
 
@@ -132,22 +140,23 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             " order by match_value desc, rating_value desc nulls last, pub_date desc",
             nativeQuery = true,
             countQuery = "select count(*) from books")
-    Page<ShortBookDto> getRecommendedBooks(
+    Page<ShortBookDtoProjection> getRecommendedBooks(
             @Param("slugs") List<String> slugsToExclude,
             Pageable nextPage
     );
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
-            SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE +
+            SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE + ", " +
+            " b.pub_date pub_date" +
             "      from books b " +
-            "      group by b.id, " +
-            " b.pub_date   " +
+            "      group by b.id  " +
             "      having  b.pub_date between :from and :to   " +
-            "      order by b.pub_date desc) as recent_books " +
-            SHORT_BOOK_WHERE_SLUG_NOT_IN_CLAUSE,
+            "      ) as recent_books " +
+            SHORT_BOOK_WHERE_SLUG_NOT_IN_CLAUSE +
+            " order by pub_date desc",
             nativeQuery = true,
             countQuery = "select count(*) from books")
-    Page<ShortBookDto> getRecentBooksByPubDate(
+    Page<ShortBookDtoProjection> getRecentBooksByPubDate(
             @Param("from") LocalDate dateFrom,
             @Param("to") LocalDate now,
             @Param("slugs") List<String> slugsToExclude, Pageable nextPage
@@ -167,7 +176,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             " order by sorting_value desc, b_id",
             nativeQuery = true,
             countQuery = "select count(*) from books")
-    Page<ShortBookDto> getPopularBooks(
+    Page<ShortBookDtoProjection> getPopularBooks(
             @Param("slugs") List<String> slugsToExclude,
             Pageable nextPage
     );
@@ -185,7 +194,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             countQuery = "select count(*)  " +
                     "            from books b2  " +
                     "            where upper(b2.title) like upper(concat('%', :word, '%'))")
-    Page<ShortBookDto> findBooksByTitleContaining(
+    Page<ShortBookDtoProjection> findBooksByTitleContaining(
             @Param("word") String searchWord,
             Pageable nextPage
     );
@@ -205,7 +214,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
                     "            join book2genre b2g on b.id = b2g.book_id   " +
                     "            join genres g on b2g.genre_id = g.id   " +
                     "            where g.slug like ?1")
-    Page<ShortBookDto> getBooksByGenre(String slug, Pageable pageable);
+    Page<ShortBookDtoProjection> getBooksByGenre(String slug, Pageable pageable);
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
             SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE +
@@ -222,7 +231,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
                     "            join book2author b2a on b.id = b2a.book_id " +
                     "            join authors a on a.id = b2a.author_id " +
                     "            where a.slug like ?1")
-    Page<ShortBookDto> getBooksListByAuthor(String slug, Pageable pageable);
+    Page<ShortBookDtoProjection> getBooksListByAuthor(String slug, Pageable pageable);
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
             SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE +
@@ -239,7 +248,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
                     "            join book2tag b2t on b.id = b2t.book_id  " +
                     "            join tags t on b2t.tag_id = t.id  " +
                     "            where t.slug like ?1")
-    Page<ShortBookDto> getBooksByTag(String tagSlug, Pageable nextPage);
+    Page<ShortBookDtoProjection> getBooksByTag(String tagSlug, Pageable nextPage);
 
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
@@ -260,9 +269,15 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
                     "            join users u on b2u.user_id = u.id  " +
                     "            join book2user_type b2ut on b2u.type_id = b2ut.id  " +
                     "            where u.email like :email and b2ut.code like :status")
-    List<ShortBookDto> getBooksByUserAndStatus(
+    List<ShortBookDtoProjection> getBooksByUserAndStatus(
             @Param("email") String email,
             @Param("status") String status
+    );
+
+    @Query("select bu.book from Book2UserEntity bu where bu.user.email like ?1 and bu.type.code = ?2")
+    List<BookEntity> getBookEntitiesByUserAndStatus(
+            @Param("email") String email,
+            @Param("status") StatusType status
     );
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
@@ -270,7 +285,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             "      from books b " +
             "      group by b.id " +
             "      having b.slug in :slugs) as books_by_slugs", nativeQuery = true)
-    List<ShortBookDto> getBooksBySlugsIn(@Param("slugs") List<String> slugs);
+    List<ShortBookDtoProjection> getBooksBySlugsIn(@Param("slugs") List<String> slugs);
 
     @Query(value = "select sum(case when b2ut.code = 'PAID' then 1 else 0 end) myCount," +
             "       sum(case when b2ut.code = 'KEPT' then 1 else 0 end) keptCount," +

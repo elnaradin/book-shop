@@ -2,7 +2,7 @@ package com.example.MyBookShopApp.services.book;
 
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.FullBookDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 
 public interface BookService {
     FullBookDto getFullBookInfoBySlug(String bookSlug);
@@ -12,7 +12,5 @@ public interface BookService {
     BooksPageDto getRecentBooksPage(RequestDto requestDto);
 
     BooksPageDto getPopularBooksPage(RequestDto request);
-
-    BooksPageDto getPageOfSearchResultBooks(RequestDto request);
 
 }

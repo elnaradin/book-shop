@@ -1,9 +1,9 @@
 package com.example.MyBookShopApp.services.genre;
 
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.genre.GenreDto;
 import com.example.MyBookShopApp.dto.genre.ShortGenreDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
 import org.springframework.security.core.Authentication;
 
 public interface GenreService {

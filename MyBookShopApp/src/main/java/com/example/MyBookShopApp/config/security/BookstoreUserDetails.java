@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class BookstoreEmailUserDetails implements UserDetails {
+public class BookstoreUserDetails implements UserDetails {
     private final Integer id;
     private final String fullName;
     private final String password;
@@ -21,7 +21,7 @@ public class BookstoreEmailUserDetails implements UserDetails {
     private final Integer balance;
     private final List<UserRoleEntity> roles;
 
-    public BookstoreEmailUserDetails(UserEntity user) {
+    public BookstoreUserDetails(UserEntity user) {
         this.id = user.getId();
         this.fullName = user.getName();
         this.password = user.getPassword();

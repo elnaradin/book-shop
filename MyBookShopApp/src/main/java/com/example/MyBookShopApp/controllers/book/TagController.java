@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.controllers.book;
 
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.services.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

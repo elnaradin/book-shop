@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.config.security.jwt;
 
-import com.example.MyBookShopApp.config.security.BookstoreEmailUserDetails;
+import com.example.MyBookShopApp.config.security.BookstoreUserDetails;
 import com.example.MyBookShopApp.config.security.BookstoreUserDetailsService;
 import com.example.MyBookShopApp.services.util.CookieUtils;
 import io.jsonwebtoken.JwtException;
@@ -20,6 +20,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
@@ -54,7 +56,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             token = cookie.getValue();
             try {
                 email = jwtUtil.extractSubject(token);
-                BookstoreEmailUserDetails userDetails = (BookstoreEmailUserDetails) userDetailsService
+                BookstoreUserDetails userDetails = (BookstoreUserDetails) userDetailsService
                         .loadUserByUsername(email);
                 if (!jwtUtil.validateToken(token, userDetails.getUsername())) {
                     break;
@@ -66,10 +68,17 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                 context.setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
                 return;
-            } catch (JwtException ignored) {
+            } catch (JwtException | NoSuchElementException ignored) {
+                SecurityContextHolder.clearContext();
             }
         }
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+            response.sendRedirect("/signin");
+        }
+
     }
 
 }

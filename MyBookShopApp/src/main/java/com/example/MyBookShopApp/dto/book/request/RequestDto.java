@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.dto.request;
+package com.example.MyBookShopApp.dto.book.request;
 
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.domain.Sort;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -25,5 +26,6 @@ public class RequestDto extends PubDatesDto {
     private Integer offset;
     private Integer limit;
     private StatusType status;
+    private Sort.Direction sort;
 
 }

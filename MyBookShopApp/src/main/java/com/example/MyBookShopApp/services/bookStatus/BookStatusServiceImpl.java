@@ -4,7 +4,7 @@ import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.BookSlugs;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
-import com.example.MyBookShopApp.dto.book.ShortBookDto;
+import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.links.Book2UserEntity;
 import com.example.MyBookShopApp.model.book.links.Book2UserTypeEntity;
@@ -46,19 +46,19 @@ public class BookStatusServiceImpl implements BookStatusService {
         if (CollectionUtils.isEmpty(slugs)) {
             return new BooksPageDto();
         }
-        List<ShortBookDto> books = bookRepository.getBooksBySlugsIn(slugs);
+        List<ShortBookDtoProjection> books = bookRepository.getBooksBySlugsIn(slugs);
         return BooksPageDto.builder()
                 .books(books)
                 .totalPrice(books.stream()
-                        .map(ShortBookDto::getPrice)
+                        .map(ShortBookDtoProjection::getPrice)
                         .mapToInt(Integer::intValue)
                         .sum())
                 .totalDiscountPrice(books.stream()
-                        .map(ShortBookDto::getDiscountPrice)
+                        .map(ShortBookDtoProjection::getDiscountPrice)
                         .mapToInt(Integer::intValue)
                         .sum())
                 .slugs(books.stream()
-                        .map(ShortBookDto::getSlug)
+                        .map(ShortBookDtoProjection::getSlug)
                         .collect(Collectors.toList()))
                 .build();
 
@@ -96,20 +96,20 @@ public class BookStatusServiceImpl implements BookStatusService {
 
     @Override
     public BooksPageDto getBooksByStatus(StatusType status, Authentication authentication) {
-        List<ShortBookDto> books = bookRepository.getBooksByUserAndStatus(
+        List<ShortBookDtoProjection> books = bookRepository.getBooksByUserAndStatus(
                 authentication.getName(), status.toString());
         return BooksPageDto.builder()
                 .books(books)
                 .totalPrice(books.stream()
-                        .map(ShortBookDto::getPrice)
+                        .map(ShortBookDtoProjection::getPrice)
                         .mapToInt(Integer::intValue)
                         .sum())
                 .totalDiscountPrice(books.stream()
-                        .map(ShortBookDto::getDiscountPrice)
+                        .map(ShortBookDtoProjection::getDiscountPrice)
                         .mapToInt(Integer::intValue)
                         .sum())
                 .slugs(books.stream()
-                        .map(ShortBookDto::getSlug)
+                        .map(ShortBookDtoProjection::getSlug)
                         .collect(Collectors.toList()))
                 .build();
 

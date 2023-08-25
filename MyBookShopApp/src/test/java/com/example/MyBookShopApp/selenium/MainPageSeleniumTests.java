@@ -17,7 +17,7 @@ class MainPageSeleniumTests {
 
     @BeforeAll
     static void setup() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\user\\Downloads\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\user\\Downloads\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
 
         driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
@@ -49,7 +49,7 @@ class MainPageSeleniumTests {
                 .pause()
                 .submit()
                 .pause();
-        assertTrue(driver.getPageSource().contains("Judgment Night"));
+        assertTrue(driver.getPageSource().contains("Wings of Fire"));
     }
     @Test
     @DisplayName("Сценарий навигации по разделам")

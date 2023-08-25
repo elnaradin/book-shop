@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.services.tag;
 
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.dto.tag.ShortTagDto;
 import com.example.MyBookShopApp.dto.tag.TagDtoProjection;
 import org.springframework.security.core.Authentication;

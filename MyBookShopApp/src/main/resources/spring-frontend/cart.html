@@ -21,6 +21,8 @@
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
     <script src="/assets/js/sendChangeBookStatusRequestScript.js"></script>
     <script src="/assets/js/LogoutScript.js"></script>
+    <script src="/assets/js/SigninRequiredWindowScript.js"></script>
+    <link rel="stylesheet" href="/assets/css/SigninRequiredWindowStyle.css">
 </head>
 <body class="Site">
 <header class="Header"
@@ -64,7 +66,7 @@
                                 <div class="Cart-buttons" sec:authorize="hasRole('USER')">
                                     <div class="Cart-btn">
                                         <button class="btn btn_primary btn_outline cart_section"
-                                                data-sendstatus="KEPT" th:attr="data-bookid='[&quot;' + *{slug }+ '&quot;]'"
+                                                data-sendstatus="KEPT" th:attr="data-bookid= *{slug }"
                                                 data-bookid="[1133]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/heart.svg" alt="heart.svg"/></span><span
                                                 class="btn-content">Отложить</span>
@@ -72,7 +74,7 @@
                                     </div>
                                     <div class="Cart-btn">
                                         <button sec:authorize="hasRole('USER')" class="btn btn_danger btn_outline cart_section"
-                                                data-sendstatus="UNLINK" th:attr="data-bookid='[&quot;' + *{slug }+ '&quot;]'"
+                                                data-sendstatus="UNLINK" th:attr="data-bookid=*{slug }"
                                                 data-bookid="[1133]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span>
                                             <span class="btn-content">Удалить</span>
@@ -116,7 +118,12 @@
                                        th:text="${'₽' + booksPage.totalDiscountPrice}">534 р.</span>
                         <span class="Cart-price_old" th:text="${'₽' + booksPage.totalPrice}">658 р.</span>
                     </div>
-                    <div class="Cart-block"><a class="btn btn_success btn_md" href="/order.html">Купить</a>
+                    <div class="Cart-block" ><a id="buy_btn" class="btn btn_success btn_md"  sec:authorize="hasRole('USER')" >Купить</a>
+                    </div>
+                    <div class="Cart-block"><a class="btn btn_success btn_md popup-trigger pay-trigger" sec:authorize="isAnonymous()"  >Купить</a>
+                    </div>
+                    <div  th:replace="~{fragments/signin_popup_fragment :: popup(reason='Чтобы приобрести книги', popupOverlayId='pay-popup')}"
+                          sec:authorize="isAnonymous()">
                     </div>
                 </div>
             </form>

@@ -67,7 +67,7 @@
                                 <div class="Cart-buttons" sec:authorize="hasRole('USER')">
                                     <div class="Cart-btn">
                                         <button class="btn btn_primary btn_outline kept_section" data-sendstatus="CART"
-                                                th:attr="data-bookid='[&quot;' + *{slug }+ '&quot;]'"
+                                                th:attr="data-bookid=  *{slug }"
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/shopping-basket.svg"
                                                 alt="shopping-basket.svg"/></span><span
@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="Cart-btn">
                                         <button class="btn btn_danger btn_outline kept_section" data-sendstatus="UNLINK"
-                                                th:attr="data-bookid='[&quot;' + *{slug }+ '&quot;]'"
+                                                th:attr="data-bookid=  *{slug }"
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span
                                                 class="btn-content">Удалить</span>
@@ -122,9 +122,7 @@
                     <div class="Cart-block Cart-block_total">
                     </div>
                     <div class="Cart-block">
-                        <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART"
-                                th:attr="data-bookid = ${booksPage.slugs}"
-                                data-bookid="[1111, 1122, 1133]">Купить все
+                        <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART">Купить все
                         </button>
                     </div>
                 </div>

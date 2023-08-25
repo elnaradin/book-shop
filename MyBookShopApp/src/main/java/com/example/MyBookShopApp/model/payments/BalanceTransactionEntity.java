@@ -1,13 +1,15 @@
 package com.example.MyBookShopApp.model.payments;
 
+import com.example.MyBookShopApp.model.book.BookEntity;
+import com.example.MyBookShopApp.model.user.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -19,21 +21,17 @@ public class BalanceTransactionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private Integer id;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int userId;
+    @ManyToOne
+    private UserEntity user;
 
-    @Column(columnDefinition = "TIMESTAMP NOT NULL")
     private LocalDateTime time;
 
-    @Column(columnDefinition = "INT NOT NULL  DEFAULT 0")
-    private int value;
+    private Integer value;
+    @ManyToOne
+    private BookEntity book;
 
-    @Column(columnDefinition = "INT NOT NULL")
-    private int bookId;
-
-    @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
 

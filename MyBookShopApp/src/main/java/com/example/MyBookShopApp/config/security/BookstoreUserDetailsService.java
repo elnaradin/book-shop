@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,12 +20,26 @@ public class BookstoreUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) {
         Optional<UserEntity> bookstoreUser = bookstoreUserRepository
                 .findByEmail(name);
-        String phoneRegex = "^\\+7 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$";
-        if (bookstoreUser.isEmpty() && name.matches(phoneRegex)) {
+        String formattedPhone = formatPhone(name);
+        if (bookstoreUser.isEmpty()) {
             bookstoreUser = bookstoreUserRepository
-                    .findFirstByPhone(name);
+                    .findFirstByPhone(formattedPhone);
         }
-        return new BookstoreEmailUserDetails(bookstoreUser
-                .orElseThrow(() -> new UsernameNotFoundException("User not found")));
+        return new BookstoreUserDetails(bookstoreUser
+                .orElseThrow());
+    }
+
+    private String formatPhone(String phone) {
+        String digits = phone.replaceAll("[^\\\\d.]", "");
+        if (digits.length() == 11) {
+            if (digits.startsWith("8")) {
+                digits = digits.replaceFirst("8", "7");
+            }
+            return "+" + digits;
+        }
+        if (digits.length() == 10) {
+            return "+7" + digits;
+        }
+        return digits;
     }
 }

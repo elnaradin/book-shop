@@ -30,24 +30,30 @@ $(document).ready(function () {
             removeCards($this);
             return;
         }
-            changeCartBlockBookAmount($this, status);
+        changeCartBlockBookAmount($this, status);
     });
 
     $("[data-sendstatus]").click(function () {
+        const $this = $(this);
         //animation for authorized user
-        if ($(this).hasClass('cart_section')) {
-            changeCartBlockBookAmountFromSections($(this), $('.cartAmount'), $('.keptAmount'));
+        if ($this.hasClass('cart_section')) {
+            changeCartBlockBookAmountFromSections($this, $('.cartAmount'), $('.keptAmount'));
             return;
         }
-        if ($(this).hasClass('kept_section')) {
-            changeCartBlockBookAmountFromSections($(this), $('.keptAmount'), $('.cartAmount'));
+        if ($this.hasClass('kept_section')) {
+            changeCartBlockBookAmountFromSections($this, $('.keptAmount'), $('.cartAmount'));
             return;
         }
-        const status = $(this).attr('data-sendstatus');
-        changeCartBlockBookAmount($(this), status);
+        const status = $this.attr('data-sendstatus');
+
+        if(!$this.hasClass('Cart-buyAll')){
+            changeCartBlockBookAmount($this, status);
+        }
+
     })
+
     function removeCards($this) {
-        const $cart =  $this.closest('.Cart');
+        const $cart = $this.closest('.Cart');
         let price = 0, priceOld = 0, booksId = [];
         $this.closest('.Cart-product').remove();
         $cart.find('.Cart-product').each(function () {
@@ -56,7 +62,7 @@ $(document).ready(function () {
             priceOld += parseFloat($this.find('.Cart-price_old').text().replace('₽', ''));
             booksId.push($this.find('[data-sendstatus_unauthorized="CART"]').data('bookid'));
         });
-        if(price === 0){
+        if (price === 0) {
             $(".Cart-block_total").children().hide();
         }
         $cart.find('.Cart-total .Cart-price').not('.Cart-price_old').text(price + ' р.');
@@ -74,11 +80,7 @@ $(document).ready(function () {
         }
     }
 
-    function changeCartBlockBookAmountFromSections(btn, thisBlock, otherBlock) {
-        const $this = btn;
-
-        const block = thisBlock;
-        const oppositeBlock = otherBlock;
+    function changeCartBlockBookAmountFromSections($this, block, oppositeBlock) {
         const count = parseInt(block.text());
         const oppositeCount = parseInt(oppositeBlock.text());
         if ($this.hasClass("btn_danger")) {
@@ -90,29 +92,40 @@ $(document).ready(function () {
     }
 
 
-    function changeCartBlockBookAmount(curBtn, status) {
-        let cartBlock;
-        let oppositeCartBlock;
-        let oppositeBtn;
-        let count;
-        if (status === 'CART') {
-            cartBlock = $(".cartAmount");
-            oppositeCartBlock = $(".keptAmount");
-            oppositeBtn = $(".keptBtn");
+    function changeCartBlockBookAmount($this, status) {
+        let cartAmount = $(".cartAmount");
+        let keptAmount = $(".keptAmount");
+        switch (status) {
+            case 'ARCHIVED' :
+                changeMyBlockValue($this, $(".myAmount"))
+                break;
+            case 'CART' :
+                changeCartAndKeptBlocksValues($this, cartAmount, $(".keptBtn"), keptAmount);
+                break;
+            case 'KEPT' :
+                changeCartAndKeptBlocksValues($this, keptAmount, $(".cartBtn"), cartAmount);
         }
-        if (status === 'KEPT') {
-            cartBlock = $(".keptAmount");
-            oppositeCartBlock = $(".cartAmount");
-            oppositeBtn = $(".cartBtn");
+
+    }
+
+    function changeMyBlockValue($this, cartBlock) {
+        const count = parseInt(cartBlock.text());
+        if ($this.data('check')) {
+            cartBlock.text(count + 1);
+        } else {
+            cartBlock.text(count - 1)
         }
-        count = parseInt(cartBlock.text());
-        if (curBtn.hasClass('btn_check')) {
+    }
+
+    function changeCartAndKeptBlocksValues($this, cartBlock, oppositeBtn, oppositeCartBlock) {
+        const count = parseInt(cartBlock.text());
+        if ($this.data('check')) {
             cartBlock.text(count - 1);
-            curBtn.removeClass('btn_check');
+            $this.removeClass('btn_check');
         } else {
             cartBlock.text(count + 1);
         }
-        if (oppositeBtn.hasClass('btn_check')) {
+        if (oppositeBtn.data('check')) {
             const count2 = parseInt(oppositeCartBlock.text());
             oppositeCartBlock.text(count2 - 1);
             oppositeBtn.removeClass('btn_check');

@@ -2,7 +2,7 @@ package com.example.MyBookShopApp.services.book;
 
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.services.bookStatus.BookStatusService;
 import org.junit.jupiter.api.AfterEach;

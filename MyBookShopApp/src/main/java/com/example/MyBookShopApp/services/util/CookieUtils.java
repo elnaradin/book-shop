@@ -1,6 +1,6 @@
 package com.example.MyBookShopApp.services.util;
 
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.links.Book2UserEntity;
 import com.example.MyBookShopApp.model.book.links.Book2UserTypeEntity;
@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -148,12 +149,13 @@ public class CookieUtils {
         return Arrays.stream(cookie.getValue().split(DELIMITER)).collect(Collectors.toList());
     }
 
+    @Transactional
     public void mergeSelectedBooks(StatusType statusType, UserEntity user) {
         List<String> slugs = getSlugsFromCookie(statusType);
         Book2UserTypeEntity typeEntity = book2UserTypeRepository.findByCode(statusType);
         List<BookEntity> books = null;
         if (!slugs.isEmpty()) {
-            books = bookRepository.findAllBySlugIn(slugs);
+            books = bookRepository.findKeptOrCartBooksBySlugIn(slugs, user.getEmail());
         }
         if (CollectionUtils.isEmpty(books)) {
             return;

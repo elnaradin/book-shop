@@ -23,4 +23,7 @@
     <include file="db.changelog/add_book_id_in_ratings.sql"/>
     <include file="db.changelog/add_user_email.sql"/>
     <include file="db.changelog/change_test_user_phone.sql"/>
+    <include file="db.changelog/010_add_confirmation_codes_table.xml"/>
+    <include file="db.changelog/change_test_user_phone2.sql"/>
+    <include file="db.changelog/011_drop_not_null_cnstrnt.xml"/>
 </databaseChangeLog>

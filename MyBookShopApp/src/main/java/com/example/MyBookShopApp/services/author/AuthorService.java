@@ -3,7 +3,7 @@ package com.example.MyBookShopApp.services.author;
 import com.example.MyBookShopApp.dto.author.FullAuthorDto;
 import com.example.MyBookShopApp.dto.author.ShortAuthorDto;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
-import com.example.MyBookShopApp.dto.request.RequestDto;
+import com.example.MyBookShopApp.dto.book.request.RequestDto;
 
 import java.util.List;
 import java.util.Map;
