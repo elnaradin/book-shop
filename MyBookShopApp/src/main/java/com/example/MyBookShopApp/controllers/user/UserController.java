@@ -147,10 +147,10 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String handleProfile(Model model, Authentication authentication) {
+    public String handleProfile(Model model) {
         model.addAttribute(
                 "transactionHistory",
-                paymentService.getTransactions(authentication.getName(), PageRequest.of(
+                paymentService.getTransactions( PageRequest.of(
                         0, 4, Sort.by(Sort.Direction.DESC, "time")))
         );
         return "profile";
@@ -174,26 +174,26 @@ public class UserController {
     @RequestParamsTrackable
     @PostMapping("/profile")
     @ResponseBody
-    public ResultDto changeProfile(@RequestBody ProfileUpdateDto updateDto, Authentication authentication) {
+    public ResultDto changeProfile(@RequestBody ProfileUpdateDto updateDto) {
 
-        return userService.updateProfile(updateDto, authentication.getName());
+        return userService.updateProfile(updateDto);
 
     }
 
     @RequestParamsTrackable
     @PostMapping("/payment")
     @ResponseBody
-    public ResultDto handlePayment(@RequestBody @Valid PaymentDto paymentDto, Authentication authentication)
+    public ResultDto handlePayment(@RequestBody @Valid PaymentDto paymentDto)
             throws URISyntaxException {
         return ResultDto.builder()
-                .message(paymentService.getPaymentUrl(authentication.getName(), paymentDto))
+                .message(paymentService.getPaymentUrl(paymentDto))
                 .build();
     }
 
     @RequestParamsTrackable
     @GetMapping("/transactions")
-    public ResponseEntity<TransactionsDto> getTransactions(RequestDto requestDto, Authentication authentication) {
-        return ResponseEntity.ok().body(paymentService.getTransactions(authentication.getName(), PageRequest.of(
+    public ResponseEntity<TransactionsDto> getTransactions(RequestDto requestDto) {
+        return ResponseEntity.ok().body(paymentService.getTransactions(PageRequest.of(
                         requestDto.getOffset(),
                         requestDto.getLimit(),
                         Sort.by(requestDto.getSort(), "time")

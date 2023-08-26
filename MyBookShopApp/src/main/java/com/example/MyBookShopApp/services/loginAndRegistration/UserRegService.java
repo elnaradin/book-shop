@@ -20,7 +20,7 @@ public interface UserRegService {
 
     ContactConfirmationResponse jwtLoginByEmail(ContactConfirmationPayload payload);
 
-    ResultDto updateProfile(ProfileUpdateDto updateDto, String name);
+    ResultDto updateProfile(ProfileUpdateDto updateDto);
 
 
     void changeBalance(ChangeBalanceDto changeBalanceDto);

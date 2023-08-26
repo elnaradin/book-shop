@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.services.book;
 
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.FullBookDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,7 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final CookieUtils cookieUtils;
+    private final IAuthenticationFacade facade;
 
     @Override
     public FullBookDto getFullBookInfoBySlug(String bookSlug) {
@@ -83,10 +84,12 @@ public class BookServiceImpl implements BookService {
     }
 
 
+
+
     protected List<String> getSlugsToExclude() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<String> slugs = new ArrayList<>();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+        if (!facade.isAuthenticated()) {
             List<String> kept = cookieUtils.getBookSlugsByStatus(StatusType.KEPT);
             slugs.addAll(kept == null ? new ArrayList<>() : kept);
             List<String> cart = cookieUtils.getBookSlugsByStatus(StatusType.CART);

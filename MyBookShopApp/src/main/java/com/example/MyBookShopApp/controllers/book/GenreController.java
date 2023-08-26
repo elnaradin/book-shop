@@ -4,7 +4,6 @@ import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.services.genre.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +24,10 @@ public class GenreController {
     }
 
     @GetMapping("/genres/{slug}")
-    public String genresPage(@PathVariable("slug") String genreSlug, Model model, Authentication authentication) {
+    public String genresPage(@PathVariable("slug") String genreSlug, Model model) {
         model.addAttribute("genre", genreService.getShortGenreInfo(genreSlug));
         model.addAttribute("booksPage", genreService.getBooksPageByGenre(
-                RequestDto.builder().slug(genreSlug).offset(0).limit(limit).build(),
-                authentication
-        ));
+                RequestDto.builder().slug(genreSlug).offset(0).limit(limit).build()));
         return "/genres/slug";
     }
 }

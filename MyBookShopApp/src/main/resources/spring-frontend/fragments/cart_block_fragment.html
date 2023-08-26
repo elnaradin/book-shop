@@ -99,7 +99,7 @@
             </g>
         </svg>
 
-        <span class="CartBlock-text" th:text="${#authentication.principal.fullName}">Дмитрий Петров</span>
+        <span class="CartBlock-text" th:text="${currentUser.name}">Дмитрий Петров</span>
 
         <span class="CartBlock-budget"
               th:text="'На счете '+ ${#authentication.principal.balance} + ' руб.'">

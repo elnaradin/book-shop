@@ -5,16 +5,19 @@ import com.example.MyBookShopApp.dto.payment.PaymentDto;
 import com.example.MyBookShopApp.dto.payment.transaction.TransactionsDto;
 import org.springframework.data.domain.Pageable;
 
+import javax.transaction.Transactional;
 import java.net.URISyntaxException;
 
 public interface PaymentService {
 
 
-    String getPaymentUrl(String name, PaymentDto paymentDto) throws URISyntaxException;
+    @Transactional
+    String getPaymentUrl(PaymentDto paymentDto) throws URISyntaxException;
 
-    ResultDto buyCartItems(String name);
+    @Transactional
+    ResultDto buyCartItems();
 
-    TransactionsDto getTransactions(String name, Pageable pageable);
+    TransactionsDto getTransactions(Pageable pageable);
 
     boolean checkIfPaymentSucceeded(String userEmail);
 }

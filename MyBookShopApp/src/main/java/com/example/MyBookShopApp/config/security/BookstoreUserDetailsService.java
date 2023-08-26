@@ -25,8 +25,7 @@ public class BookstoreUserDetailsService implements UserDetailsService {
             bookstoreUser = bookstoreUserRepository
                     .findFirstByPhone(formattedPhone);
         }
-        return new BookstoreUserDetails(bookstoreUser
-                .orElseThrow());
+        return bookstoreUser.orElseThrow();
     }
 
     private String formatPhone(String phone) {

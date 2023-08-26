@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="commentForm">
+<th:block th:fragment="commentForm" th:if="${status} == 'PAID' or ${status} == 'ARCHIVED'">
     <strong  class="Comments-title">Написать отзыв
     </strong>
     <div class="Comments-addComment">
@@ -17,7 +17,5 @@
         </form>
     </div>
 </th:block>
-
-
 
 </html>

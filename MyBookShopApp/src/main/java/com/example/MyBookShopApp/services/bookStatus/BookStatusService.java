@@ -4,19 +4,22 @@ import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
 import com.example.MyBookShopApp.model.enums.StatusType;
-import org.springframework.security.core.Authentication;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
 public interface BookStatusService {
     BooksPageDto getAnonymUserBooks(StatusType status);
 
-    ResultDto changeBookStatus(ChangeStatusPayload payload, String authentication);
 
-    BooksPageDto getBooksByStatus(StatusType status, Authentication authentication);
 
-    StatusType getBookStatus(String slug, String email);
+    @Transactional
+    ResultDto changeBookStatus(ChangeStatusPayload payload);
 
-    Map<String, List<String>> getUserBookSlugs(Authentication authentication);
+    BooksPageDto getBooksByStatus(StatusType status);
+
+    String getBookStatus(String slug);
+
+    Map<String, List<String>> getUserBookSlugs();
 }

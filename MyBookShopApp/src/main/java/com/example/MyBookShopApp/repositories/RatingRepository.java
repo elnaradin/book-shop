@@ -18,4 +18,8 @@ public interface RatingRepository extends JpaRepository<RatingEntity, Integer> {
 
     boolean existsByUserAndBook(UserEntity user, BookEntity book);
 
+    @Query("select case when r.value is null then 0 else  r.value end " +
+            "from RatingEntity r " +
+            "where r.book.slug like ?1 and r.user = ?2")
+    Integer getRatingByBookSlugAndUser(String slug, UserEntity user);
 }

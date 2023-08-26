@@ -1,0 +1,1 @@
+INSERT INTO  book2user_type (id, code, name) values (6, 'RECENTLY_VIEWED', 'Недавно просмотрена');

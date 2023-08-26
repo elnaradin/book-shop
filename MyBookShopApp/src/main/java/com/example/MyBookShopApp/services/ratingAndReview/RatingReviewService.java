@@ -6,7 +6,6 @@ import com.example.MyBookShopApp.dto.review.BookRatingDto;
 import com.example.MyBookShopApp.dto.review.MyReviewDto;
 import com.example.MyBookShopApp.dto.review.ReviewDto;
 import com.example.MyBookShopApp.dto.review.ReviewLikeDto;
-import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -15,11 +14,11 @@ public interface RatingReviewService {
 
     List<ReviewDto> getBookReviews(String slug);
 
-    List<ReviewDto> getBookReviews(String slug, String email);
+    ResultDto addRating(BookRatingDto bookRatingDto);
 
-    ResultDto addRating(BookRatingDto bookRatingDto, Authentication authentication);
+    ResultDto addReviewRating(ReviewLikeDto reviewLikeDto);
 
-    ResultDto addReviewRating(ReviewLikeDto reviewLikeDto, String authentication);
+    ResultDto addBookReview(MyReviewDto reviewDto);
 
-    ResultDto addBookReview(MyReviewDto reviewDto, Authentication authentication);
+    Integer getBookRatingOfCurrentUser(String slug);
 }

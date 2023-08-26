@@ -50,23 +50,27 @@
         <div class="wrap">
             <nav class="menuModal" id="navigate">
                 <ul class="menu menu_main">
-                    <li class="menu-item" th:class="${main}">
+                    <li class="menu-item" th:classappend="${main}">
                         <a class="menu-link" th:href="@{/}" th:text="#{top-bar.main}" href="/index.html">Главная</a>
                     </li>
-                    <li class="menu-item" th:class="${genres}">
+                    <li class="menu-item" th:classappend="${genres}">
                         <a class="menu-link" th:href="@{/genres}" th:text="#{top-bar.genres}" href="/genres/index.html">Жанры</a>
                     </li>
-                    <li class="menu-item" th:class="${recent}">
+                    <li class="menu-item" th:classappend="${recent}">
                         <a class="menu-link" th:href="@{/books/recent}" th:text="#{top-bar.recent}"
                            href="/books/recent.html">Новинки</a>
                     </li>
-                    <li class="menu-item" th:class="${popular}">
+                    <li class="menu-item" th:classappend="${popular}">
                         <a class="menu-link" th:href="@{/books/popular}" th:text="#{top-bar.popular}"
                            href="/books/popular.html">Популярное</a>
                     </li>
-                    <li class="menu-item" th:class="${authors}">
+                    <li class="menu-item" th:classappend="${authors}">
                         <a class="menu-link" th:href="@{/authors}" th:text="#{top-bar.authors}"
                            href="/authors/index.html">Авторы</a>
+                    </li>
+                    <li class="menu-item" th:classappend="${recently_viewed}" sec:authorize="hasRole('USER')">
+                        <a class="menu-link" th:href="@{/recentlyViewed}" th:text="#{top-bar.recentlyViewed}"
+                           href="/authors/index.html">Недавно просмотренные</a>
                     </li>
                 </ul>
             </nav>

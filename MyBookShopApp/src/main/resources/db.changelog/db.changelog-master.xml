@@ -26,4 +26,7 @@
     <include file="db.changelog/010_add_confirmation_codes_table.xml"/>
     <include file="db.changelog/change_test_user_phone2.sql"/>
     <include file="db.changelog/011_drop_not_null_cnstrnt.xml"/>
+    <include file="db.changelog/add_new_status.sql"/>
+    <include file="db.changelog/add_documents.sql"/>
+    <include file="db.changelog/add_faqs.sql"/>
 </databaseChangeLog>

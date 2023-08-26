@@ -1,7 +1,9 @@
 package com.example.MyBookShopApp.controllers.book;
 
 import com.example.MyBookShopApp.data.ResourceStorage;
+import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
 import com.example.MyBookShopApp.model.book.BookEntity;
+import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.services.author.AuthorService;
 import com.example.MyBookShopApp.services.book.BookService;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -42,25 +45,17 @@ public class BookController {
     private final BookStatusService statusService;
 
     @GetMapping("/{slug}")
-    public String bookPage(
-            @PathVariable("slug") String slug,
-            Model model,
-            Authentication authentication
-    ) {
+    public String bookPage(@PathVariable("slug") String slug, Model model, Authentication authentication) {
         model.addAttribute("book", bookService.getFullBookInfoBySlug(slug));
         model.addAttribute("authors", authorService.getAuthorsList(slug));
         model.addAttribute("ratings", ratingService.getBookRating(slug));
         model.addAttribute("tags", tagService.getShortTagsList(slug));
-
         model.addAttribute("bookFiles", fileService.getFilesBySlug(slug));
+        model.addAttribute("reviews", ratingService.getBookReviews(slug));
         if (authentication != null) {
-            model.addAttribute("reviews", ratingService.getBookReviews(slug, authentication.getName()));
-            model.addAttribute(
-                    "status",
-                    statusService.getBookStatus(slug, authentication.getName()).toString()
-            );
-        } else {
-            model.addAttribute("reviews", ratingService.getBookReviews(slug));
+            model.addAttribute("myRating", ratingService.getBookRatingOfCurrentUser(slug));
+            model.addAttribute("status", statusService.getBookStatus(slug));
+            statusService.changeBookStatus(new ChangeStatusPayload(List.of(slug), StatusType.RECENTLY_VIEWED));
         }
         return "/books/slug";
     }

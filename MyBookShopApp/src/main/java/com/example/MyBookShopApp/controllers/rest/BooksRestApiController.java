@@ -20,7 +20,6 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,13 +61,13 @@ public class BooksRestApiController {
 
 
     @GetMapping("/books/tag/{slug}")
-    public BooksPageDto tagPage(RequestDto request, Authentication authentication) {
-        return tagService.getBooksPageByTag(request, authentication);
+    public BooksPageDto tagPage(RequestDto request) {
+        return tagService.getBooksPageByTag(request);
     }
 
     @GetMapping("/books/genre/{slug}")
-    public BooksPageDto genrePage(RequestDto request, Authentication authentication) {
-        return genreService.getBooksPageByGenre(request, authentication);
+    public BooksPageDto genrePage(RequestDto request) {
+        return genreService.getBooksPageByGenre(request);
     }
 
     @GetMapping("/books/author/{slug}")
@@ -78,10 +77,8 @@ public class BooksRestApiController {
 
     @PostMapping("/rateBook")
     public ResultDto rateBook(
-            @RequestBody BookRatingDto bookRatingDto,
-            Authentication authentication
-    ) {
-        return ratingService.addRating(bookRatingDto, authentication);
+            @RequestBody BookRatingDto bookRatingDto) {
+        return ratingService.addRating(bookRatingDto);
     }
 
     @GetMapping("/search/{searchWord}")
@@ -90,16 +87,13 @@ public class BooksRestApiController {
     }
 
     @PostMapping("/bookReview")
-    public ResultDto addBookReview(@RequestBody MyReviewDto reviewDto, Authentication authentication) {
-        return ratingService.addBookReview(reviewDto, authentication);
+    public ResultDto addBookReview(@RequestBody MyReviewDto reviewDto) {
+        return ratingService.addBookReview(reviewDto);
     }
 
     @PostMapping("/rateBookReview")
-    public ResultDto rateBookReview(
-            @RequestBody ReviewLikeDto reviewRatingDto,
-            Authentication authentication
-    ) {
-        return ratingService.addReviewRating(reviewRatingDto, authentication.getName());
+    public ResultDto rateBookReview(@RequestBody ReviewLikeDto reviewRatingDto) {
+        return ratingService.addReviewRating(reviewRatingDto);
 
     }
 
@@ -110,15 +104,12 @@ public class BooksRestApiController {
     }
 
     @PostMapping("/changeBookStatus")
-    public ResultDto changeBookStatus(
-            @RequestBody ChangeStatusPayload changeStatusPayload,
-            Authentication authentication
-    ) {
-        return bookStatusService.changeBookStatus(changeStatusPayload, authentication.getName());
+    public ResultDto changeBookStatus(@RequestBody ChangeStatusPayload changeStatusPayload) {
+        return bookStatusService.changeBookStatus(changeStatusPayload);
     }
 
     @GetMapping("/payment")
-    public ResultDto handlePay(Authentication authentication) {
-        return paymentService.buyCartItems(authentication.getName());
+    public ResultDto handlePay() {
+        return paymentService.buyCartItems();
     }
 }

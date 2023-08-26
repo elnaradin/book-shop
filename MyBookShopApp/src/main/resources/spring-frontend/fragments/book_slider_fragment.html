@@ -15,8 +15,7 @@
                             <a  th:href="@{'/books/' + ${book.slug}}"
                                href="/books/slug.html">
 
-                                <img  style="width: 168px; height: 253px; object-fit: cover;"
-                                      th:src="*{image}" alt="card.jpg"/>
+                                <img  th:src="*{image}" alt="card.jpg"/>
                                 <div class="Card-ribbon" th:if="*{isBestseller}">
                                     <span class="Card-ribbonText">Бестселлер</span>
                                 </div>

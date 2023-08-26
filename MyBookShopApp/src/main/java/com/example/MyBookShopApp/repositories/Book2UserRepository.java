@@ -12,9 +12,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 
 @Repository
 public interface Book2UserRepository extends JpaRepository<Book2UserEntity, Integer> {
+    void deleteByType_CodeAndTimeBefore(StatusType code, LocalDateTime time);
     void deleteByBookAndUser(BookEntity book, UserEntity user);
 
     @Transactional
@@ -25,13 +28,13 @@ public interface Book2UserRepository extends JpaRepository<Book2UserEntity, Inte
     boolean existsByUserAndBook(UserEntity user, BookEntity book);
 
     @Query(value = "select coalesce((select b2ut.code code  " +
-            "                 from Book2User b2u  " +
+            "                 from book2user b2u  " +
             "                          join users u on u.id = b2u.user_id  " +
             "                          join books b on b.id = b2u.book_id  " +
             "                          join book2user_type b2ut on b2ut.id = b2u.type_id  " +
             "                 where b.slug like :slug  " +
             "                   and u.email like :email), 'UNLINK')", nativeQuery = true)
-    StatusType getCodeByBookSlugAndEmail(
+    String getCodeByBookSlugAndEmail(
             @Param("slug") String slug,
             @Param("email") String email
     );

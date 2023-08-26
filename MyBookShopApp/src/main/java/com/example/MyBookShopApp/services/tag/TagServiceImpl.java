@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.services.tag;
 
 import com.example.MyBookShopApp.annotation.DurationTrackable;
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
 import com.example.MyBookShopApp.dto.book.request.RequestDto;
@@ -14,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +27,7 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
     private final BookRepository bookRepository;
     private final BookStatusService statusService;
+    private final IAuthenticationFacade facade;
 
 
     @Override
@@ -41,7 +42,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public BooksPageDto getBooksPageByTag(RequestDto request, Authentication authentication) {
+    public BooksPageDto getBooksPageByTag(RequestDto request) {
         Pageable nextPage = PageRequest.of(
                 request.getOffset(),
                 request.getLimit()
@@ -50,7 +51,7 @@ public class TagServiceImpl implements TagService {
                 request.getSlug(),
                 nextPage
         );
-        Map<String, List<String>> slugsByStatus = statusService.getUserBookSlugs(authentication);
+        Map<String, List<String>> slugsByStatus = statusService.getUserBookSlugs();
         return BooksPageDto.builder()
                 .count(booksPage.getTotalElements())
                 .books(booksPage.getContent())

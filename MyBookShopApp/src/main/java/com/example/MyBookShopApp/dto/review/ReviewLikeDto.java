@@ -6,5 +6,6 @@ import lombok.Data;
 public class ReviewLikeDto {
     private int reviewid;
     private Short value;
+    private String slug;
 
 }

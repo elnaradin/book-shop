@@ -1,7 +1,11 @@
 package com.example.MyBookShopApp.config.security;
 
 import com.example.MyBookShopApp.config.security.jwt.JWTRequestFilter;
+import com.example.MyBookShopApp.config.security.oauth2.CustomOauthLoginSuccessHandler;
+
+import com.example.MyBookShopApp.config.security.oauth2.CustomOidcUserService;
 import com.example.MyBookShopApp.model.enums.StatusType;
+import com.example.MyBookShopApp.model.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -87,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().oauth2Login().successHandler(oauthLoginSuccessHandler)
                 .userInfoEndpoint(userInfoEndpoint ->
                         userInfoEndpoint.oidcUserService(customOidcUserService)
-                                .customUserType(CustomOidcUser.class, "google")
+                                .customUserType(UserEntity.class, "google")
                 )
                 .and().oauth2Client();
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

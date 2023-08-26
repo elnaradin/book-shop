@@ -36,11 +36,11 @@ public class ContactConfirmationServiceImpl implements ContactConfirmationServic
 
     @Transactional
     public ContactConfirmationResponse sendSmsLogin(String phone) throws JsonProcessingException {
-
         ContactConfirmationResponse response = new ContactConfirmationResponse();
         if (!userRepository.existsByPhone(phone)) {
             return response;
         }
+
         return sendSms(phone, response);
     }
 

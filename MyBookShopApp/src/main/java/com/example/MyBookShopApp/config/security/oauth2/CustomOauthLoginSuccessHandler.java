@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.config.security;
+package com.example.MyBookShopApp.config.security.oauth2;
 
 import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.model.user.UserEntity;

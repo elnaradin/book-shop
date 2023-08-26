@@ -4,7 +4,6 @@ import com.example.MyBookShopApp.dto.book.request.RequestDto;
 import com.example.MyBookShopApp.services.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +17,11 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping("/books/tag/{slug}")
-    public String getTagPage(@PathVariable("slug") String tagSlug, Model model, Authentication authentication) {
+    public String getTagPage(@PathVariable("slug") String tagSlug, Model model) {
         model.addAttribute("tag", tagService.getShortTagInfo(tagSlug));
         model.addAttribute("tagCloud", tagService.getTagsList());
         model.addAttribute("booksPage", tagService.getBooksPageByTag(
-                RequestDto.builder().slug(tagSlug).offset(0).limit(limit).build(),
-                authentication
+                RequestDto.builder().slug(tagSlug).offset(0).limit(limit).build()
         ));
         return "/tags/index";
     }

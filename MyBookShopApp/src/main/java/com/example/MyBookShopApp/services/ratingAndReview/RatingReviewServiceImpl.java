@@ -1,25 +1,27 @@
 package com.example.MyBookShopApp.services.ratingAndReview;
 
-import com.example.MyBookShopApp.annotation.DurationTrackable;
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.RatingDto;
 import com.example.MyBookShopApp.dto.review.BookRatingDto;
 import com.example.MyBookShopApp.dto.review.MyReviewDto;
 import com.example.MyBookShopApp.dto.review.ReviewDto;
 import com.example.MyBookShopApp.dto.review.ReviewLikeDto;
+import com.example.MyBookShopApp.errs.ItemNotFoundException;
 import com.example.MyBookShopApp.model.book.BookEntity;
 import com.example.MyBookShopApp.model.book.RatingEntity;
 import com.example.MyBookShopApp.model.book.review.BookReviewEntity;
 import com.example.MyBookShopApp.model.book.review.BookReviewLikeEntity;
+import com.example.MyBookShopApp.model.enums.StatusType;
 import com.example.MyBookShopApp.model.user.UserEntity;
+import com.example.MyBookShopApp.repositories.Book2UserRepository;
 import com.example.MyBookShopApp.repositories.BookRepository;
 import com.example.MyBookShopApp.repositories.RatingRepository;
 import com.example.MyBookShopApp.repositories.ReviewLikeRepository;
 import com.example.MyBookShopApp.repositories.ReviewRepository;
 import com.example.MyBookShopApp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,6 +37,8 @@ public class RatingReviewServiceImpl implements RatingReviewService {
     private final RatingRepository ratingRepository;
     private final ReviewLikeRepository reviewLikeRepository;
     private final ReviewRepository reviewRepository;
+    private final IAuthenticationFacade facade;
+    private final Book2UserRepository book2UserRepository;
 
     @Override
     public RatingDto getBookRating(String slug) {
@@ -43,19 +47,21 @@ public class RatingReviewServiceImpl implements RatingReviewService {
 
     @Override
     public List<ReviewDto> getBookReviews(String slug) {
-        return reviewRepository.getReviewListBySlug(slug);
-    }
-
-    @DurationTrackable
-    @Override
-    public List<ReviewDto> getBookReviews(String slug, String email) {
-        return reviewRepository.getReviewListBySlugAndEmail(slug, email);
+        if (facade.getAuthentication() == null || facade.getAuthentication() instanceof AnonymousAuthenticationToken) {
+            return reviewRepository.getReviewListBySlug(slug);
+        }
+        return reviewRepository.getReviewListBySlugAndEmail(slug, facade.getCurrentUsername());
     }
 
     @Override
     @Transactional
-    public ResultDto addRating(BookRatingDto bookRatingDto, Authentication authentication) {
-        UserEntity user = getUser(authentication.getName());
+    public ResultDto addRating(BookRatingDto bookRatingDto) {
+        ResultDto resultDto = new ResultDto();
+        if (!checkPurchase(bookRatingDto.getSlug())) {
+            resultDto.setResult(false);
+            return resultDto;
+        }
+        UserEntity user = facade.getPrincipal();
         BookEntity book = getBook(bookRatingDto.getSlug());
         if (!ratingRepository.existsByUserAndBook(user, book)) {
             RatingEntity rating = RatingEntity.builder()
@@ -67,17 +73,24 @@ public class RatingReviewServiceImpl implements RatingReviewService {
         } else {
             ratingRepository.updateValueByUserAndBook(bookRatingDto.getValue(), user, book);
         }
+        resultDto.setResult(true);
+        return resultDto;
+    }
 
-        return ResultDto.builder().result(true).build();
+    private boolean checkPurchase(String slug) {
+        String statusType = book2UserRepository.getCodeByBookSlugAndEmail(slug, facade.getCurrentUsername());
+        return statusType.equals(StatusType.PAID.toString())  || statusType.equals(StatusType.ARCHIVED.toString()) ;
     }
 
     @Override
     @Transactional
-    public ResultDto addReviewRating(
-            ReviewLikeDto reviewLikeDto,
-            String userEmail
-    ) {
-        UserEntity user = getUser(userEmail);
+    public ResultDto addReviewRating(ReviewLikeDto reviewLikeDto) {
+        ResultDto resultDto = new ResultDto();
+        if (!checkPurchase(reviewLikeDto.getSlug())) {
+            resultDto.setResult(false);
+            return resultDto;
+        }
+        UserEntity user = facade.getPrincipal();
         Optional<BookReviewEntity> review = reviewRepository.findById(reviewLikeDto.getReviewid());
         if (!reviewLikeRepository.existsByReviewAndUser(review.orElseThrow(), user)) {
             BookReviewLikeEntity reviewLike = BookReviewLikeEntity.builder()
@@ -95,17 +108,20 @@ public class RatingReviewServiceImpl implements RatingReviewService {
                     review.get()
             );
         }
-        return ResultDto.builder().result(true).build();
+        resultDto.setResult(true);
+        return resultDto;
     }
 
     @Override
     @Transactional
-    public ResultDto addBookReview(
-            MyReviewDto reviewDto,
-            Authentication authentication
-    ) {
+    public ResultDto addBookReview(MyReviewDto reviewDto) {
+        ResultDto resultDto = new ResultDto();
+        if (!checkPurchase(reviewDto.getSlug())) {
+            resultDto.setResult(false);
+            return resultDto;
+        }
         BookEntity book = getBook(reviewDto.getSlug());
-        UserEntity user = getUser(authentication.getName());
+        UserEntity user = facade.getPrincipal();
         if (!reviewRepository.existsByBookAndUser(book, user)) {
             BookReviewEntity review = BookReviewEntity.builder()
                     .book(book)
@@ -121,17 +137,17 @@ public class RatingReviewServiceImpl implements RatingReviewService {
                     user
             );
         }
-        return ResultDto.builder()
-                .result(true).build();
+        resultDto.setResult(true);
+        return resultDto;
     }
 
-    private UserEntity getUser(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+    @Override
+    public Integer getBookRatingOfCurrentUser(String slug) {
+        return ratingRepository.getRatingByBookSlugAndUser(slug, facade.getPrincipal());
     }
 
     private BookEntity getBook(String slug) {
         return bookRepository.findBySlug(slug)
-                .orElseThrow(() -> new RuntimeException("book not found"));
+                .orElseThrow(ItemNotFoundException::new);
     }
 }

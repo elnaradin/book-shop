@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.services.genre;
 
 import com.example.MyBookShopApp.annotation.DurationTrackable;
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
 import com.example.MyBookShopApp.dto.book.ShortBookDtoProjection;
 import com.example.MyBookShopApp.dto.book.request.RequestDto;
@@ -14,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +29,7 @@ public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
     private final BookRepository bookRepository;
     private final BookStatusService statusService;
+    private final IAuthenticationFacade facade;
 
     @DurationTrackable
     @Override
@@ -63,11 +64,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public BooksPageDto getBooksPageByGenre(RequestDto request, Authentication authentication) {
+    public BooksPageDto getBooksPageByGenre(RequestDto request) {
         Pageable pageable = PageRequest.of(request.getOffset(), request.getLimit());
         Page<ShortBookDtoProjection> booksPage = bookRepository.getBooksByGenre(request.getSlug(), pageable);
 
-        Map<String, List<String>> slugsByStatus = statusService.getUserBookSlugs(authentication);
+        Map<String, List<String>> slugsByStatus = statusService.getUserBookSlugs();
         return BooksPageDto.builder()
                 .count(booksPage.getTotalElements())
                 .books(booksPage.getContent())
