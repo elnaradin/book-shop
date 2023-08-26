@@ -5,7 +5,7 @@
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="favicon.ico" rel="shortcut icon">
+    <link href="/favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -29,10 +29,10 @@
         </div>
     </div>
     <div class="wrap">
-        <main class="Middle-main">
+        <main class="Middle-main" th:object="${document}">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='Политика обработки персональных данных')}"></ul>
-            <h1 class="Middle-title">Политика обработки персональных данных
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{title})}"></ul>
+            <h1 class="Middle-title" th:text="*{title}">Политика обработки персональных данных
             </h1>
             <article class="Article">
                 <div class="sdf">

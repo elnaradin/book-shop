@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.services.loginAndRegistration;
 
-import com.example.MyBookShopApp.config.security.BookstoreUserDetails;
+
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.config.security.jwt.JWTUtils;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.payment.ChangeBalanceDto;
@@ -22,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,7 @@ public class UserRegServiceImpl implements UserRegService {
     private final JWTUtils jwtUtils;
     private final CookieUtils cookieUtils;
     private final HttpServletResponse response;
+    private final IAuthenticationFacade facade;
 
 
     @Override
@@ -64,7 +67,7 @@ public class UserRegServiceImpl implements UserRegService {
         UserEntity savedUser = userRepository.save(user);
         cookieUtils.mergeSelectedBooks(StatusType.KEPT, savedUser);
         cookieUtils.mergeSelectedBooks(StatusType.CART, savedUser);
-        authenticate(new BookstoreUserDetails(user));
+        authenticate(user);
         return user;
     }
 
@@ -90,25 +93,23 @@ public class UserRegServiceImpl implements UserRegService {
 
     @Override
     public ContactConfirmationResponse jwtLoginByPhone(ContactConfirmationPayload payload) {
-        UserEntity user = userRepository.findFirstByPhone(payload.getContact())
-                .orElseThrow();
-        authenticate(new BookstoreUserDetails(user));
+        UserEntity user = userRepository.findFirstByPhone(payload.getContact()).orElseThrow();
+        authenticate(user);
         return addBooksAndGenerateResponse(user);
     }
 
     @Override
     public ContactConfirmationResponse jwtLoginByEmail(ContactConfirmationPayload payload) {
-        UserEntity user = userRepository.findByEmail(payload.getContact())
-                .orElseThrow();
-        authenticate(new BookstoreUserDetails(user));
+        UserEntity user = userRepository.findByEmail(payload.getContact()).orElseThrow();
+        authenticate(user);
         return addBooksAndGenerateResponse(user);
     }
 
     @Override
     @Transactional
-    public ResultDto updateProfile(ProfileUpdateDto updateDto, String name) {
+    public ResultDto updateProfile(ProfileUpdateDto updateDto) {
         ResultDto resultDto = new ResultDto();
-        UserEntity user = userRepository.findByEmail(name).orElseThrow();
+        UserEntity user = userRepository.findByEmail(facade.getCurrentUsername()).orElseThrow();
         if (updateDto.getPassword().equals(updateDto.getPasswordReply())) {
             user.setEmail(updateDto.getMail());
             if (!updateDto.getPassword().isBlank()) {
@@ -126,10 +127,9 @@ public class UserRegServiceImpl implements UserRegService {
     }
 
     private void replaceAuthenticationAndJwt(UserEntity user) {
-        BookstoreUserDetails userDetails = new BookstoreUserDetails(user);
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities()
+                user, null, user.getAuthorities()
         ));
         response.addCookie(cookieUtils.createTokenCookie(jwtUtils.generateToken(user.getEmail()), -1));
     }
@@ -162,7 +162,7 @@ public class UserRegServiceImpl implements UserRegService {
         return response;
     }
 
-    private void authenticate(BookstoreUserDetails userDetails) {
+    private void authenticate(UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

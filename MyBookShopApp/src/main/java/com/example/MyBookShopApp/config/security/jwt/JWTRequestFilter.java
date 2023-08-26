@@ -1,6 +1,5 @@
 package com.example.MyBookShopApp.config.security.jwt;
 
-import com.example.MyBookShopApp.config.security.BookstoreUserDetails;
 import com.example.MyBookShopApp.config.security.BookstoreUserDetailsService;
 import com.example.MyBookShopApp.services.util.CookieUtils;
 import io.jsonwebtoken.JwtException;
@@ -9,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -56,7 +56,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             token = cookie.getValue();
             try {
                 email = jwtUtil.extractSubject(token);
-                BookstoreUserDetails userDetails = (BookstoreUserDetails) userDetailsService
+                UserDetails userDetails =  userDetailsService
                         .loadUserByUsername(email);
                 if (!jwtUtil.validateToken(token, userDetails.getUsername())) {
                     break;
@@ -76,6 +76,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (AccessDeniedException e) {
             e.printStackTrace();
+            SecurityContextHolder.clearContext();
             response.sendRedirect("/signin");
         }
 

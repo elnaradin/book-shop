@@ -114,7 +114,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE + ", " +
             " b.pub_date , " +
             " sum(r.value) rating_value, " +
-            " (select tag.c + author.c + genre.c " +
+            " (select tag.c + author.c * 90  + genre.c " +
             "   from  " +
             "    (select (case when array_agg(b2t.tag_id) && array_agg(b2t2.id) " +
             "                  then 1 else 0 end) c from book2tag b2t2 " +
@@ -147,13 +147,13 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
             SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE + ", " +
-            " b.pub_date pub_date" +
+            " b.pub_date pub_date, b.id id" +
             "      from books b " +
             "      group by b.id  " +
             "      having  b.pub_date between :from and :to   " +
             "      ) as recent_books " +
             SHORT_BOOK_WHERE_SLUG_NOT_IN_CLAUSE +
-            " order by pub_date desc",
+            " order by pub_date, id desc",
             nativeQuery = true,
             countQuery = "select count(*) from books")
     Page<ShortBookDtoProjection> getRecentBooksByPubDate(
@@ -164,9 +164,10 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
 
     @Query(value = SHORT_BOOK_SELECT_CLAUSE +
             SHORT_BOOK_FROM_SUBQUERY_SELECT_CLAUSE + ", " +
-            "(sum(case when b2ut.code like 'PAID' then 1 else 0 end) + 0.7 * " +
-            "sum(case when b2ut.code like 'CART' then 1 else 0 end)  + 0.4 * " +
-            "sum(case when b2ut.code like 'KEPT' then 1 else 0 end)) sorting_value," +
+            "(        sum(case when b2ut.code like 'PAID' then 1 else 0 end) " +
+            " + 0.7 * sum(case when b2ut.code like 'CART' then 1 else 0 end)  " +
+            " + 0.4 * sum(case when b2ut.code like 'KEPT' then 1 else 0 end)" +
+            " + 0.2 * sum(case when b2ut.code like 'RECENTLY_VIEWED' then 1 else 0 end)) sorting_value," +
             " b.id b_id" +
             "      from books b " +
             "               left join book2user b2u on b.id = b2u.book_id  " +
@@ -305,4 +306,6 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
             "from Book2UserEntity b2u " +
             "where b2u.user.email like :email")
     List<BookSlugs> findBookSlugsByUserEmail(@Param("email") String email);
+
+
 }

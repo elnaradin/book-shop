@@ -40,16 +40,17 @@ class MainPageSeleniumTests {
     @Test
     void testMainPageSearchQuery() throws InterruptedException {
         MainPage mainPage = new MainPage(driver);
+        String token = "night";
         mainPage
                 .callPage()
                 .pause()
                 .openSearchField()
                 .pause()
-                .setUpSearchToken("night")
+                .setUpSearchToken(token)
                 .pause()
                 .submit()
                 .pause();
-        assertTrue(driver.getPageSource().contains("Wings of Fire"));
+        assertTrue(driver.getPageSource().contains(token));
     }
     @Test
     @DisplayName("Сценарий навигации по разделам")

@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.services.payment;
 
 
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.ChangeStatusPayload;
 import com.example.MyBookShopApp.dto.payment.ChangeBalanceDto;
@@ -61,15 +62,17 @@ public class PaymentServiceImpl implements PaymentService {
     private final BalanceTransactionRepository balanceTransactionRepository;
     private final UserRepository userRepository;
     private final BalanceTransactionRepository transactionRepository;
+    private final IAuthenticationFacade facade;
 
     @Override
     @Transactional
-    public String getPaymentUrl(String userName, PaymentDto paymentDto) throws URISyntaxException {
+    public String getPaymentUrl(PaymentDto paymentDto) throws URISyntaxException {
+        String username = facade.getCurrentUsername();
         String url = "http://localhost:8085/api/payment/check" +
                 "?isPaid=true";
-        RootResponse response = sendPaymentRequest(userName, paymentDto.getSum(), url).getBody();
+        RootResponse response = sendPaymentRequest(username, paymentDto.getSum(), url).getBody();
 
-        UserEntity user = userRepository.findByEmail(userName).orElseThrow();
+        UserEntity user = userRepository.findByEmail(username).orElseThrow();
         if (response != null) {
             log.info(response.toString());
             user.setHash(response.getId());
@@ -80,18 +83,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public ResultDto buyCartItems(String userName) {
-        List<BookEntity> books = bookRepository.getBookEntitiesByUserAndStatus(userName, StatusType.CART);
+    public ResultDto buyCartItems() {
+        String username = facade.getCurrentUsername();
+        List<BookEntity> books = bookRepository.getBookEntitiesByUserAndStatus(username, StatusType.CART);
         Integer totalPrice = books.stream().mapToInt(PaymentServiceImpl::getDiscountPrice).sum();
         userRegService.changeBalance(
                 ChangeBalanceDto.builder()
-                        .username(userName)
+                        .username(username)
                         .amount(totalPrice)
                         .operationType(OperationType.WRITE_OFF)
                         .build()
         );
-        changeBooksStatus(userName, books);
-        UserEntity user = userRepository.findByEmail(userName).orElseThrow();
+        changeBooksStatus( books);
+        UserEntity user = userRepository.findByEmail(username).orElseThrow();
         for (BookEntity book : books) {
             String description = "Покупка книги \"" + book.getTitle() + "\"";
             createTransaction(user, description, -getDiscountPrice(book), book);
@@ -125,8 +129,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public TransactionsDto getTransactions(String name, Pageable pageable) {
-        Page<TransactionDto> transactions = balanceTransactionRepository.findTransactionsByUserEmail(name, pageable);
+    public TransactionsDto getTransactions(Pageable pageable) {
+        Page<TransactionDto> transactions = balanceTransactionRepository
+                .findTransactionsByUserEmail(facade.getCurrentUsername(), pageable);
         return new TransactionsDto((int) transactions.getTotalElements(), transactions.getContent());
     }
 
@@ -184,11 +189,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
 
-    private void changeBooksStatus(String userName, List<BookEntity> books) {
+    private void changeBooksStatus( List<BookEntity> books) {
         ChangeStatusPayload payload = new ChangeStatusPayload();
         payload.setBookIds(books.stream().map(BookEntity::getSlug).collect(Collectors.toList()));
         payload.setStatus(StatusType.PAID);
-        bookStatusService.changeBookStatus(payload, userName);
+        bookStatusService.changeBookStatus(payload);
     }
 
 

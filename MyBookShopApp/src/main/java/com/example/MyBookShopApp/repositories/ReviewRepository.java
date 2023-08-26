@@ -28,15 +28,15 @@ public interface ReviewRepository extends JpaRepository<BookReviewEntity, Intege
             "    u.name userName,   " +
             "       br.time time,   " +
             "       br.text text,   " +
-            "       r.value rating,   " +
+            "       case when r.value is null then 0 else r.value end  rating,   " +
             "       sum(case when brl.value = 1 then 1 else 0 end)  likeCount,   " +
             "       sum(case when brl.value = -1 then 1 else 0 end) dislikeCount   " +
             " from book_review br   " +
             "         left join book_review_like brl on br.id = brl.review_id   " +
             "         join books b on b.id = br.book_id   " +
             "         join users u on br.user_id = u.id   " +
-            "         join ratings r on u.id = r.user_id   " +
-            " group by b.slug, br.id, u.name, r.value   " +
+            "         left join ratings r on (u.id = r.user_id and r.book_id = b.id)    " +
+            " group by b.slug, br.id, u.name, r.value " +
             " having b.slug like :slug) as reviews_table " +
             " order by likeCount - dislikeCount desc",
             nativeQuery = true)
@@ -47,7 +47,7 @@ public interface ReviewRepository extends JpaRepository<BookReviewEntity, Intege
             "    u.name userName,   " +
             "       br.time time,   " +
             "       br.text text,   " +
-            "       r.value rating,   " +
+            "       case when r.value is null then 0 else r.value end  rating,   " +
             "       sum(case when brl.value = 1 then 1 else 0 end)  likeCount,   " +
             "       sum(case when brl.value = -1 then 1 else 0 end) dislikeCount," +
             "       (select case when brl2.value = 1 then true else false end " +
@@ -62,7 +62,7 @@ public interface ReviewRepository extends JpaRepository<BookReviewEntity, Intege
             "         left join book_review_like brl on br.id = brl.review_id   " +
             "         join books b on b.id = br.book_id   " +
             "         join users u on br.user_id = u.id   " +
-            "         join ratings r on u.id = r.user_id   " +
+            "         left join ratings r on (u.id = r.user_id and r.book_id = b.id)   " +
             " group by b.slug, br.id, u.name, r.value   " +
             " having b.slug like :slug) as reviews_table " +
             " order by likeCount - dislikeCount desc",

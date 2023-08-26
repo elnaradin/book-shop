@@ -1,13 +1,19 @@
 package com.example.MyBookShopApp.services.ratingAndReview;
 
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.review.ReviewDto;
 import com.example.MyBookShopApp.dto.review.ReviewLikeDto;
+import com.example.MyBookShopApp.repositories.Book2UserRepository;
+import com.example.MyBookShopApp.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 
@@ -25,9 +31,20 @@ public class RatingReviewServiceImpl2Tests {
     @Autowired
     private RatingReviewServiceImpl ratingReviewService;
     private ReviewLikeDto reviewLikeDto;
+
+
+    @MockBean
+    private Book2UserRepository book2UserRepositoryMock;
+    @SpyBean
+    private IAuthenticationFacade facadeSpy;
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void setUp() {
+
         reviewLikeDto = new ReviewLikeDto();
+        reviewLikeDto.setSlug(bookSlug);
         reviewLikeDto.setValue((short) 1);
     }
 
@@ -38,10 +55,12 @@ public class RatingReviewServiceImpl2Tests {
         addReviewRatings(reviewLikeDto);
         reviewLikeDto = null;
     }
+
     @Test
     @WithUserDetails("test@email.com")
     @DisplayName("Расчет рейтинга отзыва")
     void getBookReviews() {
+
         List<ReviewDto> bookReviews = ratingReviewService.getBookReviews(bookSlug);
         assertNotNull(bookReviews);
         assertThat(bookReviews.size(), greaterThan(0));
@@ -55,9 +74,11 @@ public class RatingReviewServiceImpl2Tests {
     }
 
 
-    void addReviewRatings(ReviewLikeDto reviewLikeDto ){
-        for(int i = 2; i < 50; i++){
-            ratingReviewService.addReviewRating(reviewLikeDto, "email" + i + "@email.com");
+    void addReviewRatings(ReviewLikeDto reviewLikeDto) {
+        Mockito.doReturn("PAID").when(book2UserRepositoryMock).getCodeByBookSlugAndEmail(bookSlug, "test@email.com");
+        for (int i = 2; i < 50; i++) {
+            Mockito.doReturn(userRepository.findByEmail("email"+ i +"@email.com").orElseThrow()).when(facadeSpy).getPrincipal();
+            ratingReviewService.addReviewRating(reviewLikeDto);
         }
     }
 }

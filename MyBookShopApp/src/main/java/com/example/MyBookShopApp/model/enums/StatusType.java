@@ -8,7 +8,8 @@ public enum StatusType {
     CART("cart"),
     PAID(""),
     ARCHIVED(""),
-    UNLINK("");
+    UNLINK(""),
+    RECENTLY_VIEWED("");
 
     private final String cookieName;
 

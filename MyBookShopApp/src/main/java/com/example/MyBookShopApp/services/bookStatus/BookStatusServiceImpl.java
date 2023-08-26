@@ -1,5 +1,6 @@
 package com.example.MyBookShopApp.services.bookStatus;
 
+import com.example.MyBookShopApp.config.security.IAuthenticationFacade;
 import com.example.MyBookShopApp.dto.ResultDto;
 import com.example.MyBookShopApp.dto.book.BookSlugs;
 import com.example.MyBookShopApp.dto.book.BooksPageDto;
@@ -17,8 +18,8 @@ import com.example.MyBookShopApp.repositories.UserRepository;
 import com.example.MyBookShopApp.services.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -39,6 +40,7 @@ public class BookStatusServiceImpl implements BookStatusService {
     private final Book2UserRepository book2UserRepository;
     private final Book2UserTypeRepository book2UserTypeRepository;
     private final CookieUtils cookieUtils;
+    private final IAuthenticationFacade facade;
 
     @Override
     public BooksPageDto getAnonymUserBooks(StatusType status) {
@@ -66,10 +68,9 @@ public class BookStatusServiceImpl implements BookStatusService {
 
     @Override
     @Transactional
-    public ResultDto changeBookStatus(ChangeStatusPayload payload, String userEmail) {
+    public ResultDto changeBookStatus(ChangeStatusPayload payload) {
         List<BookEntity> books = bookRepository.findBookEntitiesBySlugIn(payload.getBookIds());
-        UserEntity userEntity = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserEntity userEntity = facade.getPrincipal();
         ResultDto resultDto = ResultDto.builder().result(true).build();
         if (payload.getStatus().equals(StatusType.UNLINK)) {
             for (BookEntity book : books) {
@@ -79,9 +80,12 @@ public class BookStatusServiceImpl implements BookStatusService {
         }
         Book2UserTypeEntity code = book2UserTypeRepository.findByCode(payload.getStatus());
         for (BookEntity book : books) {
-            if (book2UserRepository.existsByUserAndBook(userEntity, book)) {
+            String status = book2UserRepository.getCodeByBookSlugAndEmail(book.getSlug(), facade.getCurrentUsername());
+            if (book2UserRepository.existsByUserAndBook(userEntity, book) && !payload.getStatus().equals(StatusType.RECENTLY_VIEWED)) {
                 book2UserRepository.updateTypeByUserAndBook(code, userEntity, book);
-            } else {
+            } else if (book2UserRepository.existsByUserAndBook(userEntity, book) && status.equals(StatusType.RECENTLY_VIEWED.toString())) {
+                book2UserRepository.updateTypeByUserAndBook(code, userEntity, book);
+            } else if (!book2UserRepository.existsByUserAndBook(userEntity, book)){
                 Book2UserEntity link = Book2UserEntity.builder()
                         .book(book)
                         .user(userEntity)
@@ -94,10 +98,16 @@ public class BookStatusServiceImpl implements BookStatusService {
         return resultDto;
     }
 
+    @Scheduled(fixedRate = 60_000, zone = "Europe/Moscow")
+    @Transactional
+    public void deleteRecentlyViewedBooks() {
+        book2UserRepository.deleteByType_CodeAndTimeBefore(StatusType.RECENTLY_VIEWED, LocalDateTime.now().minusMinutes(1));
+    }
+
     @Override
-    public BooksPageDto getBooksByStatus(StatusType status, Authentication authentication) {
+    public BooksPageDto getBooksByStatus(StatusType status) {
         List<ShortBookDtoProjection> books = bookRepository.getBooksByUserAndStatus(
-                authentication.getName(), status.toString());
+                facade.getCurrentUsername(), status.toString());
         return BooksPageDto.builder()
                 .books(books)
                 .totalPrice(books.stream()
@@ -116,20 +126,20 @@ public class BookStatusServiceImpl implements BookStatusService {
     }
 
     @Override
-    public StatusType getBookStatus(String slug, String email) {
-        return book2UserRepository.getCodeByBookSlugAndEmail(slug, email);
+    public String getBookStatus(String slug) {
+        return book2UserRepository.getCodeByBookSlugAndEmail(slug, facade.getCurrentUsername());
     }
 
     @Override
-    public Map<String, List<String>> getUserBookSlugs(Authentication authentication) {
+    public Map<String, List<String>> getUserBookSlugs() {
         Map<String, List<String>> slugsByStatus = new HashMap<>();
-        if (authentication == null) {
+        if (facade.getAuthentication() == null || facade.getAuthentication() instanceof AnonymousAuthenticationToken) {
             return getSlugsFromCookies();
         }
         for (StatusType statusType :
                 StatusType.values()) {
             List<String> slugs = bookRepository
-                    .findBookSlugsByUserEmail(authentication.getName()).stream()
+                    .findBookSlugsByUserEmail(facade.getCurrentUsername()).stream()
                     .filter(bookSlugs -> bookSlugs.getStatus().equals(statusType))
                     .map(BookSlugs::getSlug)
                     .collect(Collectors.toList());

@@ -53,14 +53,14 @@
                 </button>
             </div>
         </div>
-        <div class="ProductCard-cart" sec:authorize="hasRole('USER')">
+        <div class="ProductCard-cart" th:if="${status == 'PAID'|| status == 'ARCHIVED'} "  sec:authorize="hasRole('USER')">
             <div class="ProductCard-cartElement" >
                 <a class="btn btn_primary btn_outline" href="#"><span
                         class="btn-icon"><img src="/assets/img/icons/download.svg"
                                               alt="download.svg"/></span><span
                         class="btn-content">Скачать</span></a>
             </div>
-            <div class="ProductCard-cartElement" th:if="${status == 'PAID'|| status == 'ARCHIVED'} ">
+            <div class="ProductCard-cartElement" >
                 <button class="btn btn_primary btn_outline" data-sendstatus="ARCHIVED"
                         data-bookid="[1111]" th:classappend="${status} == 'ARCHIVED' ? 'btn_check' : ''"
                         th:attr="data-bookid= *{slug },

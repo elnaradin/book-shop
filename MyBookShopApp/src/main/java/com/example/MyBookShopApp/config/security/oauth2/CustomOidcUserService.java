@@ -1,4 +1,4 @@
-package com.example.MyBookShopApp.config.security;
+package com.example.MyBookShopApp.config.security.oauth2;
 
 import com.example.MyBookShopApp.model.user.UserEntity;
 import com.example.MyBookShopApp.repositories.UserRepository;
@@ -25,13 +25,12 @@ public class CustomOidcUserService extends OidcUserService {
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         OidcUser oidcUser = super.loadUser(userRequest);
-        String email = oidcUser.getAttributes().get("email").toString();
-        UserEntity user = getUserOrCreateNew(email, oidcUser);
-        return new CustomOidcUser(oidcUser, user);
+        return getUserOrCreateNew(oidcUser);
     }
 
     @Transactional
-    public UserEntity getUserOrCreateNew(String email, OidcUser oidcUser) {
+    public UserEntity getUserOrCreateNew(OidcUser oidcUser) {
+        String email = oidcUser.getAttributes().get("email").toString();
         return userRepository.findByEmail(email)
                 .orElseGet(() -> {
                     UserEntity newUser = UserEntity.builder()

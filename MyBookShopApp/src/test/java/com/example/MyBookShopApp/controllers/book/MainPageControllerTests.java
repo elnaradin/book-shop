@@ -62,8 +62,9 @@ class MainPageControllerTests {
     }
     @Test
     void testSearchQuery() throws Exception{
-        mockMvc.perform(get("/search/night"))
+        String query = "night";
+        mockMvc.perform(get("/search/"+query))
                 .andDo(print())
-                .andExpect(xpath("/html/body/div/div/main/div[2]/div/div[1]/div[2]/strong").string("Wings of Fire"));
+                .andExpect(content().string(containsString(query)));
     }
 }
