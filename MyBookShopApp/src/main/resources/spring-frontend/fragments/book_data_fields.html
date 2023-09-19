@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="emptyBookFields">
+    <tr>
+        <td style="width:30%">
+            <div class="ProductCard-titleProp" th:text="#{book.title}">Название книги:
+            </div>
+        </td>
+        <td style="width:20%">
+            <input class="form-input" id="title" name="title" type="text"
+                   placeholder="Название"  th:attr="placeholder=#{book.title}" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp">Slug:
+            </div>
+        </td>
+        <td>
+            <input class="form-input" id="slug" name="slug" type="text"
+                   placeholder="Slug" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp" th:text="#{book.pubDate}">Дата публикации:
+            </div>
+        </td>
+        <td>
+            <input class="form-input form-input_date form-input_date_uninit"
+                   id="pubDate"
+                   name="pubDate" type="text" placeholder="Дата"  th:attr="placeholder=#{book.pubDate}"
+                   autocomplete="off"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp" th:text="#{book.isBestseller}">Является бестселлером:
+            </div>
+        </td>
+        <td>
+            <input style="margin-top: 10px" type="checkbox" id="isBestseller" name="isBestseller"
+                   value="isBestseller">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.authors}">Автор(ы):</span>&#32;
+        </td>
+        <td>
+            <div id="selected-authors"></div>
+
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" onclick="authorsFunction()"
+                        class="btn_sm btn_primary dropbtn" th:text="#{buttons.addAuthor}">
+                    Добавить автора
+                </button>
+                <div id="authorsDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." class="search_input"
+                           id="authorInput" onkeyup="filterAuthorsFunction()">
+                    <th:block th:object="${authorOption}" th:each="authorOption : ${authorsList}">
+                        <a th:attr="data-itemid=*{slug}" th:text="*{name}">Home</a>
+                    </th:block>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.genres}">Жанры:</span>
+        </td>
+        <td>
+            <div id="selected-genres"></div>
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" onclick="genresFunction()"
+                        class="btn_sm btn_primary dropbtn" th:text="#{buttons.addGenre}">
+                    Добавить жанр
+                </button>
+                <div id="genresDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." class="search_input"
+                           id="genreInput" onkeyup="filterGenresFunction()">
+                    <th:block th:object="${genreOption}" th:each="genreOption : ${genresList}">
+                        <a th:attr="data-itemid=*{slug}" th:text="*{name}">Home</a>
+                    </th:block>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.tags}">Тэги:</span>
+        </td>
+        <td>
+            <div id="selected-tags"></div>
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" onclick="tagsFunction()"
+                        class="btn_sm btn_primary dropbtn" th:text="#{buttons.addTag}">
+                    Добавить тэг
+                </button>
+                <div id="tagsDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." class="search_input"
+                           id="tagInput" onkeyup="filterTagsFunction()">
+                    <th:block th:object="${tagOption}" th:each="tagOption : ${tagsList}">
+                        <a th:attr="data-itemid=*{slug}" th:text="*{name}">Home</a>
+                    </th:block>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.price}">Цена:</span>
+
+        </td>
+        <td>
+            <input class="form-input" id="price" name="price" type="text"
+                   placeholder="Цена" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.discount}">Скидка:</span>
+        </td>
+        <td>
+            <input class="form-input" id="discount" name="discount" type="text"
+                   placeholder="Скидка"  th:attr="placeholder=#{book.discount}"data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.description}">Описание:</span>
+        </td>
+        <td>
+                                            <textarea name="description" class="form-textarea" placeholder="Описание"
+                                                      data-validate="require"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.files}">Файлы:</span>
+        </td>
+        <td>
+            <form  id="pdfForm" method="POST" enctype="multipart/form-data" action="#">
+                <label for="pdf">PDF: </label>
+                <input type="file" name="pdf" id="pdf" accept=".pdf"/>
+            </form>
+            <form  id="epubForm" method="POST" enctype="multipart/form-data" action="#">
+                <label for="epub">EPUB: </label>
+                <input type="file" name="epub" id="epub" accept=".epub"/>
+            </form>
+            <form  id="fb2Form" method="POST" enctype="multipart/form-data" action="#">
+                <label for="fb2">FB2: </label>
+                <input type="file" name="fb2" id="fb2" accept=".fb2"/>
+            </form>
+        </td>
+    </tr>
+</th:block>
+
+<th:block th:fragment="filledBookFields" th:object="${book}">
+    <tr>
+        <td style="width:20%">
+            <div class="ProductCard-titleProp" th:text="#{book.title}">Название книги:
+            </div>
+        </td>
+        <td style="width:20%">
+            <input class="form-input" th:field="*{title}" id="title" name="title" type="text"
+                   placeholder="Название"  th:attr="placeholder=#{book.title}"data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp">Slug:
+            </div>
+        </td>
+        <td>
+            <input class="form-input" th:attr="data-itemid=*{slug}" th:field="*{slug}" id="slug" name="slug" type="text"
+                   placeholder="Slug" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp" th:text="#{book.pubDate}">Дата публикации:
+            </div>
+        </td>
+        <td>
+            <input class="form-input form-input_date form-input_date_uninit"
+                   id="pubDate" th:field="*{pubDate} "
+                   name="pubDate" type="text" placeholder="Дата"  th:attr="placeholder=#{book.pubDate}"
+                   autocomplete="off"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp" th:text="#{book.isBestseller}">Является бестселлером:
+            </div>
+        </td>
+        <td >
+            <input style="margin-top: 10px" type="checkbox" th:checked="*{isBestseller == 1}"
+                   id="isBestseller" name="isBestseller"
+                   value="isBestseller">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.authors}">Автор(ы):</span>&#32;
+        </td>
+        <td>
+            <div id="selected-authors">
+
+                <th:block th:object="${author}" th:each="author, iterStat : ${authors}">
+                    <span th:attr="data-itemid=*{slug}" th:text="*{name}"></span>
+                    <span th:unless="${iterStat.last}">, </span>
+                </th:block>
+            </div>
+
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" onclick="authorsFunction()"
+                        class="btn_sm btn_primary dropbtn" th:text="#{buttons.addAuthor}">
+                    Добавить автора
+                </button>
+                <div id="authorsDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." class="search_input"
+                           id="authorInput" onkeyup="filterAuthorsFunction()">
+                    <th:block th:object="${authorOption}" th:each="authorOption : ${authorsList}">
+                        <a th:attr="data-itemid=*{slug}" th:text="*{name}">Home</a>
+                    </th:block>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.genres}">Жанры:</span>
+        </td>
+        <td>
+            <div id="selected-genres">
+<!--                <div class="old-items" style="display: none">-->
+<!--                    <th:block th:object="${genre}" th:each="genre, iterStat : ${genres}">-->
+<!--                        <span th:attr="data-itemid=*{slug}" th:text="*{name}"></span>-->
+<!--                        <span th:unless="${iterStat.last}">, </span>-->
+<!--                    </th:block>-->
+<!--                </div>-->
+                <th:block th:object="${genre}" th:each="genre, iterStat : ${genres}">
+                    <span th:attr="data-itemid=*{slug}" th:text="*{name}"></span>
+                    <span th:unless="${iterStat.last}">, </span>
+                </th:block>
+            </div>
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" onclick="genresFunction()"
+                        class="btn_sm btn_primary dropbtn" th:text="#{buttons.addGenre}">
+                    Добавить жанр
+                </button>
+                <div id="genresDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." class="search_input"
+                           id="genreInput" onkeyup="filterGenresFunction()">
+                    <th:block th:object="${genreOption}" th:each="genreOption : ${genresList}">
+                        <a th:attr="data-itemid=*{slug}" th:text="*{name}">Home</a>
+                    </th:block>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.tags}">Тэги:</span>
+        </td>
+        <td>
+            <div id="selected-tags" >
+<!--                <div class="old-items" style="display: none">-->
+<!--                    <th:block th:object="${tag}" th:each="tag, iterStat : ${tags}">-->
+<!--                        <span th:attr="data-itemid=*{slug}" th:text="*{name}"></span>-->
+<!--                        <span th:unless="${iterStat.last}">, </span>-->
+<!--                    </th:block>  -->
+<!--                </div>-->
+
+                <th:block th:object="${tag}" th:each="tag, iterStat : ${tags}">
+                    <span th:attr="data-itemid=*{slug}" th:text="*{name}"></span>
+                    <span th:unless="${iterStat.last}">, </span>
+                </th:block>
+            </div>
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" onclick="tagsFunction()"
+                        class="btn_sm btn_primary dropbtn" th:text="#{buttons.addTag}">
+                    Добавить тэг
+                </button>
+                <div id="tagsDropdown" class="dropdown-content">
+                    <input type="text" placeholder="Search.." class="search_input"
+                           id="tagInput" onkeyup="filterTagsFunction()">
+                    <th:block th:object="${tagOption}" th:each="tagOption : ${tagsList}">
+                        <a th:attr="data-itemid=*{slug}" th:text="*{name}">Home</a>
+                    </th:block>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.price}">Цена:</span>
+
+        </td>
+        <td>
+            <input class="form-input" th:field="*{price}" id="price" name="price" type="text"
+                   placeholder="Цена"  th:attr="placeholder=#{book.price}" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.discount}">Скидка:</span>
+        </td>
+        <td>
+            <input class="form-input" th:field="*{discount}" id="discount" name="discount" type="text"
+                   placeholder="Скидка"  th:attr="placeholder=#{book.discount}" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.description}">Описание:</span>
+        </td>
+        <td>
+                                            <textarea name="description" class="form-textarea" placeholder="Описание" th:attr="placeholder=#{book.description}"
+                                                      data-validate="require" th:field="*{description}"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.files}">Файлы:</span>
+        </td>
+        <td>
+            <form  id="pdfForm" method="POST" enctype="multipart/form-data" action="#">
+                <label for="pdf">PDF: </label>
+                <input type="file" name="pdf" id="pdf" accept=".pdf"/>
+            </form>
+            <form  id="epubForm" method="POST" enctype="multipart/form-data" action="#">
+                <label for="epub">EPUB: </label>
+                <input type="file" name="epub" id="epub" accept=".epub"/>
+            </form>
+            <form  id="fb2Form" method="POST" enctype="multipart/form-data" action="#">
+                <label for="fb2">FB2: </label>
+                <input type="file" name="fb2" id="fb2" accept=".fb2"/>
+            </form>
+        </td>
+    </tr>
+</th:block>
+</html>

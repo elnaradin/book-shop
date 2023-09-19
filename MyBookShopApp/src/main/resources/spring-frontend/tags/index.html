@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Книги по тэгам</title>
     <meta name="description" content="Описание страницы">
@@ -25,33 +25,32 @@
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main" th:object="${tag}">
+
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{name})}"></ul>
-
-
             <div class="Section">
-
-
                 <div class="Section-header">
 
                     <h1 class="Section-title" th:text="*{name}">Психологическая проза
                     </h1>
-                    <button class="trigger trigger_dropdown" type="button">
-                        <div class="Section-header-links">
+                    <button class="trigger trigger_dropdown" type="button" >
+                        <div class="Section-header-links" >
                             <a class="Section-header-link" th:href="@{'/' + '#tags'}"
-                               href="/index.html#tags">Все тэги</a>
+                               href="/index.html#tags" th:text="#{tags.allTags}">Все тэги</a>
                         </div>
 
-                        <div class="modal modal_dropdown ">
+                        <div class="modal modal_dropdown" style="margin-top: 20px;"  >
                             <div class="modal-window "><a class="modal-close"
                                                           href="#"><span></span><span></span></a>
-                                <strong class="modal-title">Все тэги</strong>
+                                <strong class="modal-title" th:text="#{tags.allTags}">Все тэги</strong>
                                 <div th:replace="~{fragments/tag_cloud_fragment :: cloud}"></div>
-
                             </div>
                         </div>
-
                     </button>
+                    <div class="ProductCard-cartElement" sec:authorize="hasRole('ADMIN')" style="float: right; margin: 25px">
+                        <button id="DeleteTag_btn" th:attr=" data-itemid=*{slug}, data-item='TAG'" class="btn btn_danger btn_primary " th:text="#{buttons.delete}">Удалить
+                        </button>
+                    </div>
                 </div>
 
                 <div class="Cards Cards_refresh"

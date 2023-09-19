@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<th:block  th:fragment="authorEmptyFields">
+    <tr>
+        <td style="width:30%">
+            <div class="ProductCard-titleProp" th:text="#{author.name}">Имя автора:
+            </div>
+        </td>
+        <td style="width:20%">
+            <input class="form-input" id="name" name="name" type="text"
+                   placeholder="Имя" th:attr="placeholder=#{author.name}" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp">Slug:
+            </div>
+        </td>
+        <td>
+            <input class="form-input" id="slug" name="slug" type="text"
+                   placeholder="Slug" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.description}">Описание:</span>
+        </td>
+        <td>
+                                        <textarea name="description" class="form-textarea" placeholder="Описание" th:attr="placeholder=#{book.description}"
+                                                  data-validate="require"></textarea>
+        </td>
+    </tr>
+</th:block>
+<th:block  th:fragment="authorFilledFields" th:object="${author}">
+    <tr>
+        <td style="width:20%">
+            <div class="ProductCard-titleProp" th:text="#{author.name}">Имя автора:
+            </div>
+        </td>
+        <td style="width:20%">
+            <input class="form-input" th:field="*{name}" id="name" name="name" type="text"
+                   placeholder="Имя" th:attr="placeholder=#{author.name}" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="ProductCard-titleProp" >Slug:
+            </div>
+        </td>
+        <td>
+            <input class="form-input" th:attr="data-itemid=*{slug}" th:field="*{slug}" id="slug" name="slug" type="text"
+                   placeholder="Slug" data-validate="require">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ProductCard-titleProp" th:text="#{book.description}">Описание:</span>
+        </td>
+        <td>
+                                        <textarea name="description"   th:field="*{description}" class="form-textarea" placeholder="Описание"
+                                                  th:attr="placeholder=#{book.description}"
+                                                  data-validate="require"></textarea>
+        </td>
+    </tr>
+</th:block>
+
+
+</html>

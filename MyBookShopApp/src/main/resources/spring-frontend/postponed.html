@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Тут название страницы написать</title>
+    <title th:text="#{shelves.postponed.title}">Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -28,10 +28,10 @@
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
-            <h1 class="Middle-title">Отложенное
+            <h1 class="Middle-title" th:text="#{shelves.postponed.title}">Отложенное
             </h1>
             <form th:if="${#lists.isEmpty(booksPage.books)}" class="form Cart Cart_postponed">
-                <div class="Cart-messageInfo">Отложенных книг нет</div>
+                <div class="Cart-messageInfo" th:text="#{shelves.postponed.emptyBookList}">Отложенных книг нет</div>
 
 
                 <div class="Cart-total">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="Cart-block">
                         <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART" data-bookid="[9]"
-                                disabled="disabled">Купить все
+                                disabled="disabled" th:text="#{buttons.buyAll}">Купить все
                         </button>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/shopping-basket.svg"
                                                 alt="shopping-basket.svg"/></span><span
-                                                class="btn-content">Купить</span>
+                                                class="btn-content" th:text="#{buttons.buy}">Купить</span>
                                         </button>
                                     </div>
                                     <div class="Cart-btn">
@@ -79,7 +79,7 @@
                                                 th:attr="data-bookid=  *{slug }"
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span
-                                                class="btn-content">Удалить</span>
+                                                class="btn-content" th:text="#{buttons.delete}">Удалить</span>
                                         </button>
 
                                     </div>
@@ -91,7 +91,7 @@
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/shopping-basket.svg"
                                                 alt="shopping-basket.svg"/></span><span
-                                                class="btn-content">Купить</span>
+                                                class="btn-content" th:text="#{buttons.buy}">Купить</span>
                                         </button>
                                     </div>
                                     <div class="Cart-btn">
@@ -99,7 +99,7 @@
                                                 th:attr="data-bookid= *{slug} "
                                                 data-bookid="[1122]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span
-                                                class="btn-content">Удалить</span>
+                                                class="btn-content" th:text="#{buttons.delete}">Удалить</span>
                                         </button>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                     <div class="Cart-block Cart-block_total">
                     </div>
                     <div class="Cart-block">
-                        <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART">Купить все
+                        <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART" th:text="#{buttons.buyAll}">Купить все
                         </button>
                     </div>
                 </div>

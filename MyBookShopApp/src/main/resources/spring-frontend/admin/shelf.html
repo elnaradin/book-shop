@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Тут название страницы написать</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="../../favicon.ico" rel="shortcut icon">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=04238027">
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=04238027">
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=04238027">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script defer src="/assets/js/scripts.min.js?v=04238027"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!--    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+    <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/sendChangeBookStatusRequestScript.js"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head}"></header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+
+            <h1 class="Middle-title" th:text="#{shelves.userBooks}">Книги пользователя
+            </h1>
+            <form th:if="${#lists.isEmpty(booksPage.books)}" th:attr="data-userid=${userId}" class="form Cart Cart_postponed">
+                <div class="Cart-messageInfo" th:text="#{shelves.userBooksEmpty}">Купленных книг нет</div>
+            </form>
+            <form th:unless="${#lists.isEmpty(booksPage.books)}" th:attr="data-userid=${userId}" class="form Cart Cart_postponed">
+                <div class="Cart-product" th:each="book : ${booksPage.books}">
+                    <div class="Cart-block Cart-block_row" th:object="${book}">
+                        <div class="Cart-block Cart-block_pict">
+                            <a class="Cart-pict" href="#" th:href="@{'/books/' + *{slug}}">
+                                <img style="width: 100px; height: 150px; object-fit: cover;"
+                                     class="Cart-img" th:src="*{image}" src="/assets/img/content/main/card.jpg"
+                                     alt="card.jpg"/>
+                            </a>
+                        </div>
+                        <div class="Cart-block Cart-block_row">
+                            <div class="Cart-block Cart-block_info">
+
+                                <div class="Cart-title"><a href="#" th:href="@{'/books/' + *{slug}}" th:text="*{title}">Жизнь</a>
+                                </div>
+                                <div class="Card-description">
+                                    <span th:text=" *{authors}">Лия Арден
+                                        <span></span>
+                                    </span>
+                                </div>
+                                <div class="Cart-buttons">
+                                    <div class="Cart-btn">
+                                        <button class="btn btn_danger remove_shelf_book"
+                                                th:attr="data-bookid=*{slug}"
+                                                data-bookid="[1122]"><span
+                                                class="btn-content" th:text=" #{buttons.delete}">Удалить</span>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Cart-block Cart-block_price">
+                                <div class="Cart-priceTitle" th:text=" #{book.price}">Цена:
+                                </div>
+                                <div class="Cart-price Cart-price_old" th:text="'₽' + *{price}">150 р.
+                                </div>
+                                <div class="Cart-price" th:text="'₽' + *{discountPrice}">254 р.
+                                </div>
+                                <div class="Cart-sale" th:text="'-' + *{discount} + '%'">-30%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <h1 class="Middle-title" th:text="#{top-bar.addBook2Shelf}">Поиск
+            </h1>
+            <div class="Section">
+                <div class="search">
+                    <form class="form form_search" id="searchshelfbooks" action="#" method="post" data-searchlimit="20">
+                        <input class="search-input" id="querypage" name="querypage" type="text"
+                               placeholder="Search over 30 million book titles"
+                               value=""/>
+                        <button class="search-button" type="submit" name="searchpage" id="searchpage"
+                                th:text="#{top-bar.search}">Поиск
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="Section Section_close">
+                <header class="Section-header" th:attr="data-bookCount=#{search.zeroBooksFound}, data-add_btn=#{buttons.add}">
+                    <h2 class="Section-title Middle-searchHeader" th:text="#{search.zeroBooksFound}">
+                        Найдено 0 книг
+                    </h2>
+                </header>
+
+                <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary"
+                                                                 style="display: none;"
+                                                                 href="#"
+                                                                 id= 'showmore'
+                                                                 data-refreshquery=""
+                                                                 data-refreshoffset="1"
+                                                                 data-refreshlimit="5"
+                                                                 th:text="#{show-more}">Показать еще</a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</div>
+<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+</body>
+</html>

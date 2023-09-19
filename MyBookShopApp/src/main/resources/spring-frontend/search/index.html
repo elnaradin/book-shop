@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Поиск</title>
     <meta name="description" content="Описание страницы"/>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <link href="../favicon.ico" rel="shortcut icon"/>
+    <link href="../../../favicon.ico" rel="shortcut icon"/>
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous"/>
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous"/>
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous"/>
@@ -25,11 +25,12 @@
 <div class="Middle Middle_search">
     <div class="wrap">
         <main class="Middle-main">
+
             <h1 class="Middle-title" th:text="#{top-bar.search}">Поиск
             </h1>
             <div class="Section">
                 <div class="search">
-                    <form class="form form_search" action="#" method="post" data-searchlimit="20">
+                    <form class="form form_search" id="searchbook2" action="#" method="post" data-searchlimit="20">
                         <input class="search-input" id="querypage" name="querypage" type="text"
                                placeholder="Search over 30 million book titles" th:field="${searchWordDto.example}"
                                th:attr="data-refreshquery=${searchWordDto.example}" value="Техника"/>
@@ -38,17 +39,23 @@
                         </button>
                     </form>
                 </div>
+                <div th:if="${searchError}" class="form-error" th:text="${searchError.getLocalizedMessage()}"></div>
             </div>
             <div class="Section Section_close">
                 <header class="Section-header" th:object="${booksPage}">
-                    <h2 class="Section-title Middle-searchHeader"
-                        th:text="'Найдено ' +
-                        *{count + (count eq 1 ? ' книга':(count gt 1 and count lt 5 ? ' книги' : ' книг' ))}">
+                    <h2 class="Section-title Middle-searchHeader" th:with="bookCount=*{count}, str=#{search.zeroBooksFound}"
+                        th:text="${#strings.replace(str, '0', bookCount)}">
                         Найдено 40 книг
                     </h2>
+                    <a class="menu-link" id=""
+                       th:attr="href=${type eq 'search-local' ?  '/search/google-books' : '/search/local' },
+                                                id= ${type eq 'search-local' ?  'google-search' : 'local-search' }"
+                       th:href="${type} eq 'search-local' ?  @{'/search/google-books'} : @{'/search/local'} "
+                       href="/genres/index.html"
+                       th:text="${type eq 'search-local'} ? #{search.google-books} : #{search.local} ">Книги</a>
                 </header>
                 <div class="Cards Cards_refresh"
-                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage}, refreshShowValue = 'search')}"></div>
+                     th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage}, refreshShowValue = ${type})}"></div>
             </div>
         </main>
     </div>

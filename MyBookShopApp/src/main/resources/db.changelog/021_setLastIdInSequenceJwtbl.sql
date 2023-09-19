@@ -1,0 +1,1 @@
+SELECT setval('jwt_black_list_id_seq', (SELECT MAX(id) from "jwt_black_list"));

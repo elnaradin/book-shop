@@ -29,4 +29,14 @@
     <include file="db.changelog/add_new_status.sql"/>
     <include file="db.changelog/add_documents.sql"/>
     <include file="db.changelog/add_faqs.sql"/>
+    <include file="db.changelog/012_drop_confirmation_codes_table.xml"/>
+    <include file="db.changelog/013_add_autoincrement_id.xml"/>
+    <include file="db.changelog/014_set_last_id.sql"/>
+    <include file="db.changelog/015_add_admin.sql"/>
+    <include file="db.changelog/016_add_hash_column.xml"/>
+    <include file="db.changelog/017_insert_hash_into_reviews.sql"/>
+    <include file="db.changelog/018_adduc_slugs.xml"/>
+    <include file="db.changelog/019_add_on_delete_actions.xml"/>
+    <include file="db.changelog/020_add_autoincrement_jwtbl.xml"/>
+    <include file="db.changelog/021_setLastIdInSequenceJwtbl.sql"/>
 </databaseChangeLog>

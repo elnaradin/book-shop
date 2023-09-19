@@ -2,13 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:id="${popupOverlayId}" th:fragment="popup" sec:authorize="isAnonymous()">
     <div class="signinPopup" >
-        <p th:text="${reason} + ', войдите в аккаунт или зарегистрируйтесь.'"></p>
+        <p th:text="${reason} + #{popup.signin.advice}"></p>
         <div>
-            <a href="#" th:href="${'/signin'}">Войти</a>
+            <a href="#" th:href="${'/signin'}" th:text="#{sign-in}">Войти</a>
         </div>
         <p></p>
         <div>
-            <a href="#" th:href="${'/signup'}">Зарегистрироваться</a>
+            <a href="#" th:href="${'/signup'}" th:text="#{signup}">Зарегистрироваться</a>
         </div>
         <img class="close signinPopup_close" src="/assets/img/icons/close.svg" alt="close.svg"/>
     </div>

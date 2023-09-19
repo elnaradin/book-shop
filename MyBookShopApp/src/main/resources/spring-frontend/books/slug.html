@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title th:text="${book.title}">Страница книги</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="../favicon.ico" rel="shortcut icon">
+    <link href="../../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -28,19 +28,30 @@
     <script src="/assets/js/SigninRequiredWindowScript.js"></script>
     <link rel="stylesheet" href="/assets/css/SigninRequiredWindowStyle.css">
     <script src="/assets/js/LogoutScript.js"></script>
+    <link rel="stylesheet" href="/assets/css/Dropdown.css">
+    <script src="/assets/js/Dropdown.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
         th:replace="~{fragments/common_header_fragment :: head}"></header>
 <div class="Middle">
     <div class="wrap">
+
         <main class="Middle-main" th:object="${book}">
+<!--            <header style="margin-bottom: 0px" sec:authorize="hasRole('ADMIN')" class="Section-header">-->
+<!--                <h2 class="Section-title Middle-searchHeader"></h2>-->
+<!--                <a   id="" th:href="@{'/edit/book/' + *{slug}}">-->
+<!--                    <img  src="/assets/img/icons/edit.svg" alt="edit.svg"/>-->
+<!--                </a>-->
+<!--            </header>-->
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{title})}"></ul>
+
             <div class="Product">
                 <div class="ProductCard">
                     <div class="ProductCard-look">
-                        <form sec:authorize="hasRole('ADMIN')" id="imgForm" method="POST" enctype="multipart/form-data"
+                        <th:block sec:authorize="hasRole('ADMIN')" >
+                        <form style="cursor: pointer;" id="imgForm" method="POST" enctype="multipart/form-data"
                               action="#"
                               th:action="'/books/' + *{slug} +'/img/save'">
                             <div class="ProductCard-photo uploadButton">
@@ -49,29 +60,69 @@
                                      alt="card.jpg"/>
                             </div>
                             <input type="file" name="file" id="dialog" style="display: none" accept="image/*"/>
-                        </form>
-
+                        </form >
+                            <div style="margin-top: 20px;" class="form-group">
+                                <h4 th:text="#{book.existingFiles}">Все текущие файлы:</h4>
+                                <div th:if="${#lists.size(bookFiles) == 0}" th:text="#{book.noFiles}">Файлов нет</div>
+                                <table style="display: flex; justify-content: center;">
+                                    <tr th:object="${bookFile}" th:each="bookFile : ${bookFiles}">
+                                        <td th:text="*{typeName}"></td>
+                                        <td th:text="*{typeDescription}"></td>
+                                        <td th:text="*{length}"></td>
+                                        <td > <a href="#" th:href="'/books/download/' + ${book.slug} + '/'+${bookFile.hash}" th:text="#{buttons.download}">Download</a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </th:block>
                         <div sec:authorize="!hasAnyRole('ADMIN')" class="ProductCard-photo">
-                            <img th:src="*{image}"  style="width: 400px; height: 600px; object-fit: cover;"
+                            <img th:src="*{image}" style="width: 400px; height: 600px; object-fit: cover;"
                                  src="/assets/img/content/main/card.jpg"
                                  alt="card.jpg"/>
                         </div>
-
                     </div>
                     <div class="ProductCard-desc"
                          th:replace="~{fragments/book_description_fragment :: bookDesc}"></div>
-                </div>
-                <div class="Product-comments">
-                    <div class="Product-comments-header">
-                        <h3 class="Product-comments-title">Отзывы
-                        </h3><span class="Product-comments-amount"
-                                   th:text="${#lists.size(reviews)} == 0 ? 'Отзывов нет'
-                                   : ${#lists.size(reviews)} + ' отзывов'">567 отзывов</span>
+                    <div class="ProductCard-desc" sec:authorize="hasRole('ADMIN')">
+                        <div class="ProductCard-header">
+                            <table>
+                                <th:block th:replace="~{fragments/book_data_fields :: filledBookFields}"></th:block>
+                                <tr>
+                                    <td>
+                                        <div class="ProductCard-cart">
+                                            <div class="ProductCard-cartElement">
+                                                <button id="DeleteBook_btn" th:attr="data-itemid=*{slug}, data-item='BOOK'" class="btn btn_danger btn_primary "  th:text="#{buttons.delete}">Удалить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="ProductCard-cart">
+                                            <div class="ProductCard-cartElement">
+
+                                                <button id="UpdateBook_btn" class="btn btn_primary "  th:text="#{buttons.update}">Обновить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <div  sec:authorize="hasRole('USER')"
-                     th:replace="~{fragments/add_comment_fragment :: commentForm}"></div>
-                <div th:replace="~{fragments/book_reviews_fragment :: reviewBlock}"></div>
+
+                    <div class="Product-comments">
+                        <div class="Product-comments-header">
+                            <h3 class="Product-comments-title"  th:text="#{book.reviews}">Отзывы
+                            </h3><span class="Product-comments-amount"
+                                       th:text="${#lists.size(reviews)} == 0 ? #{book.noReviews}
+                                   : ${#lists.size(reviews)} + ' ' + #{book.reviews.gen}">567 отзывов</span>
+                        </div>
+                    </div>
+                    <div
+                         th:replace="~{fragments/add_comment_fragment :: commentForm}"></div>
+                    <div th:replace="~{fragments/book_reviews_fragment :: reviewBlock}"></div>
+
+
             </div>
 
         </main>

@@ -7,7 +7,7 @@
      th:classappend=" ${genre.children.size() > 0 ? '' : 'Tag'}">
 
     <div class="Tags-title" th:object="${genre}">
-        <div class="Tag"><a th:href="@{'/genres/' + *{slug}}" href="/genres/slug.html">
+        <div class="Tag"><a th:href="@{'/books/genres/' + *{slug}}" href="/genres/slug.html">
             <span th:text="*{name}">Лёгкое чтение</span>
             <span th:text="'(' + *{booksCount} + ')'"
                   class="undefined-amount">(15638)</span></a>

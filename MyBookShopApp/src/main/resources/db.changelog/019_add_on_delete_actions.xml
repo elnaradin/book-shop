@@ -1,0 +1,99 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="changeset-ondelete1" author="user">
+        <dropForeignKeyConstraint baseTableName="book_review_like" constraintName="fkl5konyr7ye2i76wv92vf9w6y2"/>
+        <addForeignKeyConstraint baseTableName="book_review_like" baseColumnNames="review_id"
+                                 constraintName="fkl5konyr7ye2i76wv92vf9w6y22"
+                                 referencedTableName="book_review" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete2" author="user">
+        <dropForeignKeyConstraint baseTableName="book2author" constraintName="fk8joa8tens71ol1st4fd9hssph"/>
+        <addForeignKeyConstraint baseTableName="book2author" baseColumnNames="book_id"
+                                 constraintName="fk8joa8tens71ol1st4fd9hssph2"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete3" author="user">
+        <dropForeignKeyConstraint baseTableName="book2genre" constraintName="fkceqa97sssb6d5xg7n8jtt5gqb"/>
+        <addForeignKeyConstraint baseTableName="book2genre" baseColumnNames="book_id"
+                                 constraintName="fkceqa97sssb6d5xg7n8jtt5gqb2"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete4" author="user">
+        <dropForeignKeyConstraint baseTableName="book2tag" constraintName="fkkshb2gce4ettp6ehidjy86u5c"/>
+        <addForeignKeyConstraint baseTableName="book2tag" baseColumnNames="book_id"
+                                 constraintName="fkkshb2gce4ettp6ehidjy86u5c2"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete5" author="user">
+        <dropForeignKeyConstraint baseTableName="book2user" constraintName="fkd80i5quc7o0xb1d1k8ppqmtsu"/>
+        <addForeignKeyConstraint baseTableName="book2user" baseColumnNames="book_id"
+                                 constraintName="fkd80i5quc7o0xb1d1k8ppqmtsu2"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete6" author="user">
+        <dropForeignKeyConstraint baseTableName="book_file" constraintName="fkg7meofferi2glg6uwj2yhfmp9"/>
+        <addForeignKeyConstraint baseTableName="book_file" baseColumnNames="book_id"
+                                 constraintName="fkg7meofferi2glg6uwj2yhfmp92"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete7" author="user">
+        <dropForeignKeyConstraint baseTableName="book_review" constraintName="fkgme5o68sylsmw5hw0ys2x8iw8"/>
+        <addForeignKeyConstraint baseTableName="book_review" baseColumnNames="book_id"
+                                 constraintName="fkgme5o68sylsmw5hw0ys2x8iw82"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete8" author="user">
+        <dropForeignKeyConstraint baseTableName="ratings" constraintName="bookidratings"/>
+        <addForeignKeyConstraint baseTableName="ratings" baseColumnNames="book_id"
+                                 constraintName="bookidratings2"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete9" author="user">
+        <dropForeignKeyConstraint baseTableName="book2genre" constraintName="fknb5tbib0eo6i1qhmy62b78b3o"/>
+        <addForeignKeyConstraint baseTableName="book2genre" baseColumnNames="genre_id"
+                                 constraintName="fknb5tbib0eo6i1qhmy62b78b3o2"
+                                 referencedTableName="genres" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete10" author="user">
+        <dropForeignKeyConstraint baseTableName="book2tag" constraintName="fkbha16g6maqt9emet4pt8qq9"/>
+        <addForeignKeyConstraint baseTableName="book2tag" baseColumnNames="tag_id"
+                                 constraintName="fkbha16g6maqt9emet4pt8qq92"
+                                 referencedTableName="tags" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete11" author="user">
+        <dropForeignKeyConstraint baseTableName="book2author" constraintName="fk3hyom3yo5q6nfo9ytqofqil37"/>
+        <addForeignKeyConstraint baseTableName="book2author" baseColumnNames="author_id"
+                                 constraintName="fk3hyom3yo5q6nfo9ytqofqil372"
+                                 referencedTableName="authors" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="changeset-ondelete12" author="user">
+        <dropForeignKeyConstraint baseTableName="genres" constraintName="fkoaold0bfrn25lmbsjnp64lxp"/>
+        <addForeignKeyConstraint baseTableName="genres" baseColumnNames="parent_id"
+                                 constraintName="fkoaold0bfrn25lmbsjnp64lxp2"
+                                 referencedTableName="genres" referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+    </changeSet>
+    <changeSet id="changeset-addFKC" author="user">
+        <addForeignKeyConstraint baseTableName="file_download" baseColumnNames="book_id"
+                                 constraintName="fk3hyom3yo5q6nfo9ytqofqil372filetobook"
+                                 referencedTableName="books" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="file_download" baseColumnNames="user_id"
+                                 constraintName="fk3hyom3yo5q6nfo9ytqofqil372filetobookfiletouser"
+                                 referencedTableName="users" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,49 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="user" id="addUCBookSlug">
+        <addUniqueConstraint
+                columnNames="slug"
+                constraintName="bookUC"
+                tableName="books"/>
+    </changeSet>
+    <changeSet author="user" id="addUCAuthorSlug">
+        <addUniqueConstraint
+                columnNames="slug"
+                constraintName="authorUC"
+                tableName="authors"/>
+    </changeSet>
+    <changeSet author="user" id="addUCTagSlug">
+        <addUniqueConstraint
+                columnNames="slug"
+                constraintName="tagUC"
+                tableName="tags"/>
+    </changeSet>
+    <changeSet author="user" id="addUCGenreSlug">
+        <addUniqueConstraint
+                columnNames="slug"
+                constraintName="genreUC"
+                tableName="genres"/>
+    </changeSet>
+    <changeSet author="user" id="addUCFileHash">
+        <addUniqueConstraint
+                columnNames="hash"
+                constraintName="fileUC"
+                tableName="book_file"/>
+    </changeSet>
+    <changeSet author="user" id="addUCFileDownload">
+        <addUniqueConstraint
+                columnNames="book_id, user_id"
+                constraintName="fileDownloadUC"
+                tableName="file_download"/>
+    </changeSet>
+    <changeSet author="user" id="addUCbook2author">
+        <addUniqueConstraint
+                columnNames="book_id, author_id"
+                constraintName="book2authorUC"
+                tableName="book2author"/>
+    </changeSet>
+
+</databaseChangeLog>

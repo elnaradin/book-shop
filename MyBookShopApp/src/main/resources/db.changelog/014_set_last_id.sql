@@ -1,0 +1,17 @@
+SELECT setval('books_id_seq', (SELECT MAX(id) from "books"));
+SELECT setval('authors_id_seq', (SELECT MAX(id) from "authors"));
+SELECT setval('balance_transaction_id_seq', (SELECT MAX(id) from "balance_transaction"));
+SELECT setval('book2author_id_seq', (SELECT MAX(id) from "book2author"));
+SELECT setval('book2genre_id_seq', (SELECT MAX(id) from "book2genre"));
+SELECT setval('book2tag_id_seq', (SELECT MAX(id) from "book2tag"));
+SELECT setval('book2user_id_seq', (SELECT MAX(id) from "book2user"));
+SELECT setval('document_id_seq', (SELECT MAX(id) from "document"));
+SELECT setval('faq_id_seq', (SELECT MAX(id) from "faq"));
+SELECT setval('file_download_id_seq', (SELECT MAX(id) from "file_download"));
+SELECT setval('genres_id_seq', (SELECT MAX(id) from "genres"));
+SELECT setval('message_id_seq', (SELECT MAX(id) from "message"));
+SELECT setval('tags_id_seq', (SELECT MAX(id) from "tags"));
+SELECT setval('user2role_id_seq', (SELECT MAX(id) from "user2role"));
+SELECT setval('ratings_id_seq', (SELECT MAX(id) from "ratings"));
+SELECT setval('user_contact_id_seq', (SELECT MAX(id) from "user_contact"));
+SELECT setval('book_file_id_seq', (SELECT MAX(id) from "book_file"));
