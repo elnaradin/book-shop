@@ -10,22 +10,22 @@
                         class="btn btn_primary btn_outline keptBtn"
                         th:classappend="${status == 'KEPT'} ? 'btn_check' : ''" data-sendstatus="KEPT"
                         data-bookid="[1111]" th:attr="data-bookid= *{ slug } ,
-                        data-alttext=${status == 'KEPT' ? 'Отложить': 'Отложена'},
-                        data-check = ${status == 'KEPT'  ? 'check' : 'false'}"
+                        data-alttext=(${status} == 'KEPT' ? #{buttons.postpone}: #{buttons.postponed}),
+                        data-check = (${status} == 'KEPT'  ? 'check' : 'false')"
                         data-btntype="check" data-btnradio="buyblock" data-check="false" data-alttext="Отложена"><span class="btn-icon"><img
                         src="/assets/img/icons/heart.svg" alt="heart.svg"/></span>
-                    <span class="btn-content" th:text="${status} == 'KEPT' ? 'Отложена' : 'Отложить'">Отложить</span>
+                    <span class="btn-content" th:text="${status} == 'KEPT' ?  #{buttons.postponed} : #{buttons.postpone}">Отложить</span>
                 </button>
             </div>
             <div class="ProductCard-cartElement">
                 <button  class="btn btn_primary btn_outline cartBtn"
                         th:classappend="${status} == 'CART' ? 'btn_check' : ''" data-sendstatus="CART"
                         data-bookid="[1111]" th:attr="data-bookid= *{slug },
-                        data-alttext=${status == 'CART' ? 'Купить' : 'В корзине'},
-                        data-check = ${status == 'CART'  ? 'check' : 'false'}"
+                        data-alttext=(${status} == 'CART' ? #{buttons.buy} : #{buttons.inCart}),
+                        data-check = (${status} == 'CART'  ? 'check' : 'false')"
                         data-btntype="check" data-btnradio="buyblock" data-check="false" data-alttext="В корзине"><span class="btn-icon"><img
                         src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg"/></span>
-                    <span class="btn-content" th:text="${status}  == 'CART' ? 'В корзине' : 'Купить'">Купить</span>
+                    <span class="btn-content" th:text="${status}  == 'CART' ? #{buttons.inCart} : #{buttons.buy}">Купить</span>
                 </button>
 
             </div>
@@ -35,21 +35,21 @@
                 <button data-bookid="[1111]" class="btn btn_primary btn_outline keptBtn"
                         data-sendstatus_unauthorized="KEPT" th:classappend="${isKept} ? 'btn_check' : ''"
                         th:attr="data-bookid= *{slug},
-                        data-alttext = ${isKept} ? 'Отложить': 'Отложена',
+                        data-alttext = ${isKept} ? #{buttons.postpone}: #{buttons.postponed},
                         data-check = ${isKept} ? 'check' : 'false'" data-btntype="check" data-btnradio="buyblock" data-check="false"
                         data-alttext="Отложена"><span class="btn-icon"><img src="/assets/img/icons/heart.svg" alt="heart.svg"/></span>
-                    <span class="btn-content" th:text="${isKept} ? 'Отложена' : 'Отложить'">Отложить</span>
+                    <span class="btn-content" th:text="${isKept} ? #{buttons.postponed} : #{buttons.postpone}">Отложить</span>
                 </button>
             </div>
             <div class="ProductCard-cartElement" th:with="isInCart=${#lists.contains(slugsByStatus.get('CART'), slug)}">
                 <button class="btn btn_primary btn_outline cartBtn" th:classappend="${isInCart} ? 'btn_check' : ''"
                         data-sendstatus_unauthorized="CART" data-bookid="[1111]"
-                        th:attr="data-bookid=  *{slug }, data-alttext= ${isInCart}?  'Купить' : 'В корзине',
+                        th:attr="data-bookid=  *{slug }, data-alttext= ${isInCart}?  #{buttons.buy} : #{buttons.inCart},
                         data-check= ${isInCart} ? 'check' : 'false'"
                         data-btntype="check" data-btnradio="buyblock" data-check="false"
                         data-alttext="В корзине" ><span class="btn-icon"><img src="/assets/img/icons/shopping-basket.svg"
                                                                              alt="shopping-basket.svg"/></span>
-                    <span class="btn-content" th:text="${isInCart}  ? 'В корзине' : 'Купить'">Купить</span>
+                    <span class="btn-content" th:text="${isInCart}  ? #{buttons.inCart} : #{buttons.buy}">Купить</span>
                 </button>
             </div>
         </div>
@@ -58,18 +58,18 @@
                 <a class="btn btn_primary btn_outline" href="#"><span
                         class="btn-icon"><img src="/assets/img/icons/download.svg"
                                               alt="download.svg"/></span><span
-                        class="btn-content">Скачать</span></a>
+                        class="btn-content" th:text="#{buttons.download}">Скачать</span></a>
             </div>
-            <div class="ProductCard-cartElement" >
+            <div class="ProductCard-cartElement">
                 <button class="btn btn_primary btn_outline" data-sendstatus="ARCHIVED"
-                        data-bookid="[1111]" th:classappend="${status} == 'ARCHIVED' ? 'btn_check' : ''"
-                        th:attr="data-bookid= *{slug },
-                        data-alttext=${status == 'ARCHIVED' ? 'В архив' : 'Вернуть из архива'},
-                        data-check = ${status == 'ARCHIVED'  ? 'check' : 'false'}" data-btntype="check"
+                        data-bookid="[1111]" th:classappend="(${status} == 'ARCHIVED' ? 'btn_check' : '')"
+                        th:attr="data-bookid= *{slug},
+                        data-alttext=(${status} == 'ARCHIVED' ? #{buttons.archive} : #{buttons.removeFromArchive}),
+                        data-check = (${status} == 'ARCHIVED'  ? 'check' : 'false')" data-btntype="check"
                         data-btnradio="buyblock"
                         data-check="false" data-alttext="Вернуть из архива"><span class="btn-icon"><img
                         src="/assets/img/icons/archive.svg" alt="archive.svg"/></span><span
-                        class="btn-content" th:text="${status}  == 'ARCHIVED' ? 'Вернуть из архива' : 'В архив'">В архив</span>
+                        class="btn-content" th:text="${status}  == 'ARCHIVED' ? #{buttons.removeFromArchive} : #{buttons.archive}">В архив</span>
                 </button>
             </div>
         </div>
@@ -79,18 +79,34 @@
                 <a class="btn btn_primary btn_outline popup-trigger download-trigger" href="#"><span
                         class="btn-icon"><img src="/assets/img/icons/download.svg"
                                               alt="download.svg"/></span><span
-                        class="btn-content">Скачать</span></a>
+                        class="btn-content" th:text="#{buttons.download}">Скачать</span></a>
             </div>
+            <div class="form-error"  th:if="${limitReached}" th:text="#{exceptionMessage.downloadLimitReached}">Лимит скачивания превышен</div>
 
         </div>
-        <div th:replace="~{fragments/signin_popup_fragment :: popup(reason='Чтобы скачать книгу', popupOverlayId='download-popup')}"></div>
+        <div th:replace="~{fragments/signin_popup_fragment :: popup(reason=#{popup.signin.reason.download}, popupOverlayId='download-popup')}"></div>
 
-        <div id="myPopup" sec:authorize="hasRole('USER')">
-            <p>Ссылки для скачивания</p>
-            <div th:each="bookFile : ${bookFiles}">
-                <a href="#" th:href="${'/books/download/' + bookFile.hash}"
-                   th:text="${bookFile.getBookFileExtensionString()}"></a>
-            </div>
+        <div id="myPopup" th:if="${status == 'PAID'|| status == 'ARCHIVED'}" sec:authorize="hasRole('USER')" >
+            <p></p>
+            <p></p>
+            <th:block th:unless="${downloadLimitReached}">
+                <h4 th:text="#{book.downloadLinks}">Ссылки для скачивания</h4>
+                <table style="display: flex; justify-content: center;">
+                    <tr th:object="${bookFile}" th:each="bookFile : ${bookFiles}">
+                        <td th:text="*{typeName}"></td>
+                        <td th:text="*{typeDescription}"></td>
+                        <td th:text="*{length}"></td>
+                        <td > <a href="#" th:href="'/books/download/' + ${book.slug} + '/'+${bookFile.hash}" th:text="#{buttons.download}">Download</a></td>
+                    </tr>
+                </table>
+
+            </th:block>
+            <th:block th:if="${downloadLimitReached}">
+                <p></p>
+                <p></p>
+                <h3 th:text="#{exceptionMessage.downloadLimitReached}"></h3>
+                <a class="menu-link" th:href="@{/contacts}" th:text="#{support}">Поддержка</a>
+            </th:block>
             <img id="myPopup__close" class="close" src="/assets/img/icons/close.svg" alt="close.svg"/>
         </div>
         <div id="myOverlay" sec:authorize="hasRole('USER')"></div>

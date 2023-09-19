@@ -23,7 +23,7 @@
                     </div>
                     <div class="Header-search">
                         <div class="search">
-                            <form class="form form_search" action="#" method="post" data-searchlimit="5">
+                            <form class="form form_search" id="searchbook" action="#" method="post" data-searchlimit="5">
                                 <input class="search-input" id="query" name="query" type="text"
                                        th:placeholder="#{searchbar-placeholder}" th:field="${searchWordDto}"
                                        value=""/>
@@ -33,8 +33,7 @@
                             </form>
                         </div>
                     </div>
-                    <span th:if="${searchError}" th:text="${searchError.getLocalizedMessage()}"
-                          style="color: red"></span>
+                    <div th:if="${searchError}" class="form-error" th:text="${searchError.getLocalizedMessage()}"></div>
                 </div>
                 <div class="row-block Header-cart" sec:authorize="hasAnyRole('USER', 'ADMIN')" th:replace="~{fragments/cart_block_fragment ::  authorized}" ></div>
                 <div class="row-block Header-cart" sec:authorize="isAnonymous()"  th:replace="~{fragments/cart_block_fragment ::  unauthorized}"></div>
@@ -50,27 +49,47 @@
         <div class="wrap">
             <nav class="menuModal" id="navigate">
                 <ul class="menu menu_main">
-                    <li class="menu-item" th:classappend="${main}">
-                        <a class="menu-link" th:href="@{/}" th:text="#{top-bar.main}" href="/index.html">Главная</a>
+                    <li class="menu-item" th:classappend="${main}" >
+                        <a class="menu-link" th:href="@{/}" th:text="#{top-bar.main}"  href="/index.html">Главная</a>
                     </li>
-                    <li class="menu-item" th:classappend="${genres}">
-                        <a class="menu-link" th:href="@{/genres}" th:text="#{top-bar.genres}" href="/genres/index.html">Жанры</a>
+                    <li class="menu-item" th:classappend="${genres}" >
+                        <a class="menu-link" th:href="@{/books/genres}"  th:text="#{top-bar.genres}" href="/genres/index.html">Жанры</a>
                     </li>
-                    <li class="menu-item" th:classappend="${recent}">
-                        <a class="menu-link" th:href="@{/books/recent}" th:text="#{top-bar.recent}"
+                    <li class="menu-item" th:classappend="${recent}" >
+                        <a class="menu-link" th:href="@{/books/recent}"  th:text="#{top-bar.recent}"
                            href="/books/recent.html">Новинки</a>
                     </li>
-                    <li class="menu-item" th:classappend="${popular}">
+                    <li class="menu-item" th:classappend="${popular}" >
                         <a class="menu-link" th:href="@{/books/popular}" th:text="#{top-bar.popular}"
                            href="/books/popular.html">Популярное</a>
                     </li>
-                    <li class="menu-item" th:classappend="${authors}">
+                    <li class="menu-item" th:classappend="${authors}" >
                         <a class="menu-link" th:href="@{/authors}" th:text="#{top-bar.authors}"
                            href="/authors/index.html">Авторы</a>
                     </li>
-                    <li class="menu-item" th:classappend="${recently_viewed}" sec:authorize="hasRole('USER')">
+                    <li class="menu-item" th:classappend="${recently_viewed}" sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
                         <a class="menu-link" th:href="@{/recentlyViewed}" th:text="#{top-bar.recentlyViewed}"
                            href="/authors/index.html">Недавно просмотренные</a>
+                    </li>
+                    <li class="menu-item" th:classappend="${add_book}" sec:authorize="hasRole('ADMIN')">
+                        <a class="menu-link" th:href="@{/add/book}" th:text="#{top-bar.addBook}"
+                           href="/authors/index.html">Добавить книгу</a>
+                    </li>
+                    <li class="menu-item" th:classappend="${add_author}" sec:authorize="hasRole('ADMIN')">
+                        <a class="menu-link" th:href="@{/add/author}" th:text="#{top-bar.addAuthor}"
+                           href="/authors/index.html">Добавить книгу</a>
+                    </li>
+                    <li class="menu-item" th:classappend="${add_genre}" sec:authorize="hasRole('ADMIN')">
+                        <a class="menu-link" th:href="@{/add/genre}" th:text="#{top-bar.addGenre}"
+                           href="/authors/index.html">Добавить жанр</a>
+                    </li>
+                    <li class="menu-item" th:classappend="${add_tag}" sec:authorize="hasRole('ADMIN')">
+                        <a class="menu-link" th:href="@{/add/tag}" th:text="#{top-bar.addTag}"
+                           href="/authors/index.html">Добавить тэг</a>
+                    </li>
+                    <li class="menu-item" th:classappend="${users}" sec:authorize="hasRole('ADMIN')">
+                        <a class="menu-link" th:href="@{/users}" th:text="#{top-bar.users}"
+                           href="/authors/index.html">Добавить тэг</a>
                     </li>
                 </ul>
             </nav>

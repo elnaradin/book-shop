@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title th:text="#{shelves.paid.title}">Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="favicon.ico" rel="shortcut icon">
+    <link href="../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -27,17 +27,17 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs"
-                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='Мои книги')}"></ul>
+                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=#{shelves.paid.title})}"></ul>
             <div class="Section">
                 <div class="Section-header">
-                    <h1 class="Section-title">Мои книги
+                    <h1 class="Section-title" th:text="#{shelves.paid.title}">Мои книги
                     </h1>
-                    <div class="Section-header-links"><span class="Section-header-link Section-header-link_ACTIVE">Непрочитанные</span><a
-                            class="Section-header-link" th:href="@{/myarchive}" href="/myarchive.html">Архив</a>
+                    <div class="Section-header-links"><span class="Section-header-link Section-header-link_ACTIVE" th:text="#{shelves.unread.title}">Непрочитанные</span><a
+                            class="Section-header-link" th:href="@{/myarchive}" href="/myarchive.html" th:text="#{shelves.archived.title}">Архив</a>
                     </div>
                 </div>
                 <form class="form Cart" th:if="${#lists.isEmpty(booksPage.books)}" >
-                    <div class="Cart-messageInfo">У вас пока нет книг</div>
+                    <div class="Cart-messageInfo" th:text="#{shelves.paid.emptyBookList}">У вас пока нет книг</div>
                     <div class="Cart-total">
                         <div class="Cart-block Cart-block_total">
 

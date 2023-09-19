@@ -151,10 +151,32 @@
             <version>2.3.1</version>
         </dependency>
 
+
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.4.0.905</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+
+                <configuration>
+                    <environmentVariables>
+                        <APP_PORT>8085</APP_PORT>
+                        <DB_PASSWORD>password</DB_PASSWORD>
+                        <DB_PORT>5432</DB_PORT>
+                        <DB_USERNAME>postgres</DB_USERNAME>
+                        <DB_NAME>bookshop-test</DB_NAME>
+                        <EMAIL_USERNAME>conf</EMAIL_USERNAME>
+                        <EMAIL_PASSWORD>conf</EMAIL_PASSWORD>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -180,7 +202,7 @@
                 <version>4.13.0</version>
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/bookshop</url>
+                    <url>jdbc:postgresql://localhost:5432/bookshop-test</url>
                     <username>postgres</username>
                     <password>password</password>
                     <changeLogFile>src/main/resources/db.changelog/db.changelog-master.xml</changeLogFile>
@@ -192,8 +214,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>14</source>
+                    <target>14</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>

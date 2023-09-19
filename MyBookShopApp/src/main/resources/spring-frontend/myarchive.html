@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title th:text="#{shelves.archived.title}">Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="favicon.ico" rel="shortcut icon">
+    <link href="../../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -26,24 +26,24 @@
     <div class="wrap">
         <main class="Middle-main">
             <ul class="breadcrumbs">
-                <li class="breadcrumbs-item"><a th:href="@{/}" href="/index.html">Главная</a>
+                <li class="breadcrumbs-item"><a th:href="@{/}" href="/index.html" th:text="#{top-bar.main}">Главная</a>
                 </li>
-                <li class="breadcrumbs-item"><a th:href="@{/prifile}" href="/profile.html">Мой профиль</a>
+                <li class="breadcrumbs-item"><a th:href="@{/profile}" href="/profile.html" th:text="#{profile.title}">Мой профиль</a>
                 </li>
-                <li class="breadcrumbs-item breadcrumbs-item_current"><span>Мои книги</span>
+                <li class="breadcrumbs-item breadcrumbs-item_current"><span th:text="#{shelves.paid.title}">Мои книги</span>
                 </li>
             </ul>
             <div class="Section">
                 <div class="Section-header">
-                    <h1 class="Section-title">Мои книги
+                    <h1 class="Section-title" th:text="#{shelves.paid.title}">Мои книги
                     </h1>
                     <div class="Section-header-links"><a class="Section-header-link" th:href="@{/my}"
-                                                         href="/my.html">Непрочитанные</a><span
-                            class="Section-header-link Section-header-link_ACTIVE">Архив</span>
+                                                         href="/my.html" th:text="#{shelves.unread.title}">Непрочитанные</a><span
+                            class="Section-header-link Section-header-link_ACTIVE" th:text="#{shelves.archived.title}">Архив</span>
                     </div>
                 </div>
                 <form class="form Cart" th:if="${#lists.isEmpty(booksPage.books)}" >
-                    <div class="Cart-messageInfo">Архив пуст</div>
+                    <div class="Cart-messageInfo" th:text="#{shelves.archived.emptyBookList}">Архив пуст</div>
                     <div class="Cart-total">
                         <div class="Cart-block Cart-block_total">
 

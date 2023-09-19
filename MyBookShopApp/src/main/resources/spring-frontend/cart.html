@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Тут название страницы написать</title>
+    <title th:text="#{shelves.cart.title}">Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -32,15 +32,15 @@
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
-            <h1 class="Middle-title">Корзина
+            <h1 class="Middle-title" th:text="#{shelves.cart.title}">Корзина
             </h1>
             <form class="form Cart" th:if="${#lists.isEmpty(booksPage.books)}">
-                <div class="Cart-messageInfo">Корзина пуста</div>
+                <div class="Cart-messageInfo" th:text="#{shelves.cart.emptyBookList}">Корзина пуста</div>
                 <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
 
                     </div>
-                    <div class="Cart-block"><a class="btn btn_success btn_md" href="/order.html" disabled="disabled">Купить</a>
+                    <div class="Cart-block"><a class="btn btn_success btn_md" href="/order.html" disabled="disabled" th:text="#{buttons.buy}">Купить</a>
                     </div>
                 </div>
             </form>
@@ -71,7 +71,7 @@
                                                 data-sendstatus="KEPT" th:attr="data-bookid= *{slug }"
                                                 data-bookid="[1133]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/heart.svg" alt="heart.svg"/></span><span
-                                                class="btn-content">Отложить</span>
+                                                class="btn-content" th:text="#{buttons.postpone}">Отложить</span>
                                         </button>
                                     </div>
                                     <div class="Cart-btn">
@@ -79,7 +79,7 @@
                                                 data-sendstatus="UNLINK" th:attr="data-bookid=*{slug }"
                                                 data-bookid="[1133]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span>
-                                            <span class="btn-content">Удалить</span>
+                                            <span class="btn-content" th:text="#{buttons.delete}">Удалить</span>
                                         </button>
                                     </div>
                                 </div>
@@ -88,20 +88,20 @@
                                         <button class="btn btn_primary btn_outline cart_section" data-sendstatus_unauthorized="KEPT"
                                                 th:attr="data-bookid=*{slug} " data-bookid="[1133]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/heart.svg" alt="heart.svg"/></span><span
-                                                class="btn-content">Отложить</span>
+                                                class="btn-content" th:text="#{buttons.postpone}">Отложить</span>
                                         </button>
                                     </div>
                                     <div class="Cart-btn">
                                         <button class="btn btn_danger btn_outline cart_section" data-sendstatus_unauthorized="CART"
                                                 th:attr="data-bookid=*{slug} " data-bookid="[1133]"><span class="btn-icon"><img
                                                 src="/assets/img/icons/trash.svg" alt="trash.svg"/></span>
-                                            <span class="btn-content">Удалить</span>
+                                            <span class="btn-content" th:text="#{buttons.delete}">Удалить</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="Cart-block Cart-block_price">
-                                <div class="Cart-priceTitle">Цена:
+                                <div class="Cart-priceTitle" th:text="#{book.price}">Цена:
                                 </div>
                                 <div class="Cart-price Cart-price_old" th:text="'₽' + *{price}">150 р.
                                 </div>
@@ -115,16 +115,16 @@
                 </div>
                 <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
-                        <strong class="Cart-title">Итого:
+                        <strong class="Cart-title" th:text="#{shelves.cart.total}">Итого:
                         </strong><span class="Cart-price"
                                        th:text="${'₽' + booksPage.totalDiscountPrice}">534 р.</span>
                         <span class="Cart-price_old" th:text="${'₽' + booksPage.totalPrice}">658 р.</span>
                     </div>
-                    <div class="Cart-block" ><a id="buy_btn" class="btn btn_success btn_md"  sec:authorize="hasRole('USER')" >Купить</a>
+                    <div class="Cart-block" ><a id="buy_btn" class="btn btn_success btn_md"  sec:authorize="hasRole('USER')" th:text="#{buttons.buy}">Купить</a>
                     </div>
-                    <div class="Cart-block"><a class="btn btn_success btn_md popup-trigger pay-trigger" sec:authorize="isAnonymous()"  >Купить</a>
+                    <div class="Cart-block"><a class="btn btn_success btn_md popup-trigger pay-trigger" sec:authorize="isAnonymous()"  th:text="#{buttons.buy}">Купить</a>
                     </div>
-                    <div  th:replace="~{fragments/signin_popup_fragment :: popup(reason='Чтобы приобрести книги', popupOverlayId='pay-popup')}"
+                    <div  th:replace="~{fragments/signin_popup_fragment :: popup(reason=#{popup.signin.reason.purchase}, popupOverlayId='pay-popup')}"
                           sec:authorize="isAnonymous()">
                     </div>
                 </div>

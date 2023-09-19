@@ -4758,3 +4758,8 @@ img {
 .Transactions-footer {
     margin-top: 30px
 }
+
+.table-center{
+    margin-left: auto;
+    margin-right: auto;
+}

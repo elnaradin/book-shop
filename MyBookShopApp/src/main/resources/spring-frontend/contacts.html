@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Контакты</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="favicon.ico" rel="shortcut icon">
+    <link href="../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -58,19 +58,19 @@
                             <form class="form" action="#" method="post">
                                 <div class="form-group" sec:authorize="isAnonymous()">
                                     <input class="form-input" id="name" name="name" type="text"
-                                           placeholder="Введите Имя" data-validate="require"/>
+                                           placeholder="Введите Имя" th:attr="placeholder=#{contacts.enterName}" data-validate="require"/>
                                 </div>
                                 <div class="form-group" sec:authorize="isAnonymous()">
                                     <input class="form-input form-input_mail" id="mail" name="mail" type="text"
-                                           placeholder="Введите e-mail" data-validate="mail require"/>
+                                           placeholder="Введите e-mail" th:attr="placeholder=#{contacts.enterEmail}" data-validate="mail require"/>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-input" id="topic" name="topic" type="text"
-                                           placeholder="Введите тему" data-validate="require"/>
+                                           placeholder="Введите тему" th:attr="placeholder=#{contacts.enterTopic}" data-validate="require"/>
                                 </div>
                                 <div class="form-group">
                                     <textarea class="form-textarea Contacts-message" name="message" id="message"
-                                              placeholder="Введите сообщение" data-validate="require"></textarea>
+                                              placeholder="Введите сообщение" th:attr="placeholder=#{contacts.enterMessage}"  data-validate="require"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn_primary form-btn" type="submit" name="sendMessage"

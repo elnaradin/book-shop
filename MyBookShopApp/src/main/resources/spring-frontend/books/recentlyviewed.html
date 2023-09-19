@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Недавно просмотренное</title>
   <meta name="description" content="Описание страницы">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-  <link href="..\favicon.ico" rel="shortcut icon">
+  <link href="../../favicon.ico" rel="shortcut icon">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -32,11 +32,11 @@
           <h1 class="Section-title" th:text="#{top-bar.recentlyViewed}">Недавно просмотренное
           </h1>
         </div>
-        <form class="form Cart" th:style="${#lists.isEmpty(recentlyViewedBooks.books)} ? '' : 'display: none;'" >
-          <div class="Cart-messageInfo">Недавно просмотренных книг нет</div>
+        <form class="form Cart" th:style="${#lists.isEmpty(booksPage.books)} ? '' : 'display: none;'" >
+          <div class="Cart-messageInfo" th:text="#{recentlyViewed.isEmpty}">Недавно просмотренных книг нет</div>
         </form>
-        <div class="Cards Cards_refresh" th:unless="${#lists.isEmpty(recentlyViewedBooks.books)}"
-             th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${recentlyViewedBooks},
+        <div class="Cards Cards_refresh" th:unless="${#lists.isEmpty(booksPage.books)}"
+             th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage},
                       refreshShowValue='recentlyViewed')}"></div>
       </div>
     </main>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>О компании</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="favicon.ico" rel="shortcut icon">
+    <link href="../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -26,9 +26,9 @@
     <div class="wrap">
         <main class="Middle-main">
             <div class="Section">
-                <h1 class="Section-header" th:if="${notFoundError}" th:text="#{404-message}">О компании
-                </h1>
                 <h1 class="Section-header" th:unless="${notFoundError}" th:text="#{404-message}">О компании
+                </h1>
+                <h1 class="Section-header" th:if="${notFoundError}" th:text="${errMessage}">О компании
                 </h1>
             </div>
         </main>

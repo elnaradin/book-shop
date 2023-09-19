@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="article" th:object="${author}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div sec:authorize="!hasRole('ADMIN')" th:fragment="article" th:object="${author}">
     <h1 class="Middle-title" th:text="${author.name}">Борис Васильевич Бедный
     </h1>
     <article class="Article">

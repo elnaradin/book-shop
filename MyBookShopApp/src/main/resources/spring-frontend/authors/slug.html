@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Автор</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="../favicon.ico" rel="shortcut icon">
+    <link href="../../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -15,9 +15,11 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=93601584">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=93601584"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
     <script src="/assets/js/LogoutScript.js"></script>
+
 </head>
 <body class="Site">
 <header class="Header"
@@ -27,19 +29,73 @@
         <main class="Middle-main">
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=${author.name})}"></ul>
+
+
             <div th:replace="~{fragments/author_article_fragment :: article(author=${author})}"></div>
-            <div class="Section"
-                 th:replace="~{fragments/book_slider_fragment :: bookSlider(title='Книги автора', category=${booksPage.books}, bookType='author')}"></div>
-            <footer class="Section-footer"><a class="Author-books"
-                                              th:href="@{'/books/author/' + ${author.slug}}"
-                                              href="/books/author.html"><span th:text="#{authors.all-books}">Все книги
-                автора</span><span
-                    class="Author-amount" th:text="${'('+ booksPage.count + ')'}">(55)</span></a>
-            </footer>
+            <!--                <div class="Spoiler">-->
+            <!--                    <div class="Spoiler-visible">-->
+            <!--                        <div class="pict pict_left"><img th:src= src="/assets/img/content/main/card.jpg" alt="card.jpg"/>-->
+            <!--                        </div>-->
+            <div class="Product" sec:authorize="hasRole('ADMIN')">
+                <div class="ProductCard">
+                    <div class="ProductCard-look">
+                        <form style="cursor: pointer;" id="imgForm" method="POST"
+                              enctype="multipart/form-data"
+                              action="#"
+                              th:action="'/authors/' + ${author.slug} +'/img/save'">
+                            <div class=" ProductCard-photo uploadButton">
+                                <img th:src="${author.photo}" style="width: 400px ; height: 600px; object-fit: cover;"
+                                     src="/assets/img/content/main/card.jpg"
+                                     alt="card.jpg"/>
+                            </div>
+                            <input type="file" name="file" id="dialog" style="display: none" accept="image/*"/>
+                        </form>
+                    </div>
+                    <div style="margin-top: 50px" class="ProductCard-desc" sec:authorize="hasRole('ADMIN')">
+                        <div class="ProductCard-header">
+                            <table>
+                                <th:block th:replace="~{fragments/author_data_fields :: authorFilledFields}"></th:block>
+                                <tr>
+                                    <td>
+                                        <div class="ProductCard-cart">
+                                            <div class="ProductCard-cartElement">
+                                                <button  th:attr="data-itemid=${author.slug}, data-item='AUTHOR'" id="DeleteAuthor_btn" class="btn btn_danger btn_primary "  th:text="#{buttons.delete}">Удалить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="ProductCard-cart">
+                                            <div class="ProductCard-cartElement">
+
+                                                <button id="UpdateAuthor_btn" class="btn btn_primary "  th:text="#{buttons.update}">Обновить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+            </div>
+            <th:block sec:authorize="!hasRole('ADMIN')">
+                <div class="Section"
+                     th:replace="~{fragments/book_slider_fragment :: bookSlider(title=#{authors.sampleBooks}, category=${booksPage.books}, bookType='author')}"></div>
+                <footer class="Section-footer"><a class="Author-books"
+                                                  th:href="@{'/books/author/' + ${author.slug}}"
+                                                  href="/books/author.html"><span th:text="#{authors.all-books}">Все книги автора</span><span
+                        class="Author-amount" th:text="${'('+ booksPage.count + ')'}">(55)</span></a>
+                </footer>
+            </th:block>
+
+
         </main>
     </div>
 </div>
 <footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
 <script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<script src="/assets/js/UploadNewBookImageScript.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
 </html>

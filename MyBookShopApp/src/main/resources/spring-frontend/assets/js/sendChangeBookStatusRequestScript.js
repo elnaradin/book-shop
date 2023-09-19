@@ -96,9 +96,9 @@ $(document).ready(function () {
         let cartAmount = $(".cartAmount");
         let keptAmount = $(".keptAmount");
         switch (status) {
-            case 'ARCHIVED' :
-                changeMyBlockValue($this, $(".myAmount"))
-                break;
+            // case 'ARCHIVED' :
+            //     changeMyBlockValue($this, $(".myAmount"))
+            //     break;
             case 'CART' :
                 changeCartAndKeptBlocksValues($this, cartAmount, $(".keptBtn"), keptAmount);
                 break;

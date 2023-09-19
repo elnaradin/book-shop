@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{top-bar.addTag}">Недавно просмотренное</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="../../favicon.ico" rel="shortcut icon">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=45035206">
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=45035206">
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=45035206">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script defer src="/assets/js/scripts.min.js?v=45035206"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script th:replace="~{fragments/locale_change_script_fragment :: script}"></script>
+    <script src="/assets/js/LogoutScript.js"></script>
+</head>
+<body class="Site">
+<header class="Header"
+        th:replace="~{fragments/common_header_fragment :: head(add_tag='menu-item_ACTIVE')}"></header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+            <div class="Section">
+                <div class="Section-header">
+                    <h1 class="Section-title" th:text="#{top-bar.addTag}">
+                    </h1>
+                </div>
+                <div class="Product">
+                    <div class="ProductCard">
+
+                        <table class="table-center" >
+                            <tr>
+                                <td style="width:30%">
+                                    <div class="ProductCard-titleProp" th:text="#{genre.name}">Название:
+                                    </div>
+                                </td>
+                                <td style="width:20%">
+                                    <input class="form-input" id="name" name="name" type="text"
+                                           placeholder="Название" th:attr="placeholder=#{genre.name}" data-validate="require">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="ProductCard-titleProp">Slug:
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-input" id="slug" name="slug" type="text"
+                                           placeholder="Slug" data-validate="require">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="ProductCard-cart">
+                                        <div class="ProductCard-cartElement">
+                                            <button id="AddTag_btn" class="btn btn_primary" th:text="#{buttons.add}">Добавить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="Footer" th:replace="~{fragments/common_footer_fragment :: footer}"></footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+</body>
+</html>

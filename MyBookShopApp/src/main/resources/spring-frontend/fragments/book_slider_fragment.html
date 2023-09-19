@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="bookSlider">
+<div th:fragment="bookSlider" th:attr=" data-bestsellerTag=#{book.bestsellerTag} , data-discountTag=#{book.discountTag}">
     <div class="Section-header">
         <h2 class="Section-title" th:text="${title}">Рекомендуемое
         </h2>
@@ -15,11 +15,11 @@
                             <a  th:href="@{'/books/' + ${book.slug}}"
                                href="/books/slug.html">
 
-                                <img  th:src="*{image}" alt="card.jpg"/>
+                                <img  style="width: 190px; height: 270px; object-fit: cover;" th:src="*{image}" alt="card.jpg"/>
                                 <div class="Card-ribbon" th:if="*{isBestseller}">
-                                    <span class="Card-ribbonText">Бестселлер</span>
+                                    <span class="Card-ribbonText" th:text="#{book.bestsellerTag}">Бестселлер</span>
                                 </div>
-                                <div class="Card-sale" th:if="*{discount} > 0" th:text="*{discount} + '% скидка'">30%
+                                <div class="Card-sale" th:if="*{discount} > 0" th:text="*{discount} + '% ' +  #{book.discountTag}">30%
                                     скидка
                                 </div>
                                 <div sec:authorize="hasRole('USER')">
@@ -59,7 +59,7 @@
 
 
                             <div class="Card-cost">
-                                <span class="Card-priceOld" th:text="'₽' + *{ price}">₽300.00</span>
+                                <span class="Card-priceOld" th:unless="*{discount == 0}" th:text="'₽' + *{ price}">₽300.00</span>
                                 <span class="Card-price" th:text="'₽'+ *{discountPrice}">₽190.00</span>
                             </div>
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" th:attr="lang=${lang}" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title th:text="${genre.name}">Тут название страницы написать</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="../favicon.ico" rel="shortcut icon">
+    <link href="../../../favicon.ico" rel="shortcut icon">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
     <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -25,12 +25,19 @@
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main" th:object="${genre}">
+
             <ul class="breadcrumbs"
                 th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category=*{name})}"></ul>
+            <div class="ProductCard-cartElement" style="float: right;" sec:authorize="hasRole('ADMIN')">
+                <button id="DeleteGenre_btn" th:attr=" data-itemid=*{slug}, data-item='GENRE'" class="btn btn_danger btn_primary "  th:text="#{buttons.delete}">Удалить
+                </button>
+            </div>
             <header class="Middle-header">
-                <h1 class="Middle-title" th:text="*{name}">Детективы
+                <h1  class="Middle-title" th:text="*{name}">Детективы
                 </h1>
+
             </header>
+
             <div class="Section">
                 <div class="Cards Cards_refresh"
                      th:replace="~{fragments/books_pool_fragment :: pool(booksPage=${booksPage},

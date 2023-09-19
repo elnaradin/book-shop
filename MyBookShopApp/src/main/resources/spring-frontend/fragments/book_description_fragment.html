@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div class="ProductCard-desc" th:fragment="bookDesc">
+<div sec:authorize="!hasRole('ADMIN')" class="ProductCard-desc" th:fragment="bookDesc">
     <div class="ProductCard-header" th:object="${book}">
         <h1 class="ProductCard-title" th:text="*{title}">Мара и морок
         </h1>
-        <div class="ProductCard-author"><span class="ProductCard-titleProp">Автор(ы):</span>&#32;
+        <div class="ProductCard-author"><span class="ProductCard-titleProp" th:text="#{book.authors}">Автор(ы):</span>&#32;
             <span
                     th:each="author, status : ${authors}">
                 <a class="author_link" href="#" th:href="@{'/authors/' + ${author.slug}}"
                    th:text="${author.name}">Лия Арден</a><span th:if="!${status.last}" th:text="', '"></span></span>
         </div>
-        <div class="ProductCard-rating"><span class="ProductCard-titleProp">Рейтинг:</span>
+        <div class="ProductCard-rating"><span class="ProductCard-titleProp" th:text="#{book.rating}">Рейтинг:</span>
             <button class="trigger trigger_dropdown" type="button">
                 <div class="Rating Rating_noStyleLink"><span class="Rating-stars">
                     <span class="Rating-star" th:each="i: ${#numbers.sequence(1, 5)}"
@@ -27,7 +27,7 @@
                 </div>
                 <div class="modal modal_compression modal_dropdown" th:object="${ratings}">
                     <div class="modal-window"><a class="modal-close" href="#"><span></span><span></span></a>
-                        <strong class="modal-title">Распределение оценок</strong>
+                        <strong class="modal-title" th:text="#{book.ratingDistribution}">Распределение оценок</strong>
                         <div class="RatingGroup">
                             <span class="Rating"><span class="Rating-stars"><span
                                     th:each="i: ${#numbers.sequence(1, 5)}"
@@ -95,7 +95,7 @@
             </button>
         </div>
         <div class="ProductCard-assessment"><span
-                class="ProductCard-titleProp">Оцените книгу:</span>
+                class="ProductCard-titleProp" th:text="#{book.rate}">Оцените книгу:</span>
             <span sec:authorize="hasRole('USER')" class="Rating Rating_input"
                   data-bookid="2121"
                   th:attr="data-bookid=*{slug}">
@@ -134,16 +134,16 @@
                 </th:block>
             </span></span>
         </div>
-        <div th:replace="~{fragments/signin_popup_fragment :: popup(reason='Чтобы оценить книгу', popupOverlayId='rating-popup')}"
+        <div th:replace="~{fragments/signin_popup_fragment :: popup(reason=#{popup.signin.reason.rate}, popupOverlayId='rating-popup')}"
              sec:authorize="isAnonymous()">
         </div>
 
-        <div class="ProductCard-tags"><span class="ProductCard-titleProp">Тэги:</span>
+        <div class="ProductCard-tags"><span class="ProductCard-titleProp" th:text="#{book.tags}">Тэги:</span>
             <span th:each="tag, status : ${tags}">
                 <a href="/tags/" th:href="@{'/books/tag/' + ${tag.slug}}"
                    th:text="${tag.name}">Современные</a><span th:if="!${status.last}" th:text="', '"></span></span>
         </div>
-        <div class="ProductCard-cost"><span class="ProductCard-titleProp">Цена:</span><span
+        <div class="ProductCard-cost"><span class="ProductCard-titleProp" th:text="#{book.price}">Цена:</span><span
                 class="ProductCard-priceOld" th:text="'₽' + *{price}">₽300</span><span
                 class="ProductCard-price"
                 th:text="'₽'+ *{discountPrice} ">₽180</span>

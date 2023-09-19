@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="reviewBlock">
+<div th:fragment="reviewBlock" >
     <div class="Comments">
-        <h3 th:if="${reviews.size() == 0}">Отзывов пока нет</h3>
-        <div class="Comment" th:each="review : ${reviews}">
+        <h3 th:if="${reviews.size() == 0}" th:text="#{book.noReviews}">Отзывов пока нет</h3>
+        <div class="Comment" th:object="${review}" th:each="review : ${reviews}">
             <div class="Comment-column Comment-column_pict">
                 <div class="Comment-avatar">
                 </div>
             </div>
-            <div class="Comment-column" th:object="${review}">
+
+            <div class="Comment-column" >
+
                 <header class="Comment-header">
                     <div>
                         <strong class="Comment-title"><span th:text="*{userName}">Александр Кузнецов</span>
@@ -63,16 +65,22 @@
                               </svg></span></span></span></span>
                         </strong><span class="Comment-date"
                                        th:text="*{#temporals.format(time, 'dd.MM.yyyy hh:mm')}">17.04.2020 16:40</span>
+
+                    </div>
+                    <div class="ProductCard-cartElement"  sec:authorize="hasRole('ADMIN')">
+                        <button id="DeleteReview_btn"  th:attr=" data-itemid=*{hash}, data-item='REVIEW'" class="btn btn_danger btn_primary ">Удалить
+                        </button>
                     </div>
                 </header>
-                <div class="Comment-content">
-                    <p th:text="*{text}">Lorem ipsum dolor sit amet,
+
+                <div class="Comment-content" style="width: 891px">
+                    <p  th:text="*{text}">Lorem ipsum dolor sit amet,
                     </p>
                     <div class="Comment-footer">
-                        <div class="Comment-appeal" sec:authorize="hasRole('USER')">
+                        <div class="Comment-appeal" sec:authorize="hasRole('USER') && !hasRole('ADMIN')">
                             <button class="btn btn_white btn_like"
                                     data-btntype="check" data-check="false"
-                                    th:attr="data-likeid =*{id}, data-btnradio=*{id}, data-check= *{isLiked}"
+                                    th:attr="data-likeid =*{hash}, data-btnradio=*{hash}, data-check= *{isLiked}"
                                     th:classappend=" *{isLiked} ? btn_check : ''"
                                     data-likeid="1111"
                                     data-btnradio="two2"><span
@@ -82,14 +90,14 @@
                             </button>
                             <button class="btn btn_white btn_dislike"
                                     data-btntype="check" data-check="false"
-                                    th:attr="data-likeid =*{id}, data-btnradio=*{id}, data-check= *{isDisliked}"
+                                    th:attr="data-likeid =*{hash}, data-btnradio=*{hash}, data-check= *{isDisliked}"
                                     th:classappend=" *{isDisliked} ? btn_check : ''"
                                     data-btnradio="two2" data-likeid="1111"><span class="btn-icon"><img
                                     src="/assets/img/icons/comment/dislike.svg" alt="dislike.svg"/></span><span
                                     class="btn-content" th:text="*{dislikeCount}">100</span>
                             </button>
                         </div>
-                        <div class="Comment-appeal" sec:authorize="isAnonymous()" >
+                        <div class="Comment-appeal" sec:authorize="isAnonymous() || hasRole('ADMIN')" >
                             <button class="btn btn_white btn_like popup-trigger like-trigger" ><span
                                     class="btn-icon"><img
                                     src="/assets/img/icons/comment/like.svg" alt="like.svg"/></span><span
@@ -103,9 +111,11 @@
                         </div>
                     </div>
                 </div>
-                <div th:replace="~{fragments/signin_popup_fragment :: popup(reason='Чтобы оценить отзыв', popupOverlayId='like-popup')}"></div>
+
+                <div th:replace="~{fragments/signin_popup_fragment :: popup(reason=#{popup.signin.reason.rateReview}, popupOverlayId='like-popup')}"></div>
             </div>
         </div>
+
     </div>
 </div>
 </html>
