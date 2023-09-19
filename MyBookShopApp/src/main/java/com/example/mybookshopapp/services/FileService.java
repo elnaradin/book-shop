@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.file;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.file.BookFileDto;
 import org.springframework.core.io.ByteArrayResource;

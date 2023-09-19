@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.book;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
 import com.example.mybookshopapp.dto.ResultDto;
@@ -230,7 +230,7 @@ public class BookServiceImpl implements BookService {
     }
 
 
-    protected List<String> getSlugsToExclude() {
+    public List<String> getSlugsToExclude() {
         if (facade.isAuthenticated()) {
             return bookRepository.findSlugsByUserEmail(facade.getCurrentUsername());
         }

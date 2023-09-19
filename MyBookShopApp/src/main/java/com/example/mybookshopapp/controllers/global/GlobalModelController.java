@@ -2,8 +2,8 @@ package com.example.mybookshopapp.controllers.global;
 
 import com.example.mybookshopapp.dto.search.SearchWordDto;
 import com.example.mybookshopapp.dto.user.SmallUserDto;
-import com.example.mybookshopapp.services.bookstatus.BookStatusService;
-import com.example.mybookshopapp.services.auth.UserRegService;
+import com.example.mybookshopapp.services.BookStatusService;
+import com.example.mybookshopapp.services.UserRegService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;

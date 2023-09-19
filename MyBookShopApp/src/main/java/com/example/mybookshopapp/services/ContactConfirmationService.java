@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.contactconfirmation;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.security.ContactConfirmationPayload;
 import com.example.mybookshopapp.dto.security.ContactConfirmationResponse;

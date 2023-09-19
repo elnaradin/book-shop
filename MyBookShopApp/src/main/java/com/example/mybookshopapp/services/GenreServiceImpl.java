@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.genre;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.annotation.DurationTrackable;
 import com.example.mybookshopapp.dto.ResultDto;
@@ -12,7 +12,6 @@ import com.example.mybookshopapp.errs.ItemNotFoundException;
 import com.example.mybookshopapp.model.genre.GenreEntity;
 import com.example.mybookshopapp.repositories.BookRepository;
 import com.example.mybookshopapp.repositories.GenreRepository;
-import com.example.mybookshopapp.services.bookstatus.BookStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

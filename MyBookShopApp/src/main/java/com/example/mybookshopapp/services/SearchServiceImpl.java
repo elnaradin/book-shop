@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.search;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.book.BooksPageDto;
 import com.example.mybookshopapp.dto.book.ShortBookDto;

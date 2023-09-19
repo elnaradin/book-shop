@@ -1,6 +1,6 @@
 package com.example.mybookshopapp.controllers.shop;
 
-import com.example.mybookshopapp.services.shop.ShopService;
+import com.example.mybookshopapp.services.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

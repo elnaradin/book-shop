@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.auth;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.ResultDto;
 import com.example.mybookshopapp.dto.book.request.RequestDto;

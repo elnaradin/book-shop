@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.auth;
+package com.example.mybookshopapp.services;
 
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
@@ -23,7 +23,6 @@ import com.example.mybookshopapp.model.user.UserEntity;
 import com.example.mybookshopapp.repositories.UserContactRepository;
 import com.example.mybookshopapp.repositories.UserRepository;
 import com.example.mybookshopapp.repositories.UserRolesRepository;
-import com.example.mybookshopapp.services.contactconfirmation.ContactConfirmationService;
 import com.example.mybookshopapp.services.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.payment;
+package com.example.mybookshopapp.services;
 
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
@@ -20,8 +20,6 @@ import com.example.mybookshopapp.model.user.UserEntity;
 import com.example.mybookshopapp.repositories.BalanceTransactionRepository;
 import com.example.mybookshopapp.repositories.BookRepository;
 import com.example.mybookshopapp.repositories.UserRepository;
-import com.example.mybookshopapp.services.auth.UserRegService;
-import com.example.mybookshopapp.services.bookstatus.BookStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -154,30 +152,32 @@ public class PaymentServiceImpl implements PaymentService {
                 RootResponse.class
         ).getBody();
         if (response != null) {
-            log.info(response.toString());
-            if (response.getStatus().equals("pending")) {
-                //отправляет запросы то тех пор, пока не получит статус succeeded. Заглушка
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    log.error(e.getMessage());
-                    Thread.currentThread().interrupt();
-                }
-                checkIfPaymentSucceeded();
-            }
-            if (!response.getStatus().equals("succeeded")) {
-                return false;
-            }
-            int roundedSum = Math.round(Float.parseFloat(response.getAmount().getValue()));
-            String description = getMessageForLocale("payment.topup") + roundedSum + " "+getMessageForLocale("currency.rub");
-            log.info("top up sum: " + roundedSum);
-            userRegService.changeBalance(ChangeBalanceDto.builder()
-                    .amount(roundedSum)
-                    .operationType(OperationType.TOP_UP).username(facade.getCurrentUsername()).build());
-            createTransaction(user, description, roundedSum, null);
-            return true;
+            return checkStatusAndCreateTransaction(user, response);
         }
         return false;
+    }
+
+    private boolean checkStatusAndCreateTransaction(UserEntity user, RootResponse response) {
+        if (response.getStatus().equals("pending")) {
+            //отправляет запросы то тех пор, пока не получит статус succeeded. Заглушка
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                log.error(e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+            checkIfPaymentSucceeded();
+        }
+        if (!response.getStatus().equals("succeeded")) {
+            return false;
+        }
+        int roundedSum = Math.round(Float.parseFloat(response.getAmount().getValue()));
+        String description = getMessageForLocale("payment.topup") + roundedSum + " "+getMessageForLocale("currency.rub");
+        userRegService.changeBalance(ChangeBalanceDto.builder()
+                .amount(roundedSum)
+                .operationType(OperationType.TOP_UP).username(facade.getCurrentUsername()).build());
+        createTransaction(user, description, roundedSum, null);
+        return true;
     }
 
     private void createTransaction(UserEntity user, String description, Integer value, BookEntity book) {

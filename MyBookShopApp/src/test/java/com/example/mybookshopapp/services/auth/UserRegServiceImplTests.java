@@ -6,6 +6,7 @@ import com.example.mybookshopapp.dto.security.RegistrationForm;
 import com.example.mybookshopapp.errs.UserExistsException;
 import com.example.mybookshopapp.model.user.UserEntity;
 import com.example.mybookshopapp.repositories.UserRepository;
+import com.example.mybookshopapp.services.UserRegServiceImpl;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

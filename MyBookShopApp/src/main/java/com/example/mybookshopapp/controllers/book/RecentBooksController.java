@@ -1,7 +1,7 @@
 package com.example.mybookshopapp.controllers.book;
 
 import com.example.mybookshopapp.dto.book.request.RequestDto;
-import com.example.mybookshopapp.services.book.BookService;
+import com.example.mybookshopapp.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
