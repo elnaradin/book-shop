@@ -1,7 +1,7 @@
 package com.example.mybookshopapp.controllers.book;
 
 import com.example.mybookshopapp.model.enums.StatusType;
-import com.example.mybookshopapp.services.bookstatus.BookStatusService;
+import com.example.mybookshopapp.services.BookStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -2,8 +2,8 @@ package com.example.mybookshopapp.controllers.book;
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
 import com.example.mybookshopapp.dto.book.request.RequestDto;
-import com.example.mybookshopapp.services.author.AuthorService;
-import com.example.mybookshopapp.services.file.FileService;
+import com.example.mybookshopapp.services.AuthorService;
+import com.example.mybookshopapp.services.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

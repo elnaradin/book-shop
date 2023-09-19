@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.bookstatus;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.ResultDto;
 import com.example.mybookshopapp.dto.admin.AdminChangeBookStatusDto;

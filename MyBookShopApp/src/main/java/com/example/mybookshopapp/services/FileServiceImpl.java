@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.file;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
 import com.example.mybookshopapp.dto.file.BookFileDto;
@@ -109,11 +109,8 @@ public class FileServiceImpl implements FileService {
         downloadEntity.setCount(++downloadCount);
         fileDownloadRepository.save(downloadEntity);
         Path path = storage.getBookFilePath(hash);
-        log.info("book file path: " + path);
         MediaType mediaType = storage.getBookFileMime(hash);
-        log.info("book file mime: " + path);
         byte[] data = storage.getBookFileByteArray(hash);
-        log.info("book file data length: " + data.length);
         return ResponseEntity.ok().header(
                         HttpHeaders.CONTENT_DISPOSITION,
                         "attachment;filename=" + path.getFileName().toString()

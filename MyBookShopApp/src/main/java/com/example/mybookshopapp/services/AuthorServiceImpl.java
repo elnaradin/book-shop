@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.author;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.annotation.DurationTrackable;
 import com.example.mybookshopapp.dto.ResultDto;

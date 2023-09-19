@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.shop;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
 import com.example.mybookshopapp.dto.ResultDto;

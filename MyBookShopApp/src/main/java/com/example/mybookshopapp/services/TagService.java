@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.tag;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.ResultDto;
 import com.example.mybookshopapp.dto.book.BooksPageDto;

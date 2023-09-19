@@ -1,4 +1,4 @@
-package com.example.mybookshopapp.services.payment;
+package com.example.mybookshopapp.services;
 
 import com.example.mybookshopapp.dto.ResultDto;
 import com.example.mybookshopapp.dto.payment.PaymentDto;

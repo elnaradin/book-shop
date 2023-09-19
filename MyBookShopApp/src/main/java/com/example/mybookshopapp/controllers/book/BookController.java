@@ -1,13 +1,13 @@
 package com.example.mybookshopapp.controllers.book;
 
 import com.example.mybookshopapp.config.security.IAuthenticationFacade;
-import com.example.mybookshopapp.services.author.AuthorService;
-import com.example.mybookshopapp.services.book.BookService;
-import com.example.mybookshopapp.services.bookstatus.BookStatusService;
-import com.example.mybookshopapp.services.file.FileService;
-import com.example.mybookshopapp.services.genre.GenreService;
-import com.example.mybookshopapp.services.feedback.FeedbackService;
-import com.example.mybookshopapp.services.tag.TagService;
+import com.example.mybookshopapp.services.AuthorService;
+import com.example.mybookshopapp.services.BookService;
+import com.example.mybookshopapp.services.BookStatusService;
+import com.example.mybookshopapp.services.FileService;
+import com.example.mybookshopapp.services.GenreService;
+import com.example.mybookshopapp.services.FeedbackService;
+import com.example.mybookshopapp.services.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
